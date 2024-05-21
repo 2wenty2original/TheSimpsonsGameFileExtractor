@@ -1,0 +1,10 @@
+﻿  main.cpp
+  RenderToScreen.cpp
+  Str_Load.cpp
+  TextDisplay.cpp
+  Generating Code...
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(78): warning C4715: 'Str_Load::GreaterThanLineReturn': not all control paths return a value
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(102): warning C4715: 'Str_Load::GreaterThanInputCharReturn': not all control paths return a value
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(92): warning C4715: 'Str_Load::LessThanLineReturn': not all control paths return a value
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(111): warning C4715: 'Str_Load::LessThanInputCharReturn': not all control paths return a value
+  Ultimate_File_Encoder_And_Decoder.vcxproj -> E:\GitHubDesktop\FINAL_YEAR_PROJECT\Ultimate_File_Encoder_And_Decoder\x64\Debug\Ultimate_File_Encoder_And_Decoder.exe
