@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <iostream>
 
 class RenderToScreen {
 
@@ -16,11 +17,15 @@ public:
 
 	
 	void init();
+	void update();
+	bool KeepAlive();
 	void draw();
 	void destroy();
 	
 
 private:
+
+	SDL_Event EventRecorder;
 
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;

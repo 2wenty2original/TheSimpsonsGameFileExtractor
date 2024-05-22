@@ -1,8 +1,14 @@
+
+#define SDL_MAIN_HANDLED
+
 #include "Str_Load.h"
+#include "RenderToScreen.h"
+#include "TextDisplay.h"
 #include <iostream>
 #include <fstream>
 #include <ostream>
 #include <math.h>
+
 
 int main(int argc, char** argv){
 
