@@ -1,22 +1,89 @@
 ﻿  main.cpp
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(22,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/main.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(23,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/main.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(27,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/main.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(28,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/main.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(29,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/main.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(30,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/main.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302: 'type cast': truncation from 'const _Elem *' to 'char'
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:         with
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:         [
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:             _Elem=char
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:         ]
+  (compiling source file 'Source/main.cpp')
+  
   RenderToScreen.cpp
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(22,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(23,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(27,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(28,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(29,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(30,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302: 'type cast': truncation from 'const _Elem *' to 'char'
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:         with
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:         [
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:             _Elem=char
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:         ]
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(43,63): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(43,53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(43,45): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(43,39): warning C4305: 'argument': truncation from 'double' to 'float'
   Str_Load.cpp
   TextDisplay.cpp
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(24,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(22,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'Source/TextDisplay.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(25,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  (compiling source file 'Source/TextDisplay.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(26,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(23,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'Source/TextDisplay.cpp')
   
 E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(27,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'Source/TextDisplay.cpp')
   
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(28,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/TextDisplay.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(29,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/TextDisplay.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(30,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/TextDisplay.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302: 'type cast': truncation from 'const _Elem *' to 'char'
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:         with
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:         [
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:             _Elem=char
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(57,15): warning C4302:         ]
+  (compiling source file 'Source/TextDisplay.cpp')
+  
   Generating Code...
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(102): warning C4715: 'Str_Load::GreaterThanInputCharReturn': not all control paths return a value
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(111): warning C4715: 'Str_Load::LessThanInputCharReturn': not all control paths return a value
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(92): warning C4715: 'Str_Load::LessThanLineReturn': not all control paths return a value
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(78): warning C4715: 'Str_Load::GreaterThanLineReturn': not all control paths return a value
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(110): warning C4715: 'Str_Load::LessThanInputCharReturn': not all control paths return a value
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(77): warning C4715: 'Str_Load::GreaterThanLineReturn': not all control paths return a value
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(91): warning C4715: 'Str_Load::LessThanLineReturn': not all control paths return a value
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(101): warning C4715: 'Str_Load::GreaterThanInputCharReturn': not all control paths return a value
   Ultimate_File_Encoder_And_Decoder.vcxproj -> E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\x64\Debug\Ultimate_File_Encoder_And_Decoder.exe

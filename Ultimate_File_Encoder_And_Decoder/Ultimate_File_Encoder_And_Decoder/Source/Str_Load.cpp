@@ -1,12 +1,11 @@
 #include "Str_Load.h"
 
-Str_Load::Str_Load(const char* file)
+
+
+void Str_Load::init(const char* file)
 {
 	Filename = (char*)file;
-}
 
-void Str_Load::init()
-{
 	std::ifstream EntireFile;
 	std::string line;
 
@@ -27,13 +26,13 @@ void Str_Load::init()
 		EntireFile.open(Filename, std::ios::binary); // open it as a binary file
 		Allocate2DVectors(); // initilizes vectors
 
-		while (!EntireFile.eof()) { // loop through whole file
+		while (!EntireFile.eof()){ // loop through whole file
 			
 			
 			std::getline(EntireFile, line);
 			SortGarbeld(line, CurrentIndex);
 
-			std::cout << LessThanLineReturn(4) << std::endl;
+			
 			
 			
 			
@@ -60,7 +59,7 @@ void Str_Load::init()
 void Str_Load::Allocate2DVectors() {
 	ListOfAsciiCharacters.resize(Index, std::vector<std::string>(0));
 	ListOfBinaryCharacters.resize(Index, std::vector<std::string>(0));
-	ListOfFinals.resize(Index, std::vector<std::string>(0));
+	ListOfAll.resize(Index, std::vector<std::string>(0));
 }
 
 std::string Str_Load::GreaterThanLineReturn(float value)
@@ -137,6 +136,7 @@ void Str_Load::SortGarbeld(std::string CurrentLine, int &i) {
 			std::string FillerString = { "SV" };
 			ListOfAsciiCharacters[i].push_back(PushString);
 			ListOfBinaryCharacters[i].push_back(FillerString);
+			ListOfAll[i].push_back(PushString);
 				
 		}
 
@@ -145,6 +145,7 @@ void Str_Load::SortGarbeld(std::string CurrentLine, int &i) {
 			std::string FillerString = { "SV" };
 			ListOfAsciiCharacters[i].push_back(FillerString);
 			ListOfBinaryCharacters[i].push_back(PushString);
+			ListOfAll[i].push_back(PushString);
 		}
 	}
 

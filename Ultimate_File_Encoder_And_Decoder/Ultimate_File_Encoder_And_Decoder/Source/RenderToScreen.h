@@ -3,6 +3,9 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <iostream>
+#include "Str_Load.h"
+#include "TextDisplay.h"
+
 
 class RenderToScreen {
 
@@ -16,11 +19,14 @@ public:
 	}
 
 	
-	void init();
+	bool init();
 	void update();
 	bool KeepAlive();
 	void draw();
 	void destroy();
+
+	void HandleInput(SDL_Scancode& Keyscancode);
+	bool PollEvents();
 	
 
 private:
@@ -31,13 +37,23 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	SDL_Surface* screensurface = nullptr;
 
+	std::vector<Text> Lines;
+
 	int width;
 	int height;
 
 	const int NumMouse = 5;
-	bool Keystates[512];
+	bool KeyStates[512];
 	bool Mousestates[5] = { false };
 	bool GameYes = false;
 
 	int x, y;
+
+
+
+	Str_Load* LoadObject;
+	
+
+	//std::string IsItThere = LoadObject->GreaterThan(3);
+	//std::string IsItThere2 = LoadObject->LessThan(3);
 };

@@ -12,10 +12,21 @@
 
 int main(int argc, char** argv){
 
-	Str_Load* LoadObject = new Str_Load("e.str");
-	LoadObject->init();
-	//std::string IsItThere = LoadObject->GreaterThan(3);
-	//std::string IsItThere2 = LoadObject->LessThan(3);
+	RenderToScreen HexEditorLoop = RenderToScreen(1280, 720);
+
+	if (!HexEditorLoop.init()) {
+		std::cerr << "Error Could not init" << std::endl;
+	}
+
+	while (HexEditorLoop.KeepAlive()) {
+		HexEditorLoop.update();
+		HexEditorLoop.draw();
+	}
+
+	HexEditorLoop.destroy();
+
+
+	
 
 	return 0;
 };
