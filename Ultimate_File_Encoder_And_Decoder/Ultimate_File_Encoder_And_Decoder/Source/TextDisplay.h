@@ -28,12 +28,16 @@ public:
 		TextFrect->h = TextHeight;
 		TextFrect->x = TextX;
 		TextFrect->y = TextY;
+
+		
 	}
 
 	void init();
 	void update();
 	void draw();
 	void destroy();
+
+	void OverlapEachLetterHightlight(int& x, int& y);
 
 	void SetPos(float _x, float _y) {
 		TextFrect->x = _x;
@@ -54,12 +58,10 @@ public:
 	}
 
 	void SetText(std::string _text) {
-		LineOfHex = (char)_text.c_str();
-	}
-
-	void SetText(char _text) {
 		LineOfHex = _text;
 	}
+
+	
 
 	SDL_FRect* GetFRect() {
 		return TextFrect;
@@ -69,7 +71,7 @@ public:
 		return ColourOfText;
 	}
 
-	char GetText() {
+	std::string GetText() {
 		return LineOfHex;
 	}
 
@@ -88,6 +90,8 @@ private:
 	int TextX;
 	int TextY;
 
+	int Characters;
+
 	SDL_Renderer* renderer;
 	TTF_Font* font;
 
@@ -98,7 +102,7 @@ private:
 
 	Eigen::Vector3i ColourOfText = {255,255,255};
 
-	char LineOfHex;
+	std::string LineOfHex;
 
 	
 };

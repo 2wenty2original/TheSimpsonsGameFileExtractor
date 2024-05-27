@@ -27,6 +27,21 @@ public:
 
 	void HandleInput(SDL_Scancode& Keyscancode);
 	bool PollEvents();
+
+	bool OutScreen(int x, int y) {
+		bool Output;
+
+		if (x < width && x >= 0 && y < height && y >= 0) {
+			Output = false;
+			return Output;
+		}
+
+		else {
+			Output = true;
+			return Output;
+		}
+		
+	}
 	
 
 private:
@@ -37,7 +52,7 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	SDL_Surface* screensurface = nullptr;
 
-	std::vector<Text> Lines;
+	std::vector<Text*> Lines;
 
 	int width;
 	int height;

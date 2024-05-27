@@ -24,13 +24,14 @@ void Str_Load::init(const char* file)
 		int CurrentIndex = 0; // Index for line
 		IncrementGrid(EntireFile); // takes a file assesses how many lines there are
 		EntireFile.open(Filename, std::ios::binary); // open it as a binary file
-		Allocate2DVectors(); // initilizes vectors
+		//Allocate2DVectors(); // initilizes vectors
 
 		while (!EntireFile.eof()){ // loop through whole file
 			
 			
 			std::getline(EntireFile, line);
 			SortGarbeld(line, CurrentIndex);
+			
 
 			
 			
@@ -56,38 +57,34 @@ void Str_Load::init(const char* file)
 
 
 
-void Str_Load::Allocate2DVectors() {
-	ListOfAsciiCharacters.resize(Index, std::vector<std::string>(0));
-	ListOfBinaryCharacters.resize(Index, std::vector<std::string>(0));
-	ListOfAll.resize(Index, std::vector<std::string>(0));
-}
 
 std::string Str_Load::GreaterThanLineReturn(float value)
 {
-	for (int i = 0; i < ListOfBinaryCharacters.size(); i++) {
-		for (int j = 0; j < ListOfBinaryCharacters[i].size(); j++) {
-			for (int w = 0; w < ListOfBinaryCharacters[i][j].size(); w++) {
-				if (ListOfBinaryCharacters[i][j][w] < value) {
-					return ListOfBinaryCharacters[i][j];
-				}
+	
+	for (int j = 0; j < BinaryList.size(); j++) {
+		for (int w = 0; w < BinaryList[j].size(); w++) {
+			if (BinaryList[j][w] < value) {
+				return BinaryList[j];
 			}
-			
 		}
+			
 	}
+	
 }
 
 std::string Str_Load::LessThanLineReturn(float value)
 {
-	for (int i = 0; i < ListOfBinaryCharacters.size(); i++) {
-		for (int j = 0; j < ListOfBinaryCharacters[i].size(); j++) {
-			for (int w = 0; w < ListOfBinaryCharacters[i][j].size(); w++) {
-				if (ListOfBinaryCharacters[i][j][w] > value) {
-					return ListOfBinaryCharacters[i][j];
-				}
-			}
 
+	
+	for (int j = 0; j < BinaryList.size(); j++) {
+		for (int w = 0; w < BinaryList[j].size(); w++) {
+			if (BinaryList[j][w] > value) {
+				return BinaryList[j];
+			}
 		}
+
 	}
+	
 }
 
 char Str_Load::GreaterThanInputCharReturn(float value, std::string Line)
@@ -130,13 +127,19 @@ void Str_Load::IncrementGrid(std::ifstream& _EntireFile)
 }
 
 void Str_Load::SortGarbeld(std::string CurrentLine, int &i) {	
-	for (int j = 0; j < CurrentLine.size(); j++) {
+
+	int Size = CurrentLine.size();
+
+	/*for (int j = 0; j < Size; j++) {
 		if (CurrentLine[j] > 33 && CurrentLine[j] < 126) {
 			std::string PushString = { CurrentLine[j] };
 			std::string FillerString = { "SV" };
 			ListOfAsciiCharacters[i].push_back(PushString);
 			ListOfBinaryCharacters[i].push_back(FillerString);
 			ListOfAll[i].push_back(PushString);
+			
+			std::string str(1, CurrentLine[j]);
+			AllList.push_back(str);
 				
 		}
 
@@ -146,10 +149,28 @@ void Str_Load::SortGarbeld(std::string CurrentLine, int &i) {
 			ListOfAsciiCharacters[i].push_back(FillerString);
 			ListOfBinaryCharacters[i].push_back(PushString);
 			ListOfAll[i].push_back(PushString);
+			
+			std::string str(1, CurrentLine[j]);
+			AllList.push_back(str);
+			
+		}
+	}*/
+
+	//i += 1;
+	
+	for (int j = 0; j < Size; j++) {
+		if (CurrentLine[j] > 33 && CurrentLine[j] < 126) {
+			std::string str(1, CurrentLine[j]);
+			AsciiList.push_back(str);
+			AllList.push_back(str);
+		}
+
+		else {
+			std::string str(1, CurrentLine[j]);
+			BinaryList.push_back(str);
+			AllList.push_back(str);
 		}
 	}
-
-	i += 1;	
 }
 
 void Str_Load::ConvertToTxt(std::vector<std::vector<std::string>> b)

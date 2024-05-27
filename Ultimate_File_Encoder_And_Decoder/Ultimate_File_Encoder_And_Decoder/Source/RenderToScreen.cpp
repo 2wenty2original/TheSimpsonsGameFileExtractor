@@ -28,28 +28,58 @@ bool RenderToScreen::init()
 	screensurface = SDL_GetWindowSurface(window);
 
 	LoadObject = new Str_Load();
-	LoadObject->init("a.str");
+	LoadObject->init("zone02.str");
+
+	sizeof(LoadObject);
+
 	
 
 	float xOff = 10;
 	float yOff = 10;
+
 	
 
-//#pragma omp parallel for
-	for (int i = 0; i < LoadObject->ReturnListOfAll().size(); i++) {
-		
-		for (int j = 0; j < LoadObject->ReturnListOfAll()[i].size(); j++) {
-			std::string Temp = LoadObject->ReturnListOfAll()[i][j];
-			Text NewText = Text(width, height, 0.05, 0.05, i + xOff, j + yOff, renderer);
-			NewText.SetText(Temp);
-			NewText.SetColour(252,252,252);
-				
-			Lines.push_back(NewText);
-			
-			
+	float resetCounter = 0;
+
+	
+	int size = LoadObject->ReturnAllList().size();
+	std::vector<std::string> StringList = LoadObject->ReturnAllList();
+	
+	//#pragma omp parallel for
+	for (int i = 0; i < size; i++) {
+		std::string Temp = StringList[i];
+
+		int xPos = (i + 1) * xOff;
+		xPos -= resetCounter;
+
+		int yPos = 1 + yOff;
+
+		if (this->OutScreen(xPos, yPos) == true) {
+
+			yOff += 5;
+			resetCounter += xPos;
+
 
 		}
+
+		Text* NewText = new Text(width, height, 0.2, 0.2, xPos, yPos, renderer);
+
+		NewText->init();
+		NewText->SetText(Temp);
+		NewText->SetColour(252,252,252);
+
+		Lines.push_back(NewText);
+		
+		NewText->destroy();
+
+		delete[] NewText;
+
+
+
 	}
+	
+
+	std::cout << "complete" << std::endl;
 
 
 
@@ -63,9 +93,18 @@ bool RenderToScreen::init()
 
 void RenderToScreen::update()
 {
-
-
 	SDL_GetMouseState(&x, &y);
+
+
+
+	for (int i = 0; i < Lines.size(); i++) {
+		if (this->OutScreen(Lines[i]->GetFRect()->x, Lines[i]->GetFRect()->y) == false) {
+			Lines[i]->OverlapEachLetterHightlight(x, y);
+		}
+		
+	}
+
+	
 	
 }
 
@@ -88,7 +127,17 @@ bool RenderToScreen::KeepAlive()
 void RenderToScreen::draw()
 {
 	SDL_RenderClear(renderer);
-	SDL_GetMouseState(&x, &y);
+
+	//SDL_GetMouseState(&x, &y);
+
+	for (int i = 0; i < Lines.size(); i++) {
+		if (this->OutScreen(Lines[i]->GetFRect()->x, Lines[i]->GetFRect()->y) == false) {
+			
+			Lines[i]->draw();
+		}
+	}
+
+	
 
 	SDL_RenderPresent(renderer);
 }
