@@ -30,7 +30,7 @@ bool RenderToScreen::init()
 	LoadObject = new Str_Load();
 	LoadObject->init("zone02.str");
 
-	sizeof(LoadObject);
+	
 
 	
 
@@ -43,36 +43,52 @@ bool RenderToScreen::init()
 
 	
 	int size = LoadObject->ReturnAllList().size();
-	std::vector<std::string> StringList = LoadObject->ReturnAllList();
+	std::vector<char> List = LoadObject->ReturnAllList();
 	
-	//#pragma omp parallel for
+	
+
+	Lines.resize(size);
+
+
+	
+	
+//#pragma omp parallel for
 	for (int i = 0; i < size; i++) {
-		std::string Temp = StringList[i];
+		char Temp = LoadObject->ReturnAllList()[i];
 
 		int xPos = (i + 1) * xOff;
 		xPos -= resetCounter;
 
 		int yPos = 1 + yOff;
 
-		if (this->OutScreen(xPos, yPos) == true) {
+		if (OutScreen(xPos, yPos) == true) {
 
+		
 			yOff += 5;
 			resetCounter += xPos;
+			
 
 
 		}
 
-		Text* NewText = new Text(width, height, 0.2, 0.2, xPos, yPos, renderer);
-
-		NewText->init();
-		NewText->SetText(Temp);
-		NewText->SetColour(252,252,252);
-
-		Lines.push_back(NewText);
+		Text NewText = Text(width, height, 0.2, 0.2, xPos, yPos, renderer, Temp);
 		
-		NewText->destroy();
+		//NewText.init();
+		//NewText.SetText(Temp);
+		//NewText.SetColour(252,252,252);
 
-		delete[] NewText;
+		
+		//Lines.push_back(NewText);
+
+		Lines[i] = NewText;
+		
+		
+		NewText.destroy();
+
+		
+
+		
+		
 
 
 
@@ -96,10 +112,12 @@ void RenderToScreen::update()
 	SDL_GetMouseState(&x, &y);
 
 
-
-	for (int i = 0; i < Lines.size(); i++) {
-		if (this->OutScreen(Lines[i]->GetFRect()->x, Lines[i]->GetFRect()->y) == false) {
-			Lines[i]->OverlapEachLetterHightlight(x, y);
+	int Size = Lines.size();
+	for (int i = 0; i < Size; i++) {
+		if (this->OutScreen(Lines[i].GetFRect().x, Lines[i].GetFRect().y) == false) {
+			if (this->Overlap(x, y, Lines[i].GetFRect())) {
+				std::cout << Lines[i].GetText() << std::endl;
+			}
 		}
 		
 	}
@@ -129,11 +147,12 @@ void RenderToScreen::draw()
 	SDL_RenderClear(renderer);
 
 	//SDL_GetMouseState(&x, &y);
+	int Size = Lines.size();
 
-	for (int i = 0; i < Lines.size(); i++) {
-		if (this->OutScreen(Lines[i]->GetFRect()->x, Lines[i]->GetFRect()->y) == false) {
+	for (int i = 0; i < Size; i++) {
+		if (this->OutScreen(Lines[i].GetFRect().x, Lines[i].GetFRect().y) == false) {
 			
-			Lines[i]->draw();
+			Lines[i].draw();
 		}
 	}
 

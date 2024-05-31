@@ -58,53 +58,6 @@ void Str_Load::init(const char* file)
 
 
 
-std::string Str_Load::GreaterThanLineReturn(float value)
-{
-	
-	for (int j = 0; j < BinaryList.size(); j++) {
-		for (int w = 0; w < BinaryList[j].size(); w++) {
-			if (BinaryList[j][w] < value) {
-				return BinaryList[j];
-			}
-		}
-			
-	}
-	
-}
-
-std::string Str_Load::LessThanLineReturn(float value)
-{
-
-	
-	for (int j = 0; j < BinaryList.size(); j++) {
-		for (int w = 0; w < BinaryList[j].size(); w++) {
-			if (BinaryList[j][w] > value) {
-				return BinaryList[j];
-			}
-		}
-
-	}
-	
-}
-
-char Str_Load::GreaterThanInputCharReturn(float value, std::string Line)
-{
-	for (int i = 0; i < Line.size(); i++) {
-		if (Line[i] < value) {
-			return Line[i];
-		}
-	}
-	
-}
-
-char Str_Load::LessThanInputCharReturn(float value, std::string Line)
-{
-	for (int i = 0; i < Line.size(); i++) {
-		if (Line[i] < value) {
-			return Line[i];
-		}
-	}
-}
 
 
 
@@ -160,15 +113,15 @@ void Str_Load::SortGarbeld(std::string CurrentLine, int &i) {
 	
 	for (int j = 0; j < Size; j++) {
 		if (CurrentLine[j] > 33 && CurrentLine[j] < 126) {
-			std::string str(1, CurrentLine[j]);
-			AsciiList.push_back(str);
-			AllList.push_back(str);
+			//std::string str(1, CurrentLine[j]);
+			AsciiList.push_back(CurrentLine[j]);
+			AllList.push_back(CurrentLine[j]);
 		}
 
 		else {
-			std::string str(1, CurrentLine[j]);
-			BinaryList.push_back(str);
-			AllList.push_back(str);
+			//std::string str(1, CurrentLine[j]);
+			BinaryList.push_back(CurrentLine[j]);
+			AllList.push_back(CurrentLine[j]);
 		}
 	}
 }

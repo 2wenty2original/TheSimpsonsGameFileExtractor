@@ -28,6 +28,8 @@ public:
 	void HandleInput(SDL_Scancode& Keyscancode);
 	bool PollEvents();
 
+
+
 	bool OutScreen(int x, int y) {
 		bool Output;
 
@@ -42,6 +44,15 @@ public:
 		}
 		
 	}
+	bool Overlap(int x, int y, SDL_FRect Box) {
+		if (x > Box.x && x < Box.x + Box.w && y > Box.y && y < Box.y + Box.h) {
+			return true;
+		}
+
+		else {
+			return false;
+		}
+	}
 	
 
 private:
@@ -52,7 +63,8 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	SDL_Surface* screensurface = nullptr;
 
-	std::vector<Text*> Lines;
+	std::vector<Text> Lines;
+	std::vector<SDL_FRect> Frects;
 
 	int width;
 	int height;

@@ -21,13 +21,8 @@ public:
 	void ConvertToStr();
 	void destroy();
 
-	void Allocate2DVectors();
 
-	std::string GreaterThanLineReturn(float value);
-	std::string LessThanLineReturn(float value);
 
-	char GreaterThanInputCharReturn(float value, std::string Line);
-	char LessThanInputCharReturn(float value, std::string Line);
 
 	void IncrementGrid(std::ifstream& _EntireFile);
 
@@ -35,15 +30,15 @@ public:
 
 	
 
-	std::vector<std::string> ReturnAsciiList() {
+	std::vector<char> ReturnAsciiList() {
 		return AsciiList;
 	}
 
-	std::vector<std::string> ReturnBinaryList() {
+	std::vector<char> ReturnBinaryList() {
 		return BinaryList;
 	}
 
-	std::vector<std::string> ReturnAllList() {
+	std::vector<char> ReturnAllList() {
 		return AllList;
 	}
 
@@ -57,9 +52,9 @@ private:
 
 
 
-	std::vector<std::string> BinaryList;
-	std::vector<std::string> AsciiList;
-	std::vector<std::string> AllList;
+	std::vector<char> BinaryList;
+	std::vector<char> AsciiList;
+	std::vector<char> AllList;
 	
 
 	int Index;

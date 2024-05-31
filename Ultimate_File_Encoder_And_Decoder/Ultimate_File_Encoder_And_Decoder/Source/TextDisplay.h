@@ -9,27 +9,23 @@
 class Text {
 public:
 
-	Text(int _ScreenWidth, int _ScreenHeight, float _PropotionX, float _ProportionY ,int _PositionX, int _PositionY, SDL_Renderer* _renderer) {
-		
-		renderer = _renderer;
-		
-		ScreenWidth = _ScreenWidth;
-		ScreenHeight = _ScreenHeight;
+	Text() {};
+	
 
-		TextX = _PositionX;
-		TextY = _PositionY;
+	Text(float _ScreenWidth, float _ScreenHeight, float _PropotionX, float _ProportionY, float _PositionX, float _PositionY, SDL_Renderer* _renderer, char Text)
+		: renderer(_renderer), ScreenWidth(_ScreenWidth), ScreenHeight(_ScreenHeight) {
 
-		TextWidth = _ScreenWidth * _PropotionX;
-		TextHeight = _ScreenHeight * _ProportionY;
+	
+		TextFrect = SDL_FRect();
 
-		TextFrect = new SDL_FRect();
-		
-		TextFrect->w = TextWidth;
-		TextFrect->h = TextHeight;
-		TextFrect->x = TextX;
-		TextFrect->y = TextY;
+		TextFrect.w = _ScreenWidth * _PropotionX;
+		TextFrect.h = _ScreenHeight * _ProportionY;
+		TextFrect.x = _PositionX;
+		TextFrect.y = _PositionY;
 
-		
+		this->init();
+		this->SetText(Text);
+		this->SetColour(252,252, 252);
 	}
 
 	void init();
@@ -40,13 +36,13 @@ public:
 	void OverlapEachLetterHightlight(int& x, int& y);
 
 	void SetPos(float _x, float _y) {
-		TextFrect->x = _x;
-		TextFrect->y = _y;
+		TextFrect.x = _x;
+		TextFrect.y = _y;
 	}
 
 	void SetSize(float _width, float _height) {
-		TextFrect->w = ScreenWidth * _width;
-		TextFrect->h = ScreenHeight * _height;
+		TextFrect.w = ScreenWidth * _width;
+		TextFrect.h = ScreenHeight * _height;
 
 
 	}
@@ -57,13 +53,16 @@ public:
 		ColourOfText.z() = b;
 	}
 
-	void SetText(std::string _text) {
+	void SetText(char _text) {
 		LineOfHex = _text;
 	}
 
-	
 
-	SDL_FRect* GetFRect() {
+
+
+
+
+	SDL_FRect GetFRect() {
 		return TextFrect;
 	}
 
@@ -71,11 +70,11 @@ public:
 		return ColourOfText;
 	}
 
-	std::string GetText() {
+	char GetText() {
 		return LineOfHex;
 	}
 
-	
+
 
 
 private:
@@ -84,25 +83,15 @@ private:
 	int ScreenWidth;
 	int ScreenHeight;
 
-	int TextWidth;
-	int TextHeight;
-
-	int TextX;
-	int TextY;
-
-	int Characters;
 
 	SDL_Renderer* renderer;
 	TTF_Font* font;
 
-	
-	SDL_FRect* TextFrect;
+	SDL_FRect TextFrect;
+
+	Eigen::Vector3i ColourOfText = { 255,255,255 };
+
+	char LineOfHex;
 
 
-
-	Eigen::Vector3i ColourOfText = {255,255,255};
-
-	std::string LineOfHex;
-
-	
 };

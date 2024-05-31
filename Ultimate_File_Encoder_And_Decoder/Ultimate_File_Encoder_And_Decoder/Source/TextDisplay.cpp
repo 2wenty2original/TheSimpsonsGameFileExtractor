@@ -31,8 +31,9 @@ void Text::draw()
 
 	
 
+	std::string str(1, (char)LineOfHex);
 
-	SDL_Surface* Score = TTF_RenderText_Solid(font, LineOfHex.c_str(), Colour);
+	SDL_Surface* Score = TTF_RenderText_Solid(font, str.c_str(), Colour);
 	
 
 
@@ -41,26 +42,30 @@ void Text::draw()
 
 
 
-	SDL_RenderCopyF(renderer, ScoreAsATexture, NULL, TextFrect);
+	SDL_RenderCopyF(renderer, ScoreAsATexture, NULL, &TextFrect);
 
 
 
 	SDL_DestroyTexture(ScoreAsATexture);
 	SDL_FreeSurface(Score);
 
+	
+	
 
 }
 
 void Text::destroy()
 {
-	delete TextFrect;
+	
 	
 	
 	TTF_CloseFont(font);
 
+	
+
 }
 
-void Text::OverlapEachLetterHightlight(int &x, int &y)
+/*void Text::OverlapEachLetterHightlight(int& x, int& y)
 {
 	Eigen::Vector2f Maximum = {(TextFrect->x + TextFrect->w), (TextFrect->y + TextFrect->h)};
 	float Segment = (TextFrect->w - TextFrect->x) / LineOfHex.size();
@@ -72,4 +77,6 @@ void Text::OverlapEachLetterHightlight(int &x, int &y)
 		}
 	
 	}
-}
+}*/
+
+
