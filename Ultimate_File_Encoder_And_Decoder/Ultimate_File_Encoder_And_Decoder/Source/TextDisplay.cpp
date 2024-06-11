@@ -2,17 +2,17 @@
 
 void Text::init()
 {
-	int init = TTF_Init();
+	//int init = TTF_Init();
 
-	if (init != 0) {
-		std::cout << SDL_GetError() << std::endl;
-	}
+	//if (init != 0) {
+		//std::cout << SDL_GetError() << std::endl;
+	//}
 
-	font = TTF_OpenFont("assets/in/Font.ttf", 12);
+	//font = TTF_OpenFont("assets/in/Font.ttf", 12);
 
-	if (font == NULL) {
-		std::cout << SDL_GetError() << std::endl;
-	}
+	//if (font == NULL) {
+		//std::cout << SDL_GetError() << std::endl;
+	//}
 }
 
 void Text::update()
@@ -21,19 +21,20 @@ void Text::update()
 
 }
 
-void Text::draw()
+void Text::draw(Font* font)
 {
 	SDL_Color Colour;
 
-	Colour.r = ColourOfText.x();
-	Colour.g = ColourOfText.y();
-	Colour.b = ColourOfText.z();
+	Colour.r = 200;
+	Colour.g = 200;
+	Colour.b = 200;
+	Colour.a = 255;
 
 	
 
-	std::string str(1, (char)LineOfHex);
+	std::string str(1, LineOfHex);
 
-	SDL_Surface* Score = TTF_RenderText_Solid(font, str.c_str(), Colour);
+	SDL_Surface* Score = TTF_RenderText_Solid(font->ReturnFont(), str.c_str(), Colour);
 	
 
 
@@ -59,7 +60,7 @@ void Text::destroy()
 	
 	
 	
-	TTF_CloseFont(font);
+	//TTF_CloseFont(font);
 
 	
 

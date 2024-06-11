@@ -139,12 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\FontObject.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\RenderToScreen.cpp" />
     <ClCompile Include="Source\Str_Load.cpp" />
     <ClCompile Include="Source\TextDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\FontObject.h" />
     <ClInclude Include="Source\RenderToScreen.h" />
     <ClInclude Include="Source\Str_Load.h" />
     <ClInclude Include="Source\TextDisplay.h" />

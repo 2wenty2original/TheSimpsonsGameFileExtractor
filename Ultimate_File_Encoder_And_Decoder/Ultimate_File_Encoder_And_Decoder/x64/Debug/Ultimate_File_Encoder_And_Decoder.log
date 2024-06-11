@@ -1,24 +1,75 @@
 ﻿  RenderToScreen.cpp
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(16,37): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(72,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'Source/RenderToScreen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(16,65): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(73,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'Source/RenderToScreen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(45,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(59,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(60,11): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(62,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(74,54): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(74,48): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(74,43): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(74,38): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(74,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(74,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(115,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(117,65): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(117,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(150,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(153,65): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(153,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(74,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(57,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(67,60): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(67,37): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(72,47): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(96,48): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(119,47): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(175,41): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(180,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(183,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(185,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(190,81): warning C4302: 'type cast': truncation from 'const char *' to 'char'
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(190,61): warning C4305: 'argument': truncation from 'int' to 'float'
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(190,51): warning C4305: 'argument': truncation from 'int' to 'float'
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(190,31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(190,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(196,27): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(200,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.h(201,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'Source/RenderToScreen.cpp')
+  
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(54,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(55,19): warning C4305: 'initializing': truncation from 'double' to 'float'
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(57,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(73,18): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(74,18): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(79,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(84,73): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(84,61): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(84,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\RenderToScreen.cpp(84,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Ultimate_File_Encoder_And_Decoder.vcxproj -> E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\x64\Debug\Ultimate_File_Encoder_And_Decoder.exe

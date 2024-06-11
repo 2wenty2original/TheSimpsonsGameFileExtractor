@@ -31,76 +31,95 @@ bool RenderToScreen::init()
 	LoadObject->init("zone02.str");
 
 	
+	FontObject = new Font();
 
 	
-
-	float xOff = 10;
-	float yOff = 10;
-
+	
 	
 
-	float resetCounter = 0;
 
+
+
+	float resetIteration = 0;
 	
-	int size = LoadObject->ReturnAllList().size();
+	
+
 	std::vector<char> List = LoadObject->ReturnAllList();
 	
-	
-
-	Lines.resize(size);
 
 
 	
+	
+
+	float TextWidth = 0.02;
+	float TextHeight = 0.02;
+
+	SizeOfLines = List.size();
+	
+	Lines.resize(SizeOfLines);
+
+	*xOff = 20;
+	*yOff = 0;
+
+	*Segmenet = (width / (width * TextWidth));
+
+	
+
 	
 //#pragma omp parallel for
-	for (int i = 0; i < size; i++) {
-		char Temp = LoadObject->ReturnAllList()[i];
+	for (int i = 0; i < SizeOfLines; i++) {
 
-		int xPos = (i + 1) * xOff;
-		xPos -= resetCounter;
+		char Temp = List[i];
+		int X_Position = (*Segmenet * (i - resetIteration )) + *xOff; //segment is how many on screen, i is the line in question, reset iteration is for responsive webpage thingy
+		int Y_Position = *yOff;
 
-		int yPos = 1 + yOff;
+		if (OutScreenXBias(X_Position, (width / 2), height)) {
 
-		if (OutScreen(xPos, yPos) == true) {
-
-		
-			yOff += 5;
-			resetCounter += xPos;
-			
+			*yOff += (height * TextHeight);
+			resetIteration = i;
 
 
 		}
 
-		Text NewText = Text(width, height, 0.2, 0.2, xPos, yPos, renderer, Temp);
-		
-		//NewText.init();
-		//NewText.SetText(Temp);
-		//NewText.SetColour(252,252,252);
-
-		
-		//Lines.push_back(NewText);
+		Text NewText = Text(width, height, TextWidth, TextHeight, X_Position, Y_Position, renderer, Temp);
 
 		Lines[i] = NewText;
-		
-		
+
 		NewText.destroy();
 
 		
-
-		
-		
-
-
-
 	}
+
+	std::cout << "complete conversion to text objects" << std::endl;
+	
+	InitlizeMoveIncrement();
+
+
+	std::cout << "Each mouse scroll is equal to one line of text height" << std::endl;
+
+	Padding();
+
+	std::cout << " Padding complete " << " " << SizeOfLines << " " << "perfectly rounded i assume" << std::endl;
+
+
+
+	InitlizeRenderables();
+
+	std::cout << " renderable Lines Processed " << std::endl;
+
+
+	CalculateMaxCharacters();
+
+	std::cout << " The Maximum Characters in the viewport has been calculated "<< " " << MaxCharacters << std::endl;
+
 	
 
-	std::cout << "complete" << std::endl;
 
+	// So far it takes 11 minutes and 12 seconds to open a file that is 1.4k kilobytes big, quite poor performance
+	// Release is around 9 minutes and 50 seconds
 
-
-
-
+	// reducing the function call on the std::vector i.e the returnalllist method, reduced it from 10 minutes and 50 seconds to 2 minutes and 32 seconds
+	// Release its 2 minutes and 24 seconds
 
 
 
@@ -112,13 +131,12 @@ void RenderToScreen::update()
 	SDL_GetMouseState(&x, &y);
 
 
-	int Size = Lines.size();
-	for (int i = 0; i < Size; i++) {
-		if (this->OutScreen(Lines[i].GetFRect().x, Lines[i].GetFRect().y) == false) {
-			if (this->Overlap(x, y, Lines[i].GetFRect())) {
-				std::cout << Lines[i].GetText() << std::endl;
-			}
+	
+	for (int i = 0; i < SizeOfRenderableLines; i++) {
+		if (Overlap(x, y, RenderableLines[i].GetFRect())) {
+			std::cout << RenderableLines[i].GetText() << std::endl;
 		}
+		
 		
 	}
 
@@ -139,6 +157,8 @@ bool RenderToScreen::KeepAlive()
 		return false;
 	}
 
+	
+
 	return true;
 }
 
@@ -147,14 +167,13 @@ void RenderToScreen::draw()
 	SDL_RenderClear(renderer);
 
 	//SDL_GetMouseState(&x, &y);
-	int Size = Lines.size();
+	
 
-	for (int i = 0; i < Size; i++) {
-		if (this->OutScreen(Lines[i].GetFRect().x, Lines[i].GetFRect().y) == false) {
-			
-			Lines[i].draw();
-		}
+	for (int i = 0; i < SizeOfRenderableLines; i++) {
+		RenderableLines[i].draw(FontObject);
 	}
+
+
 
 	
 
@@ -163,6 +182,8 @@ void RenderToScreen::draw()
 
 void RenderToScreen::destroy()
 {
+
+	delete xOff, yOff;
 
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -177,26 +198,21 @@ void RenderToScreen::HandleInput(SDL_Scancode& Keyscancode)
 
 	SDL_GetMouseState(&x, &y);
 
-	
-
-
-
-
-
-
-
-
-
-
 
 	const Uint8* keystate = SDL_GetKeyboardState(nullptr);
 
 	if (keystate[SDL_SCANCODE_W]) {
-		
+		for (int i = 0; i < SizeOfRenderableLines; i++) {
+			
+
+		}
 	}
 
 	if (keystate[SDL_SCANCODE_S]) {
-		
+		for (int i = 0; i < SizeOfRenderableLines; i++) {
+			
+
+		}
 	}
 
 	if (keystate[SDL_SCANCODE_A]) {
@@ -222,7 +238,7 @@ void RenderToScreen::HandleInput(SDL_Scancode& Keyscancode)
 
 	if (keystate[SDL_SCANCODE_K]) {
 		
-
+		
 
 
 	}
@@ -282,6 +298,47 @@ bool RenderToScreen::PollEvents()
 
 				
 			}
+		}
+
+		if (EventRecorder.type = SDL_MOUSEWHEEL) {
+			if (EventRecorder.wheel.preciseY <= -1) {
+
+				//ReCalculateLinesDown();
+
+				for (int i = 0; i < SizeOfRenderableLines; i++) {
+					
+					RenderableLines[i].SetPos(RenderableLines[i].GetFRect().x, RenderableLines[i].GetFRect().y - MoveIncrement);
+					
+
+					//This is scroll down, text goes up tho
+				}
+
+				
+
+				
+			}
+
+			if (EventRecorder.wheel.preciseY >= 1) {
+
+				
+
+				for (int i = 0; i < SizeOfRenderableLines; i++) {
+					
+					RenderableLines[i].SetPos(RenderableLines[i].GetFRect().x, RenderableLines[i].GetFRect().y + MoveIncrement);
+					
+					
+
+					//This is scroll up, text goes down tho
+					
+				}
+
+				
+			}
+
+			
+
+			
+			
 		}
 	}
 	return true;

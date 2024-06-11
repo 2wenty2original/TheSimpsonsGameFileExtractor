@@ -4,7 +4,7 @@
 #include <SDL_image.h>
 #include <Eigen/Dense>
 #include <iostream>
-
+#include "FontObject.h"
 
 class Text {
 public:
@@ -13,7 +13,7 @@ public:
 	
 
 	Text(float _ScreenWidth, float _ScreenHeight, float _PropotionX, float _ProportionY, float _PositionX, float _PositionY, SDL_Renderer* _renderer, char Text)
-		: renderer(_renderer), ScreenWidth(_ScreenWidth), ScreenHeight(_ScreenHeight) {
+		: renderer(_renderer) {
 
 	
 		TextFrect = SDL_FRect();
@@ -23,14 +23,14 @@ public:
 		TextFrect.x = _PositionX;
 		TextFrect.y = _PositionY;
 
-		this->init();
+		//this->init();
 		this->SetText(Text);
-		this->SetColour(252,252, 252);
+		this->SetColour(200,200, 200);
 	}
 
 	void init();
 	void update();
-	void draw();
+	void draw(Font* font);
 	void destroy();
 
 	void OverlapEachLetterHightlight(int& x, int& y);
@@ -40,11 +40,9 @@ public:
 		TextFrect.y = _y;
 	}
 
-	void SetSize(float _width, float _height) {
+	void SetSize(float ScreenWidth, float ScreenHeight, float _width, float _height) {
 		TextFrect.w = ScreenWidth * _width;
 		TextFrect.h = ScreenHeight * _height;
-
-
 	}
 
 	void SetColour(int r, int g, int b) {
@@ -57,17 +55,24 @@ public:
 		LineOfHex = _text;
 	}
 
-
-
-
-
-
 	SDL_FRect GetFRect() {
 		return TextFrect;
 	}
 
 	Eigen::Vector3i GetColour() {
 		return ColourOfText;
+	}
+
+	void SetColour(Eigen::Vector3i colour) {
+		ColourOfText = colour;
+	}
+
+
+	void SetColour(float r, float g, float b) {
+		ColourOfText.x() = r;
+		ColourOfText.y() = g;
+		ColourOfText.z() = b;
+
 	}
 
 	char GetText() {
@@ -79,13 +84,8 @@ public:
 
 private:
 
-
-	int ScreenWidth;
-	int ScreenHeight;
-
-
 	SDL_Renderer* renderer;
-	TTF_Font* font;
+
 
 	SDL_FRect TextFrect;
 

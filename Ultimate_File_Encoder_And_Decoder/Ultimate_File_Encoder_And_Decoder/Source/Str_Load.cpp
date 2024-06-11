@@ -9,7 +9,7 @@ void Str_Load::init(const char* file)
 	std::ifstream EntireFile;
 	std::string line;
 
-	if (DataList.size() > 0) { DataList.clear(); }
+	//if (DataList.size() > 0) { DataList.clear(); }
 
 	EntireFile.open(Filename, std::ios::binary);
 
@@ -126,18 +126,12 @@ void Str_Load::SortGarbeld(std::string CurrentLine, int &i) {
 	}
 }
 
-void Str_Load::ConvertToTxt(std::vector<std::vector<std::string>> b)
+void Str_Load::ConvertToTxt()
 {
 
-	for (int i = 0; i < b.size(); i++) {
-		for (int j = 0; j < b[i].size(); j++) {
-			for (int w = 0; w < b[i][j].size(); w++) {
-				if (b[i][j][w] > 0 && b[i][j][w] < 33) {
-					//std::cout << b[i][j][w] * 2 << std::endl;
-				}
-
-			}
-			
+	for (int i = 0; i < AllList.size(); i++) {
+		if (AllList[i] < 33) {
+			//std::cout << b[i][j][w] * 2 << std::endl;
 		}
 	}
 

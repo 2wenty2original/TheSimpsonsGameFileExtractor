@@ -17,7 +17,7 @@ public:
 
 
 	void init(const char* file);
-	void ConvertToTxt(std::vector<std::vector<std::string>> b);
+	void ConvertToTxt();
 	void ConvertToStr();
 	void destroy();
 
@@ -46,7 +46,7 @@ private:
 
 	char* Filename = nullptr;
 
-	std::vector<unsigned int> DataList;
+	
 	std::fstream FileObject;
 
 
