@@ -45,6 +45,11 @@ public:
 		TextFrect.h = ScreenHeight * _height;
 	}
 
+	void SetSize(float _width, float _height) {
+		TextFrect.w = _width;
+		TextFrect.h =  _height;
+	}
+
 	void SetColour(int r, int g, int b) {
 		ColourOfText.x() = r;
 		ColourOfText.y() = g;

@@ -8,24 +8,11 @@ bool RenderToScreen::init()
 		return false;
 	}
 
-	window = SDL_CreateWindow("Game Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+	CreateWindowf(window, renderer, screensurface, width, height, "Hex Editor"); // hex editor window
 
-	if (window == NULL) {
-		std::cout << "could not init" << std::endl;
-		std::cout << SDL_GetError() << std::endl;
-		return false;
-	}
+	CreateWindowf(Cwindow, Crenderer, Cscreensurface, 500, 300, "Command Line"); // Command line window
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	if (renderer == NULL)
-	{
-		std::cout << "could not init" << std::endl;
-		std::cout << SDL_GetError() << std::endl;
-		return false;
-	}
-
-	screensurface = SDL_GetWindowSurface(window);
+	MouseWindowLocation = NA;
 
 	LoadObject = new Str_Load();
 	LoadObject->init("zone02.str");
@@ -33,14 +20,15 @@ bool RenderToScreen::init()
 	
 	FontObject = new Font();
 
+	CommandLineObject = new Cmd(Crenderer, 500, 300);
+	CommandLineObject->init();
 	
 	
-	
 
 
 
 
-	float resetIteration = 0;
+
 	
 	
 
@@ -50,19 +38,24 @@ bool RenderToScreen::init()
 
 	
 	
+	float resetIteration = 0;
+	float TextWidth = 0.031;
+	float TextHeight = 0.031;
 
-	float TextWidth = 0.02;
-	float TextHeight = 0.02;
+
+	int row = 0;
 
 	SizeOfLines = List.size();
 	
 	Lines.resize(SizeOfLines);
 
-	*xOff = 20;
+	*xOff = 100;
 	*yOff = 0;
 
-	*Segmenet = (width / (width * TextWidth));
+	//*Segmenet = ((width / 2) / (width * TextWidth));
 
+	//Proportions(TextWidth, 20); // first param is the size of the text as a decimal, Second param is the space between each letter
+	CreateSegments(15, -80);
 	
 
 	
@@ -73,13 +66,19 @@ bool RenderToScreen::init()
 		int X_Position = (*Segmenet * (i - resetIteration )) + *xOff; //segment is how many on screen, i is the line in question, reset iteration is for responsive webpage thingy
 		int Y_Position = *yOff;
 
+		row += 1;
+
 		if (OutScreenXBias(X_Position, (width / 2), height)) {
 
+
+			PotentialXRows = row;
 			*yOff += (height * TextHeight);
 			resetIteration = i;
-
+			row = 0;
 
 		}
+
+		
 
 		Text NewText = Text(width, height, TextWidth, TextHeight, X_Position, Y_Position, renderer, Temp);
 
@@ -92,14 +91,19 @@ bool RenderToScreen::init()
 
 	std::cout << "complete conversion to text objects" << std::endl;
 	
-	InitlizeMoveIncrement();
-
-
-	std::cout << "Each mouse scroll is equal to one line of text height" << std::endl;
 
 	Padding();
 
 	std::cout << " Padding complete " << " " << SizeOfLines << " " << "perfectly rounded i assume" << std::endl;
+
+	
+	
+	InitlizeMoveIncrement();
+
+
+	std::cout << " Move Increment Complete " << std::endl;
+
+	
 
 
 
@@ -108,9 +112,7 @@ bool RenderToScreen::init()
 	std::cout << " renderable Lines Processed " << std::endl;
 
 
-	CalculateMaxCharacters();
-
-	std::cout << " The Maximum Characters in the viewport has been calculated "<< " " << MaxCharacters << std::endl;
+	
 
 	
 
@@ -122,6 +124,7 @@ bool RenderToScreen::init()
 	// Release its 2 minutes and 24 seconds
 
 
+	std::cout << " Init method completed " << std::endl;
 
 	return true;
 }
@@ -130,16 +133,37 @@ void RenderToScreen::update()
 {
 	SDL_GetMouseState(&x, &y);
 
+	GetMouseWindow();
 
 	
-	for (int i = 0; i < SizeOfRenderableLines; i++) {
-		if (Overlap(x, y, RenderableLines[i].GetFRect())) {
-			std::cout << RenderableLines[i].GetText() << std::endl;
+	/*if (Timer(Counter) == true) {
+		std::cout << " Timer Finished " << std::endl;
+		Counter = NumberToResetCounter;
+	}*/
+	
+	
+	if (MouseWindowLocation == HexEditor) {
+		for (int i = StartIndex; i < EndIndex; i++) {
+
+			if (i < 0 || i > SizeOfLines) {
+
+			}
+
+			else {
+				if (Overlap(x, y, Lines[i].GetFRect())) {
+					std::cout << Lines[i].GetText() << std::endl;
+				}
+			}
+
 		}
-		
-		
 	}
 
+	if (CommandType == true) {
+		CommandLineObject->DetermineCharacterIndex(x,y);
+	}
+	
+
+	
 	
 	
 }
@@ -151,6 +175,10 @@ bool RenderToScreen::KeepAlive()
 	PollEvents();
 
 	HandleInput(EventRecorder.key.keysym.scancode);
+
+
+
+	
 
 	if (SDL_PeepEvents(&EventRecorder, 1, SDL_GETEVENT, SDL_QUIT, SDL_QUIT)) {
 
@@ -165,19 +193,33 @@ bool RenderToScreen::KeepAlive()
 void RenderToScreen::draw()
 {
 	SDL_RenderClear(renderer);
+	SDL_RenderClear(Crenderer);
 
 	//SDL_GetMouseState(&x, &y);
 	
 
-	for (int i = 0; i < SizeOfRenderableLines; i++) {
-		RenderableLines[i].draw(FontObject);
+	
+
+	for (int i = StartIndex; i < EndIndex; i++) {
+		if (i < 0 || i > SizeOfLines) {
+			
+		}
+
+		else {
+			Lines[i].draw(FontObject);
+		}
+		
+	}
+
+	if (MouseWindowLocation == CommandLine) {
+		CommandLineObject->draw(FontObject);
 	}
 
 
-
 	
-
+	
 	SDL_RenderPresent(renderer);
+	SDL_RenderPresent(Crenderer);
 }
 
 void RenderToScreen::destroy()
@@ -186,6 +228,7 @@ void RenderToScreen::destroy()
 	delete xOff, yOff;
 
 	SDL_DestroyWindow(window);
+	SDL_DestroyWindow(Cwindow);
 	SDL_Quit();
 }
 
@@ -200,6 +243,20 @@ void RenderToScreen::HandleInput(SDL_Scancode& Keyscancode)
 
 
 	const Uint8* keystate = SDL_GetKeyboardState(nullptr);
+
+
+	if (keystate[SDL_SCANCODE_BACKSPACE]) {
+		if (CanPressKey == true) {
+			CanPressKey = false;
+			CommandLineObject->deleting();
+		}
+		
+
+		if (Timer(Counter) == true) {
+			CanPressKey = true;
+			Counter = NumberToResetCounter;
+		}
+	}
 
 	if (keystate[SDL_SCANCODE_W]) {
 		for (int i = 0; i < SizeOfRenderableLines; i++) {
@@ -230,6 +287,11 @@ void RenderToScreen::HandleInput(SDL_Scancode& Keyscancode)
 
 	if (keystate[SDL_SCANCODE_Q]) {
 		
+
+	}
+
+	if (keystate[SDL_SCANCODE_Z ]) {
+
 
 	}
 
@@ -267,6 +329,10 @@ bool RenderToScreen::PollEvents()
 		if (EventRecorder.type == SDL_KEYDOWN) {
 			KeyStates[EventRecorder.key.keysym.scancode] = true;
 
+			if (CommandType == true && EventRecorder.key.keysym.scancode > 3 && EventRecorder.key.keysym.scancode < 30) {
+				CommandLineObject->type(ScancodeToCharacter(EventRecorder.key.keysym.scancode));
+			}
+
 
 
 
@@ -284,7 +350,13 @@ bool RenderToScreen::PollEvents()
 
 		if (EventRecorder.type == SDL_MOUSEBUTTONDOWN) {
 			if (EventRecorder.button.button == SDL_BUTTON_LEFT) {
+				if (MouseWindowLocation == CommandLine) {
+					CommandType = true;
+				}
 
+				if (MouseWindowLocation == HexEditor) {
+					CommandType = false;
+				}
 
 				
 
@@ -303,16 +375,28 @@ bool RenderToScreen::PollEvents()
 		if (EventRecorder.type = SDL_MOUSEWHEEL) {
 			if (EventRecorder.wheel.preciseY <= -1) {
 
-				//ReCalculateLinesDown();
 
-				for (int i = 0; i < SizeOfRenderableLines; i++) {
-					
-					RenderableLines[i].SetPos(RenderableLines[i].GetFRect().x, RenderableLines[i].GetFRect().y - MoveIncrement);
-					
+				
+				if (MouseWindowLocation == HexEditor) {
+					for (int i = StartIndex; i < EndIndex; i++) {
 
-					//This is scroll down, text goes up tho
+						if (i < 0 || i > SizeOfLines) {
+
+						}
+
+						else {
+							Lines[i].SetPos(Lines[i].GetFRect().x, Lines[i].GetFRect().y - 30);
+						}
+
+
+
+
+						//This is scroll down, text goes up tho
+					}
+
+					StartIndex += PotentialXRows;
+					EndIndex += PotentialXRows;
 				}
-
 				
 
 				
@@ -320,18 +404,30 @@ bool RenderToScreen::PollEvents()
 
 			if (EventRecorder.wheel.preciseY >= 1) {
 
-				
 
-				for (int i = 0; i < SizeOfRenderableLines; i++) {
-					
-					RenderableLines[i].SetPos(RenderableLines[i].GetFRect().x, RenderableLines[i].GetFRect().y + MoveIncrement);
-					
-					
+				if(MouseWindowLocation == HexEditor){
+					for (int i = StartIndex; i < EndIndex; i++) {
 
-					//This is scroll up, text goes down tho
-					
+
+						if (i < 0 || i > SizeOfLines) {
+
+						}
+
+						else {
+							Lines[i].SetPos(Lines[i].GetFRect().x, Lines[i].GetFRect().y + 30);
+						}
+
+
+
+						//This is scroll up, text goes down tho
+
+					}
+
+
+					StartIndex -= PotentialXRows;
+					EndIndex -= PotentialXRows;
+
 				}
-
 				
 			}
 

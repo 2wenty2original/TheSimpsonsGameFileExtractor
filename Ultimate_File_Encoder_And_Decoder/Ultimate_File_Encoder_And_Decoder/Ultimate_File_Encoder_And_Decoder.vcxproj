@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\CmdTypeable.cpp" />
     <ClCompile Include="Source\FontObject.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\RenderToScreen.cpp" />
@@ -146,6 +147,9 @@
     <ClCompile Include="Source\TextDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Bytes.h" />
+    <ClInclude Include="Source\CmdTypeable.h" />
+    <ClInclude Include="Source\DisplayByte.h" />
     <ClInclude Include="Source\FontObject.h" />
     <ClInclude Include="Source\RenderToScreen.h" />
     <ClInclude Include="Source\Str_Load.h" />

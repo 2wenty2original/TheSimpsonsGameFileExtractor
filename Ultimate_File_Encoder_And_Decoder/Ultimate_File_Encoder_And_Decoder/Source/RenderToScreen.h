@@ -6,11 +6,14 @@
 #include "Str_Load.h"
 #include "TextDisplay.h"
 #include "FontObject.h"
+#include "CmdTypeable.h"
 
 
 class RenderToScreen {
 
 public:
+
+	enum WhichWindow{HexEditor, CommandLine, NA };
 
 	RenderToScreen(int _width, int _height) {
 		width = _width;
@@ -28,6 +31,36 @@ public:
 
 	void HandleInput(SDL_Scancode& Keyscancode);
 	bool PollEvents();
+
+
+	
+
+
+	void CreateWindowf(SDL_Window* &_window, SDL_Renderer* &_renderer, SDL_Surface* &_screensurface, int _width, int _height, const char* title) {
+
+
+		_window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _width, _height, SDL_WINDOW_SHOWN);
+
+		if (_window == NULL) {
+			std::cout << "could not init" << std::endl;
+			std::cout << SDL_GetError() << std::endl;
+			return;
+	
+		}
+
+		_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+
+		if (_renderer == NULL)
+		{
+			std::cout << "could not init" << std::endl;
+			std::cout << SDL_GetError() << std::endl;
+			return;
+			
+		}
+
+		_screensurface = SDL_GetWindowSurface(_window);
+
+	}
 
 	bool IsValidIndex(int index, int Offset, int SizeOfContainer) {
 		if ((index + Offset) >= 0 && (index + Offset) < SizeOfContainer) {
@@ -71,53 +104,15 @@ public:
 
 		SizeOfRenderableLines = RenderableLines.size();
 
+
+		StartIndex -= PotentialXRows;
+		EndIndex = SizeOfRenderableLines + PotentialXRows;
+
 		
 
 	}
 
-	void ReCalculateLinesUp() {
-
-
-		//RenderableLines.insert(RenderableLines.end(), Lines.begin() + CurrentIndex + LastIndex, Lines.begin() + CurrentIndex + LastIndex + 100);
-
-		MovingIndex -= MaxWidth;
-
-		RenderableLines.clear();
-		
-		if (MovingIndex > SizeOfLines) {
-			MovingIndex = SizeOfLines - 1;
-		}
-
-		if (MovingIndex - (MaxCharacters / 2) > 0) {
-			RenderableLines.insert(RenderableLines.begin(), Lines.begin() + MovingIndex - (MaxCharacters / 2), Lines.begin() + MovingIndex);
-		}
-		
-
- 		SizeOfRenderableLines = RenderableLines.size();
-
-		//std::cout << "finished" << std::endl;
-
-		
-	}
-
-
-	void ReCalculateLinesDown() {
-		
-
-		//RenderableLines.insert(RenderableLines.begin(), Lines.begin() + CurrentIndex + LastIndex, Lines.begin() + CurrentIndex + LastIndex + 100);
-		
-		MovingIndex += 1;
-		
-		for (int i = 0; i < MaxWidth; i++) {
-			int InverseIndex = MaxWidth - i;
-			RenderableLines.push_back(Lines[SizeOfRenderableLines + i + MovingIndex]);
-			RenderableLines.erase(RenderableLines.begin() + InverseIndex);
-		}
-
-		
-
-		SizeOfRenderableLines = RenderableLines.size();
-	}
+	
 
 	bool OutScreen(int x, int y, int _width, int _height) {
 		bool Output;
@@ -196,12 +191,94 @@ public:
 		SizeOfLines = Lines.size();
 	}
 
-	void CalculateMaxCharacters() {
-		MaxWidth = (width / 2) / Lines[0].GetFRect().w;
-		MaxHeight = height / Lines[0].GetFRect().h;
-		MaxCharacters = MaxWidth * MaxHeight;
 
+	void Proportions(float TextWidth, float padding) {
+		*Segmenet = ((width / 2) / ((width * TextWidth) - padding));
 	}
+
+
+	void CreateSegments(float HowMany, float padding) {
+		*Segmenet = ((width / 2) + padding) / HowMany;
+	}
+
+	char ScancodeToCharacter(SDL_Scancode Scan) {
+		int Offset = 93;
+		int Calc = Scan + Offset;
+		return (char)Calc;
+	}
+
+	
+
+	bool Timer(float& Counter) {
+
+		static float LastTime = 0.0f; 
+		float CurrentTime = (float)SDL_GetTicks() / 1000.0f; 
+
+		float ElapsedTime = CurrentTime - LastTime;
+
+	
+		/*if (Counter < 0) {
+			return true;
+		}*/
+
+	
+		Counter -= ElapsedTime;
+
+		
+		LastTime = CurrentTime;
+
+		
+		return Counter < 0;
+		
+	}
+
+
+	void GetMouseWindow() {
+
+		int Gx, Gy;
+
+		SDL_GetGlobalMouseState(&Gx, &Gy);
+	
+
+		int HexX, HexY, HexW, HexH;
+		
+
+		SDL_GetWindowPosition(window, &HexX, &HexY);
+		SDL_GetWindowSize(window, &HexW, &HexH);
+
+
+
+
+		int ComX, ComY, ComW, ComH;
+
+
+		SDL_GetWindowPosition(Cwindow, &ComX, &ComY);
+		SDL_GetWindowSize(Cwindow, &ComW, &ComH);
+
+		
+
+
+		if (Gx > HexX && Gx < HexX + HexW && Gy > HexY && Gy < HexY + HexH) {
+			MouseWindowLocation = HexEditor; // overlapping command line
+			SDL_SetWindowInputFocus(window);
+		}
+
+		else if (Gx > ComX && Gx < ComX + ComW && Gy > ComY && Gy < ComY + ComH) {
+			MouseWindowLocation = CommandLine; // overlapping command line
+			SDL_SetWindowInputFocus(Cwindow);
+		}
+
+		else if (Gx > ComX && Gx < ComX + ComW && Gy > ComY && Gy < ComY + ComH && Gx > HexX && Gx < HexX + HexW && Gy > HexY && Gy < HexY + HexH) {
+			MouseWindowLocation = NA; // if they are both overlapping, the windows that is, then NA
+		}
+
+		else {
+			MouseWindowLocation = NA; //if they are overlapping neither, then NA
+		}
+	}
+
+	
+
 
 
 	
@@ -214,21 +291,31 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	SDL_Surface* screensurface = nullptr;
 
+	SDL_Window* Cwindow = nullptr;
+	SDL_Renderer* Crenderer = nullptr;
+	SDL_Surface* Cscreensurface = nullptr;
+
 	Font* FontObject = nullptr;
+
+	Cmd* CommandLineObject = nullptr;
 
 	std::vector<Text> Lines;
 	std::vector<Text> RenderableLines;
 
-	//std::vector<SDL_FRect> Frects;
-
 	int width;
 	int height;
+
+
+	
+
 
 	const int NumMouse = 5;
 	bool KeyStates[512];
 	
 	bool Mousestates[5] = { false };
 	bool GameYes = false;
+	bool CommandType = false;
+	bool CanPressKey = true;
 
 
 	float* xOff = new float();
@@ -236,13 +323,9 @@ private:
 
 	float* Segmenet = new float();
 
-
-
 	int x, y;
 
-
-	int LastIndex = 0;
-	int CurrentIndex = 0;
+	int tolerance = 0;
 
 	int SizeOfLines;
 	int SizeOfRenderableLines;
@@ -250,17 +333,19 @@ private:
 	int MoveIncrement = 0;
 	int MoveIncrementStorage = 0;
 
+	int PotentialXRows = 0;
+	int PotentialYRows = 0;
 
-	int MaxWidth = 0;
-	int MaxHeight = 0;
-	int MovingIndex = 0; 
-	int MaxCharacters = 0;
+	int StartIndex = 0;
+	int EndIndex = 0;
 
 
+	float NumberToResetCounter = 0.2;
+	float Counter = 0.2;
+
+
+	WhichWindow MouseWindowLocation;
 
 	Str_Load* LoadObject;
 	
-
-	//std::string IsItThere = LoadObject->GreaterThan(3);
-	//std::string IsItThere2 = LoadObject->LessThan(3);
 };
