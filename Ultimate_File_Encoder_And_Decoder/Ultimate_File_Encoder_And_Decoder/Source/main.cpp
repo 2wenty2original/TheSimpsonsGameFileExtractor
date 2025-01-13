@@ -29,14 +29,14 @@ int main(int argc, char** argv){
 
 
 
-	std::vector<int> Test = {0x53,0x54,0x6F,0x63};
+	//std::vector<int> Test = {0x53,0x54,0x6F,0x63};
 
 
 
 	Str_Load* StrObject = new Str_Load();
 	StrObject->init("zone01.str"); // land of chocolate zone02
 	StrObject->CheckHeaderForCompression();
-
+	StrObject->UnCompress();
 	
 	
 	

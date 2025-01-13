@@ -63,26 +63,55 @@ void Str_Load::init(const char* file)
 	
 }
 
-void Str_Load::UnCompressSection(std::vector<char> SectionOfFile)
-{
 
-}
 
 void Str_Load::UnCompress()
 {
-	std::vector<std::string> FileOutputNames;
 
-	int size = StartOfEachFile.size();
 
-	for (int i = 0; i < size; i++) {
-		std::vector<char> Section;
+	Scanner in, out;
 
-		Section.insert(Section.begin(), );
+	
+	uint8_t Byte_Zero, Byte_One, Byte_Two, Byte_Three;
+
+	/*std::vector<char> CurrentSection(AllList.begin() + StartOfEachFile[0], AllList.begin() + StartOfEachFile[0] + StartOfEachFile[1]);*/
+	
+	while(false)
+	{
+		
+
+		// 0x80 is for 128, conviniently the size of a signed char  
+
+		if(!(Byte_Zero & 0x80)) {
+			std::cout << "hello" << std::endl;
+		}
+
+		// 0x40 is for 64, half of a char
+
+		else if (!(Byte_Zero & 0x40)) {
+
+		}
+
+		// 0x20 is for 32, quater of a char
+
+		else if (!(Byte_Zero & 0x20)) {
+
+		}
+
+
+		// of smaller value
+
+		else {
+			uint8_t proc_len = (Byte_Zero & 0x1f) * 4 + 4;
+			if (proc_len <= 0x70) 
+			{
+
+			}
+		}
 	}
 
-	std::ofstream OutputFile();
-
 }
+
 
 
 void Str_Load::IncrementGrid(std::ifstream& _EntireFile)
@@ -107,17 +136,7 @@ void Str_Load::SortGarbeld(std::string CurrentLine) {
 
 		AllList.push_back(CurrentLine[j]);
 
-		//if (CurrentLine[j] > 33 && CurrentLine[j] < 126) {
-		//	//std::string str(1, CurrentLine[j]);
-		//	
-		//	AllList.push_back(CurrentLine[j]);
-		//}
-
-		//else {
-		//	//std::string str(1, CurrentLine[j]);
-		//	
-		//	AllList.push_back(CurrentLine[j]);
-		//}
+	
 	
 	}	
 }
@@ -134,53 +153,33 @@ void Str_Load::CheckHeaderForCompression()
 
 	std::vector<char>::iterator StartIndexIterator = AllList.begin() + InitialOffSet;
 
+
+
+	// this compiles a list of all of the header section file, 24 bytes each respective
 	for (int i = 0; i < Sections.variable; i++) {
 
 		std::vector<char>::iterator Start = StartIndexIterator + (i * Offset);
 		std::vector<char>::iterator End = StartIndexIterator + (i * Offset) + Offset;
-		
 		Char_Byte StartByte = Char_Byte(Start, End);
-
 		File_Section_Bytes.push_back(StartByte);
 	}
 
-
-	int counter = 0;
-	int counter_For_Files = 0;
-
-	int Max = (Sections * Offset).variable + InitialOffSet;
-
 	std::vector<Uint32_C> TempList;
 
-	for (int i = InitialOffSet + 1; i < Max; i++) {
-		counter ++;
+	for (int i = 0; i < File_Section_Bytes.size(); i++) {
 
-		if (counter == 24) {
-			counter = 0;
-		}
+		std::vector<unsigned char> TempCharList;
+		TempCharList.insert(TempCharList.begin(), File_Section_Bytes[i].Char_Bytes.begin() + 16, File_Section_Bytes[i].Char_Bytes.begin() + 20);
 
-		else if (counter == 16) {
-			Char_Byte Temp = Char_Byte(AllList.begin() + i, AllList.begin() + i + 4);
+		Char_Byte CompressedSize = Char_Byte(TempCharList);
 
-			fileSizeComp += Temp.CastToUint32_BE().variable;
-
-			TempList.push_back(Temp.CastToUint32_BE());
-			
-			
-		}
-
-		else if (counter == 8) {
-			Char_Byte Temp = Char_Byte(AllList.begin() + i, AllList.begin() + i + 4);
-			
-			fileSizeReal += Temp.CastToUint32_BE().variable;
-			
-		}
+		TempList.push_back(CompressedSize.CastToUint32_BE());
 
 	}
 
-	int fileStartSize = TempList.size();
 
-	for (int i = 0; i < fileStartSize; i++) {
+	// hard coded locations where the files start, the end via the offset plus the size of the file which is compressed, meaning get the offset, and add its compressed size, to get to where you need to be, assuming of course they are compressed.
+	for (int i = 0; i < TempList.size(); i++) {
 		int Offset = 2048;
 		int Pushed = 0;
 
@@ -199,14 +198,24 @@ void Str_Load::CheckHeaderForCompression()
 
 
 
+	for (int i = 0; i < StartOfEachFile.size(); i++) {
 
+		
+		std::vector<char>::iterator Start = AllList.begin() + StartOfEachFile[i];
+		std::vector<char>::iterator End = AllList.begin() + StartOfEachFile[i] + StartOfEachFile[i+1];
+
+		int TempSize = abs(StartOfEachFile[i] - StartOfEachFile[i + 1]);
+
+		Section TempSection = Section{Start, End,  };
+
+
+
+		SectionList.push_back(TempSection);
+	}
 
 }
 
-void Str_Load::ScanFile()
-{
-	
-}
+
 
 bool Str_Load::IsStrFile(std::ifstream& file)
 {
