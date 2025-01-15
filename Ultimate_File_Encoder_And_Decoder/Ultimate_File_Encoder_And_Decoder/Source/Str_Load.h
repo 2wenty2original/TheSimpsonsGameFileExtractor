@@ -29,33 +29,91 @@ struct PairIndexByte {
 struct Section {
 
 	// the bytes of the section in header
-	std::vector< char>::iterator StartHeader;
-	std::vector< char>::iterator EndHeader;
-
-	std::vector< char>::iterator StartReal;
-	std::vector< char>::iterator EndReal;
+	std::vector<char> SectionHeader;
 
 
-	int Size; // size between Start and End
+	// this is the actual section begin and end, the idea being we need to determine these, then apply the decompression algorithm to each, assumign they are compressed, we can determine this mind you via the first 10FB bytes
+	std::vector<char> SectionReal;
 
-	int CompressedSize;
-	int RealSize;
+	// size between Start and End
+	int SizeHeader;
+
+	// size between Start and End, real this time tho
+	int SizeReal;
+
+
+	// compressed and real size, this is determine in the header file, the 16th and 8th byte respective of sectioned header
+	Uint32_C CompressedSize;
+	Uint32_C UnCompressedSize;
 
 };
 
 struct Scanner {
-	uint8_t *Start;
-	uint8_t *ptr;
-	uint8_t *End;
+	std::vector<uint8_t>::iterator Start;
+	std::vector<uint8_t>::iterator ptr;
+	std::vector<uint8_t>::iterator End;
 	uint8_t overflow;
 
 
-	void Init(uint8_t *Start, size_t size) {
-		this->Start = this->ptr = Start;
-		this->End = Start + size;
+	void Init(std::vector<uint8_t>& Data) {
+		this->Start = Data.begin();
+		this->End = Data.end();
+		this->ptr = Data.begin();
 		this->overflow = 0;
 	}
 	
+
+
+	size_t position() {
+		return (size_t)(this->ptr - this->Start);
+	}
+
+	size_t remaining() {
+		return (size_t)(this->End - this->ptr);
+	}
+
+	uint8_t overflowed() {
+		return this->overflow;
+	}
+
+	uint8_t read_u8() {
+
+
+		if (this->End == this->ptr) {
+			this->overflow = 1;
+			return 0;
+		}
+
+		
+
+		return *(this->ptr++);
+	}
+
+	uint16_t read_u16() {
+		uint16_t x;
+		if (this->remaining() < 2) {
+			this->ptr = this->End, this->overflow = 1;
+			return 0;
+		}
+
+		x = (this->ptr[0] << 8 | this->ptr[1]);
+		this->ptr += 2;
+		return x;
+	}
+
+	uint32_t read_u24() {
+		uint32_t x;
+		if (remaining() < 3) {
+			this->ptr = this->End, this->overflow = 1;
+			return 0;
+		}
+		x = (this->ptr[0] << 16) | (this->ptr[1] << 8) | this->ptr[2];
+		this->ptr += 3;
+		return x;
+	}
+
+
+
 };
 
 class Str_Load {
@@ -71,6 +129,12 @@ public:
 
 	void init(const char* file);
 
+
+	
+
+	void WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> ByteToWrite, int &index);
+
+	void UnCompressSection(Section Sect, std::vector<uint8_t> &Write);
 	void UnCompress();
 
 	void ConvertToTxt();
@@ -98,6 +162,83 @@ public:
 		}
 	}
 
+	static void append(Scanner *out, Scanner *in, size_t length)
+	{
+		if (!length) 
+		{
+			return;
+		}
+
+		else if (length > 4) {
+			length = 4;
+		}
+
+
+		// works out remaining bytes, kinda like how vectors work by magnitude this measure displacement
+		if (std::distance(in->ptr, in->End) < static_cast<ptrdiff_t>(length) || 
+			std::distance(out->ptr, out->End) < static_cast<ptrdiff_t>(length)) {
+
+			// specifies, determines oveflow
+			if (std::distance(in->ptr, in->End) < static_cast<ptrdiff_t>(length)) {
+				in->ptr = in->End;
+				in->overflow = 1;
+				
+			}
+
+			// specifies
+
+			if (std::distance(out->ptr, out->End) < static_cast<ptrdiff_t>(length)) {
+				out->ptr = out->End;
+				out->overflow = 1;
+			}
+
+			return;
+
+		}
+
+		// this is like the iterator version of memcpy, i dont like it but its just Source, length and destination
+
+
+		std::copy_n(in->ptr, length, out->ptr);
+
+		//increment iterator
+
+		out->ptr += length; 
+		in->ptr += length;
+
+
+	}
+
+	void self_copy(Scanner *scanner, size_t distance, size_t length) {
+
+
+
+		if (std::distance(scanner->Start, scanner->ptr) < static_cast<ptrdiff_t>(distance) ||
+			std::distance(scanner->ptr, scanner->End) < static_cast<ptrdiff_t>(length)) {
+
+			//does overflow
+
+			scanner->ptr = scanner->End;
+			scanner->overflow = 1;
+			return;
+		}
+
+		//in_ptr = scanner->ptr - distance, out_ptr = scanner->ptr;
+
+		auto in_ptr = scanner->ptr - distance;
+		auto out_ptr = scanner->ptr;
+		
+		for (size_t i = 0; i < length; i++) {
+			*out_ptr = *in_ptr;
+			++out_ptr;
+			++in_ptr;
+
+			
+		}
+
+		scanner->ptr += length;
+	
+	}
 	
 
 	std::vector<char> ReturnAllList() {

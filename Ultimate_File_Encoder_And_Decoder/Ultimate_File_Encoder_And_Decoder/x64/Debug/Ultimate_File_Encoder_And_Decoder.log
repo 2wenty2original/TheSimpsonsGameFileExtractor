@@ -286,13 +286,12 @@ E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Enc
 E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Bytes.h(190,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/Str_Load.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(75,41): warning C4101: 'Byte_Three': unreferenced local variable
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(75,21): warning C4101: 'Byte_One': unreferenced local variable
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(72,14): warning C4101: 'out': unreferenced local variable
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(75,31): warning C4101: 'Byte_Two': unreferenced local variable
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(72,10): warning C4101: 'in': unreferenced local variable
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(133,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(150,26): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(80,21): warning C4101: 'DecompSize': unreferenced local variable
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(80,11): warning C4101: 'CompSize': unreferenced local variable
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(205,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(222,26): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(244,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\Str_Load.cpp(245,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   TextDisplay.cpp
 E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Ultimate_File_Encoder_And_Decoder\Ultimate_File_Encoder_And_Decoder\Source\TextDisplay.h(77,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'Source/TextDisplay.cpp')

@@ -255,6 +255,41 @@ class Char_Byte {
         }
 
 
+        Uint16_C CastToUint24_BE() {
+            if (Char_Bytes.size() == 3) {
+                Uint16_C Byte = 0;
+
+                Byte |= Char_Bytes[0] << 16;
+                Byte |= Char_Bytes[1] << 8; // big endian
+                Byte |= Char_Bytes[2];
+
+
+
+                return Byte;
+            }
+
+            return Uint16_C(0);
+
+        }
+
+        int16_C CastToint24_BE() {
+            if (Char_Bytes.size() == 3) {
+                int16_C Byte = 0;
+
+                Byte |= Char_Bytes[0] << 16;
+                Byte |= Char_Bytes[1] << 8; // big endian
+                Byte |= Char_Bytes[2];
+
+
+
+                return Byte;
+            }
+
+            return int16_C(0);
+
+        }
+
+
         Uint32_C CastToUint32_BE() {
             if (Char_Bytes.size() == 4) {
                 Uint32_C Byte = 0;
@@ -312,6 +347,41 @@ class Char_Byte {
             if (Char_Bytes.size() == 2) {
                 int16_C Byte = 0;
 
+                Byte |= Char_Bytes[1] << 8; // big endian
+                Byte |= Char_Bytes[0];
+
+
+
+                return Byte;
+            }
+
+            return int16_C(0);
+
+        }
+
+
+        Uint16_C CastToUint24_LE() {
+            if (Char_Bytes.size() == 3) {
+                Uint16_C Byte = 0;
+
+                Byte |= Char_Bytes[2] << 16;
+                Byte |= Char_Bytes[1] << 8; // big endian
+                Byte |= Char_Bytes[0];
+
+
+
+                return Byte;
+            }
+
+            return Uint16_C(0);
+
+        }
+
+        int16_C CastToint24_LE() {
+            if (Char_Bytes.size() == 3) {
+                int16_C Byte = 0;
+
+                Byte |= Char_Bytes[2] << 16;
                 Byte |= Char_Bytes[1] << 8; // big endian
                 Byte |= Char_Bytes[0];
 

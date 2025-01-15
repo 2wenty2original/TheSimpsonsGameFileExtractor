@@ -6,110 +6,182 @@ void Str_Load::init(const char* file)
 {
 	Filename = (char*)file;
 
-	std::ifstream EntireFile;
-	std::string line;
-
-	//if (DataList.size() > 0) { DataList.clear(); }
-
-	EntireFile.open(Filename, std::ios::binary);
-
+	std::ifstream EntireFile(Filename, std::ios::binary | std::ios::ate);
 	if (!EntireFile.is_open()) {
-		std::cerr << "cant open file" << Filename << "\n";
-		EntireFile.close();
+		std::cerr << "Cannot open file: " << Filename << "\n";
 		return;
 	}
 
-	else if (IsStrFile(EntireFile) == false) {
-		std::cerr << "Not an Str File" << Filename << "\n";
-		EntireFile.close();
+
+	std::streamsize fileSize = EntireFile.tellg();
+	EntireFile.seekg(0, std::ios::beg);
+
+	if (fileSize <= 0) {
+		std::cerr << "File size invalid or empty file: " << Filename << "\n";
 		return;
 	}
 
-	else {
+	std::vector<char> buffer(fileSize);
 
-		
-
-		
-		IncrementGrid(EntireFile); // takes a file assesses how many lines there are
-		EntireFile.open(Filename, std::ios::binary); // open it as a binary file
-		
-
-		while (!EntireFile.eof()){ // loop through whole file
-			
-			
-			std::getline(EntireFile, line);
-			SortGarbeld(line);
-			
-
-			
-			
-			
-			
-			
-
-		}
-
-		EntireFile.close();
-		
-
-
-
-		
-		std::cout << "Completed" << std::endl;
+	if (!EntireFile.read(buffer.data(), fileSize)) {
+		std::cerr << "Failed to read file content.\n";
+		return;
 	}
 
+	EntireFile.close();
 
+	for (char ch : buffer) {
+		SortGarbeld(std::string(1, ch));  
+	}
 
-	
+std::cout << "Completed the Init " << buffer.size() << " Is the Buffer Size\n";
+
 }
 
 
 
-void Str_Load::UnCompress()
+void Str_Load::WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> ByteToWrite, int &index)
 {
+	if (!OutFile.is_open()) {
+		return;
+	}
+
+	std::vector<char> InData;
+
+	for (int i = 0; i < ByteToWrite.size(); i ++) {
+		char Data = (char)ByteToWrite[i];
+		InData.push_back(Data);
+	}
+
+	std::string Name = std::to_string(index);
+
+	if (!ByteToWrite.empty()) {
+		OutFile.write(InData.data(), ByteToWrite.size());
+	}
+
+	index++;
+}
+
+void Str_Load::UnCompressSection(Section Sect, std::vector<uint8_t> &Write)
+{
+	std::vector<uint8_t> InData;
+
+	for (int i = 0; i < Sect.SectionReal.size(); i++) {
+		uint8_t Data = (uint8_t)Sect.SectionReal[i];
+		InData.push_back(Data);
+	}
+
 
 
 	Scanner in, out;
 
-	
-	uint8_t Byte_Zero, Byte_One, Byte_Two, Byte_Three;
 
-	/*std::vector<char> CurrentSection(AllList.begin() + StartOfEachFile[0], AllList.begin() + StartOfEachFile[0] + StartOfEachFile[1]);*/
+	uint8_t Byte_Zero, Byte_One, Byte_Two, Byte_Three;
+	uint32_t CompSize, DecompSize;
+	uint32_t proc_len, ref_dis, ref_len;
+
+	in.Init(InData);
+	out.Init(Write);
 	
-	while(false)
+
+	while (!in.overflowed() && !out.overflowed())
 	{
-		
+		Byte_Zero = in.read_u8();
 
 		// 0x80 is for 128, conviniently the size of a signed char  
 
-		if(!(Byte_Zero & 0x80)) {
-			std::cout << "hello" << std::endl;
+		if (!(Byte_Zero & 0x80)) {
+			Byte_One = in.read_u8();
+
+			proc_len = Byte_Zero & 0x03;
+
+			append(&out, &in, proc_len);
+
+			// opcode/byte command
+
+			ref_dis = ((Byte_Zero & 0x60) << 3) + Byte_One + 1;
+			ref_len = ((Byte_Zero >> 2) & 0x07) + 3;
+
+			self_copy(&out, ref_dis, ref_len);
 		}
 
 		// 0x40 is for 64, half of a char
 
 		else if (!(Byte_Zero & 0x40)) {
+			Byte_One = in.read_u8();
+			Byte_Two = in.read_u8();
 
+			proc_len = Byte_One >> 6;
+			append(&out, &in, proc_len);
+
+			ref_dis = ((Byte_One & 0x3f) << 8) + Byte_Two + 1;
+			ref_len = (Byte_Zero & 0x3f) + 4;
+			self_copy(&out, ref_dis, ref_len);
 		}
 
 		// 0x20 is for 32, quater of a char
 
 		else if (!(Byte_Zero & 0x20)) {
 
+			Byte_One = in.read_u8();
+			Byte_Two = in.read_u8();
+			Byte_Three = in.read_u8();
+
+			proc_len = Byte_Zero & 0x03;
+			append(&out, &in, proc_len);
+
+			ref_dis = ((Byte_Zero & 0x10) << 12)
+				+ (Byte_One << 8) + Byte_Two + 1;
+			ref_len = ((Byte_Zero & 0x0c) << 6) + Byte_Three + 5;
+			self_copy(&out, ref_dis, ref_len);
+
 		}
 
 
-		// of smaller value
+
 
 		else {
-			uint8_t proc_len = (Byte_Zero & 0x1f) * 4 + 4;
-			if (proc_len <= 0x70) 
-			{
+			proc_len = (Byte_Zero & 0x1f) * 4 + 4;
+			if (proc_len <= 0x70) {
 
+				append(&out, &in, proc_len);
 			}
+			else {
+
+				proc_len = Byte_Zero & 0x3;
+				append(&out, &in, proc_len);
+
+				break;
+			}
+
 		}
 	}
+}
 
+void Str_Load::UnCompress()
+{
+	int index = 0;
+	
+	
+
+	for (int i = 0; i < SectionList.size(); i++) {
+		std::string name = std::to_string(index);
+		std::ofstream TempOutput(name, std::ios::binary);
+
+		std::vector<uint8_t> WriteTo(SectionList[i].UnCompressedSize.variable);
+
+
+		UnCompressSection(SectionList[i], WriteTo);
+
+
+
+		WriteSectionToFile(TempOutput, WriteTo, index);
+		TempOutput.close();
+		WriteTo.clear();
+	}
+	
+
+	
 }
 
 
@@ -154,64 +226,68 @@ void Str_Load::CheckHeaderForCompression()
 	std::vector<char>::iterator StartIndexIterator = AllList.begin() + InitialOffSet;
 
 
-
 	// this compiles a list of all of the header section file, 24 bytes each respective
 	for (int i = 0; i < Sections.variable; i++) {
 
 		std::vector<char>::iterator Start = StartIndexIterator + (i * Offset);
 		std::vector<char>::iterator End = StartIndexIterator + (i * Offset) + Offset;
-		Char_Byte StartByte = Char_Byte(Start, End);
-		File_Section_Bytes.push_back(StartByte);
+
+
+		Section SectionSlice = Section{};
+
+		SectionSlice.SectionHeader.insert(SectionSlice.SectionHeader.begin(), Start, End);
+		SectionSlice.SizeHeader = 24;
+
+		SectionList.push_back(SectionSlice);
 	}
 
-	std::vector<Uint32_C> TempList;
+	int Capacity = AllList.capacity();
+	int Size = AllList.size();
 
-	for (int i = 0; i < File_Section_Bytes.size(); i++) {
+	for (int i = 0; i < SectionList.size(); i++) 
+	{
+		
+	
+		
 
-		std::vector<unsigned char> TempCharList;
-		TempCharList.insert(TempCharList.begin(), File_Section_Bytes[i].Char_Bytes.begin() + 16, File_Section_Bytes[i].Char_Bytes.begin() + 20);
+		Char_Byte CompressedSize = Char_Byte(SectionList[i].SectionHeader.begin() + 16, SectionList[i].SectionHeader.begin() + 20);
 
-		Char_Byte CompressedSize = Char_Byte(TempCharList);
+		Char_Byte UnCompressedSize = Char_Byte(SectionList[i].SectionHeader.begin() + 8, SectionList[i].SectionHeader.begin() + 12);
 
-		TempList.push_back(CompressedSize.CastToUint32_BE());
+
+
+		SectionList[i].CompressedSize = CompressedSize.CastToUint32_BE();
+		SectionList[i].UnCompressedSize = UnCompressedSize.CastToUint32_BE();
+		
 
 	}
+
 
 
 	// hard coded locations where the files start, the end via the offset plus the size of the file which is compressed, meaning get the offset, and add its compressed size, to get to where you need to be, assuming of course they are compressed.
-	for (int i = 0; i < TempList.size(); i++) {
-		int Offset = 2048;
-		int Pushed = 0;
 
+	int Pushed = 2048;
 
-		if (i == 0) {
-			Pushed += 2048;
-		}
-
-		else {
-			Pushed += TempList[i - 1].variable + StartOfEachFile[i - 1];
-		}
-
-		StartOfEachFile.push_back(Pushed);
-	}
-
-
-
-
-	for (int i = 0; i < StartOfEachFile.size(); i++) {
+	for (int i = 0; i < SectionList.size(); i++) {
+		
+		int Start = Pushed;
 
 		
-		std::vector<char>::iterator Start = AllList.begin() + StartOfEachFile[i];
-		std::vector<char>::iterator End = AllList.begin() + StartOfEachFile[i] + StartOfEachFile[i+1];
+	    Pushed += SectionList[i].CompressedSize.variable;
 
-		int TempSize = abs(StartOfEachFile[i] - StartOfEachFile[i + 1]);
+		int End = Pushed;
+		
+		
+		
 
-		Section TempSection = Section{Start, End,  };
-
-
-
-		SectionList.push_back(TempSection);
+	    SectionList[i].SectionReal.insert(SectionList[i].SectionReal.begin(), AllList.begin() + Start, AllList.begin() + End);
+		
 	}
+
+
+	int gh = 50;
+
+	
 
 }
 
