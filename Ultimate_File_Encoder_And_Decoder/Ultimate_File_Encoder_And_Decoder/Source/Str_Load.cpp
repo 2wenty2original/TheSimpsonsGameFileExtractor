@@ -40,64 +40,61 @@ std::cout << "Completed the Init " << buffer.size() << " Is the Buffer Size\n";
 
 
 
-void Str_Load::WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> ByteToWrite, int &index)
+void Str_Load::WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> Data, int index)
 {
 	if (!OutFile.is_open()) {
 		return;
 	}
 
-	std::vector<char> InData;
-
-	for (int i = 0; i < ByteToWrite.size(); i ++) {
-		char Data = (char)ByteToWrite[i];
-		InData.push_back(Data);
-	}
-
 	std::string Name = std::to_string(index);
 
-	if (!ByteToWrite.empty()) {
-		OutFile.write(InData.data(), ByteToWrite.size());
+	if (!Data.empty()) {
+		OutFile.write((const char*)(Data.data()), Data.size());
 	}
-
-	index++;
 }
 
-void Str_Load::UnCompressSection(Section Sect, std::vector<uint8_t> &Write)
+void Str_Load::UnCompressSection(std::vector<char> InData,std::vector<uint8_t> &OutData, size_t InSize, size_t OutSize)
 {
-	std::vector<uint8_t> InData;
-
-	for (int i = 0; i < Sect.SectionReal.size(); i++) {
-		uint8_t Data = (uint8_t)Sect.SectionReal[i];
-		InData.push_back(Data);
-	}
-
-
-
 	Scanner in, out;
 
-
+	uint16_t sig;
 	uint8_t Byte_Zero, Byte_One, Byte_Two, Byte_Three;
 	uint32_t CompSize, DecompSize;
 	uint32_t proc_len, ref_dis, ref_len;
 
-	in.Init(InData);
-	out.Init(Write);
-	
 
-	while (!in.overflowed() && !out.overflowed())
+	//std::vector<uint8_t> InDataReal;
+
+	/*for (int i = 0; i < InData.size(); i++) {
+		InDataReal.push_back((uint8_t) InData[i]);
+	}*/
+
+	Init(&in, reinterpret_cast<std::vector<uint8_t>*>(&InData), InSize);
+	Init(&out, &OutData, OutSize);
+
+
+	sig = read_u16(&in);
+
+	CompSize = (sig & 0x0100) ? read_u24(&in) : 0;
+
+	DecompSize = read_u24(&in);
+
+
+
+	while (!overflowed(&in) && !overflowed(&out))
 	{
-		Byte_Zero = in.read_u8();
+		Byte_Zero = read_u8(&in);
 
 		// 0x80 is for 128, conviniently the size of a signed char  
 
 		if (!(Byte_Zero & 0x80)) {
-			Byte_One = in.read_u8();
+
+			printf("Triggered clause 0x80 \n");
+
+			Byte_One = read_u8(&in);
 
 			proc_len = Byte_Zero & 0x03;
-
 			append(&out, &in, proc_len);
-
-			// opcode/byte command
 
 			ref_dis = ((Byte_Zero & 0x60) << 3) + Byte_One + 1;
 			ref_len = ((Byte_Zero >> 2) & 0x07) + 3;
@@ -108,8 +105,12 @@ void Str_Load::UnCompressSection(Section Sect, std::vector<uint8_t> &Write)
 		// 0x40 is for 64, half of a char
 
 		else if (!(Byte_Zero & 0x40)) {
-			Byte_One = in.read_u8();
-			Byte_Two = in.read_u8();
+
+
+			printf("Triggered clause 0x40 \n");
+
+			Byte_One = read_u8(&in);
+			Byte_Two = read_u8(&in);
 
 			proc_len = Byte_One >> 6;
 			append(&out, &in, proc_len);
@@ -123,15 +124,16 @@ void Str_Load::UnCompressSection(Section Sect, std::vector<uint8_t> &Write)
 
 		else if (!(Byte_Zero & 0x20)) {
 
-			Byte_One = in.read_u8();
-			Byte_Two = in.read_u8();
-			Byte_Three = in.read_u8();
+			printf("Triggered clause 0x20 \n");
+
+			Byte_One = read_u8(&in);
+			Byte_Two = read_u8(&in);
+			Byte_Three = read_u8(&in);
 
 			proc_len = Byte_Zero & 0x03;
 			append(&out, &in, proc_len);
 
-			ref_dis = ((Byte_Zero & 0x10) << 12)
-				+ (Byte_One << 8) + Byte_Two + 1;
+			ref_dis = ((Byte_Zero & 0x10) << 12) + (Byte_One << 8) + Byte_Two + 1;
 			ref_len = ((Byte_Zero & 0x0c) << 6) + Byte_Three + 5;
 			self_copy(&out, ref_dis, ref_len);
 
@@ -141,19 +143,20 @@ void Str_Load::UnCompressSection(Section Sect, std::vector<uint8_t> &Write)
 
 
 		else {
-			proc_len = (Byte_Zero & 0x1f) * 4 + 4;
-			if (proc_len <= 0x70) {
 
+			printf("Triggered clause else \n");
+
+			proc_len = (Byte_Zero & 0x1f) * 4 + 4;
+
+			if (proc_len <= 0x70) {
 				append(&out, &in, proc_len);
 			}
+			 
 			else {
-
 				proc_len = Byte_Zero & 0x3;
 				append(&out, &in, proc_len);
-
-				break;
+				break;  
 			}
-
 		}
 	}
 }
@@ -165,23 +168,27 @@ void Str_Load::UnCompress()
 	
 
 	for (int i = 0; i < SectionList.size(); i++) {
+
 		std::string name = std::to_string(index);
+
 		std::ofstream TempOutput(name, std::ios::binary);
 
-		std::vector<uint8_t> WriteTo(SectionList[i].UnCompressedSize.variable);
+		std::vector<char> InData = SectionList[i].SectionReal;
+		std::vector<uint8_t> OutData(SectionList[i].UnCompressedSize.variable);
 
+		size_t InSize = (size_t)InData.size();
+		size_t OutSize = (size_t)OutData.size();
 
-		UnCompressSection(SectionList[i], WriteTo);
+		UnCompressSection(InData, OutData, InSize, OutSize);
 
+		WriteSectionToFile(TempOutput, OutData, index);
 
-
-		WriteSectionToFile(TempOutput, WriteTo, index);
 		TempOutput.close();
-		WriteTo.clear();
-	}
-	
 
-	
+		index++;
+
+		printf("\n");
+	}
 }
 
 
@@ -271,24 +278,14 @@ void Str_Load::CheckHeaderForCompression()
 	for (int i = 0; i < SectionList.size(); i++) {
 		
 		int Start = Pushed;
-
 		
 	    Pushed += SectionList[i].CompressedSize.variable;
 
 		int End = Pushed;
-		
-		
-		
 
 	    SectionList[i].SectionReal.insert(SectionList[i].SectionReal.begin(), AllList.begin() + Start, AllList.begin() + End);
 		
 	}
-
-
-	int gh = 50;
-
-	
-
 }
 
 
@@ -298,14 +295,8 @@ bool Str_Load::IsStrFile(std::ifstream& file)
 
 	std::string Line;
 	std::string SToc = "SToc";
-	
-	
-	//file.open(Filename, std::ios::binary);
 
 	std::getline(file, Line);
-
-	
-	
 
 	if (Line.compare(SToc) == 1) {
 		file.close();
@@ -317,17 +308,11 @@ bool Str_Load::IsStrFile(std::ifstream& file)
 		return false;
 	}
 
-
-	
-
 	return false;
 }
 
 void Str_Load::ConvertToTxt()
 {
-
-	
-
 
 }
 

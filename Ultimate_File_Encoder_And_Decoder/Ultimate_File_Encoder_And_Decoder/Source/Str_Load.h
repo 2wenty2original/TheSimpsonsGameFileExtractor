@@ -53,68 +53,161 @@ struct Scanner {
 	std::vector<uint8_t>::iterator ptr;
 	std::vector<uint8_t>::iterator End;
 	uint8_t overflow;
+};
+
+	
+
+static __inline void Init(Scanner *sca, std::vector<uint8_t> *Start, size_t size) {
+	sca->Start = Start->begin();
+	sca->ptr = Start->begin();
+	sca->End = Start->begin() + std::min(size, Start->size());
+	sca->overflow = 0;
+}
+
+static __inline size_t GetIndex(std::vector<uint8_t>::iterator Start, std::vector<uint8_t>::iterator End) {
+	return std::distance(Start, End);
+}
 
 
-	void Init(std::vector<uint8_t>& Data) {
-		this->Start = Data.begin();
-		this->End = Data.end();
-		this->ptr = Data.begin();
-		this->overflow = 0;
+static __inline size_t position(Scanner* sca) {
+	return (size_t)(sca->ptr - sca->Start);
+	//return (size_t)std::distance(sca->ptr, sca->Start);
+}
+
+static __inline size_t remaining(Scanner* sca) {
+	return (size_t)(sca->End - sca->ptr);
+	//return std::distance(sca->ptr, sca->End);
+}
+
+static __inline uint8_t overflowed(Scanner* sca) {
+	return sca->ptr >= sca->End;
+}
+
+
+static uint8_t read_u8(Scanner* sca) {
+
+
+
+	if (sca->End == sca->ptr) {
+		sca->overflow = 1;
+		return 0;
+	}
+
+	uint8_t value = *(sca->ptr++);
+
+	printf("read_u8: %02X (pos: %zu, remaining: %zu)\n", value, position(sca), remaining(sca));
+
+	return value;
+}
+
+static uint16_t read_u16(Scanner* sca) {
+	if (remaining(sca) < 2) {
+		sca->ptr = sca->End;
+		sca->overflow = 1;
+		return 0;
+	}
+
+	uint16_t x = (uint16_t(sca->ptr[0]) << 8) | sca->ptr[1];  // Ensures proper widening before shifting
+	sca->ptr += 2;
+
+	printf("read_u16: %04X (pos: %zu, remaining: %zu)\n", x, position(sca), remaining(sca));
+	return x;
+}
+
+static uint32_t read_u24(Scanner* sca) {
+	if (remaining(sca) < 3) {
+		sca->ptr = sca->End;
+		sca->overflow = 1;
+		return 0;
+	}
+
+	uint32_t x = (uint32_t(sca->ptr[0]) << 16) | (uint32_t(sca->ptr[1]) << 8) | sca->ptr[2];
+	sca->ptr += 3;
+
+	printf("read_u24: %06X (pos: %zu, remaining: %zu)\n", x, position(sca), remaining(sca));
+	return x;
+}
+
+static void append(Scanner* out, Scanner* in, size_t length)
+{
+	if (!length) // 15 on this breakpoint
+	{
+		return;
+	}
+
+	if (length > 4) {
+		length = 4;
+	}
+
+
+	// works out remaining bytes, kinda like how vectors work by magnitude this measure displacement
+
+	int inRem = remaining(in);
+	int outRem = remaining(out);
+
+
+	if (remaining(in) < length || remaining(out) < length) {
+		if (remaining(in) < length) {
+			in->ptr = in->End;
+			in->overflow = 1;
+			
+		}
+
+		if (remaining(out) < length) {
+			out->ptr = out->End;
+			out->overflow = 1;
+			
+		}
+
+		return;
+
 	}
 	
 
 
-	size_t position() {
-		return (size_t)(this->ptr - this->Start);
-	}
-
-	size_t remaining() {
-		return (size_t)(this->End - this->ptr);
-	}
-
-	uint8_t overflowed() {
-		return this->overflow;
-	}
-
-	uint8_t read_u8() {
 
 
-		if (this->End == this->ptr) {
-			this->overflow = 1;
-			return 0;
-		}
 
-		
+	// this is like the iterator version of memcpy, i dont like it but its just Source, length and destination
 
-		return *(this->ptr++);
-	}
+	std::copy_n(in->ptr, length, out->ptr);
 
-	uint16_t read_u16() {
-		uint16_t x;
-		if (this->remaining() < 2) {
-			this->ptr = this->End, this->overflow = 1;
-			return 0;
-		}
+	//std::copy_n(in->ptr, length, out->ptr); // 8 on this breakpoint
 
-		x = (this->ptr[0] << 8 | this->ptr[1]);
-		this->ptr += 2;
-		return x;
-	}
+	//increment iterator
 
-	uint32_t read_u24() {
-		uint32_t x;
-		if (remaining() < 3) {
-			this->ptr = this->End, this->overflow = 1;
-			return 0;
-		}
-		x = (this->ptr[0] << 16) | (this->ptr[1] << 8) | this->ptr[2];
-		this->ptr += 3;
-		return x;
+	out->ptr += length;
+	in->ptr += length;
+
+
+}
+
+static void self_copy(Scanner* scanner, size_t distance, size_t length) {
+	size_t pos = position(scanner);
+	size_t remain = remaining(scanner);
+
+
+	if (position(scanner) < distance || remaining(scanner) < length) {
+		scanner->ptr = scanner->End;
+		scanner->overflow = 1;
+		return;
 	}
 
 
+	std::vector<uint8_t>::iterator in_ptr = scanner->ptr - distance;
+	std::vector<uint8_t>::iterator out_ptr = scanner->ptr;
 
-};
+	//std::copy_n(in_ptr, length, out_ptr);
+
+	for (size_t i = 0; i < length; i++) {
+		*out_ptr++ = *in_ptr++;
+	}
+
+	scanner->ptr += length;
+
+}
+
+
 
 class Str_Load {
 
@@ -129,12 +222,9 @@ public:
 
 	void init(const char* file);
 
+	void WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> Data, int index);
 
-	
-
-	void WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> ByteToWrite, int &index);
-
-	void UnCompressSection(Section Sect, std::vector<uint8_t> &Write);
+	void UnCompressSection(std::vector<char> InData, std::vector<uint8_t>& OutData, size_t InSize, size_t OutSize);
 	void UnCompress();
 
 	void ConvertToTxt();
@@ -162,83 +252,6 @@ public:
 		}
 	}
 
-	static void append(Scanner *out, Scanner *in, size_t length)
-	{
-		if (!length) 
-		{
-			return;
-		}
-
-		else if (length > 4) {
-			length = 4;
-		}
-
-
-		// works out remaining bytes, kinda like how vectors work by magnitude this measure displacement
-		if (std::distance(in->ptr, in->End) < static_cast<ptrdiff_t>(length) || 
-			std::distance(out->ptr, out->End) < static_cast<ptrdiff_t>(length)) {
-
-			// specifies, determines oveflow
-			if (std::distance(in->ptr, in->End) < static_cast<ptrdiff_t>(length)) {
-				in->ptr = in->End;
-				in->overflow = 1;
-				
-			}
-
-			// specifies
-
-			if (std::distance(out->ptr, out->End) < static_cast<ptrdiff_t>(length)) {
-				out->ptr = out->End;
-				out->overflow = 1;
-			}
-
-			return;
-
-		}
-
-		// this is like the iterator version of memcpy, i dont like it but its just Source, length and destination
-
-
-		std::copy_n(in->ptr, length, out->ptr);
-
-		//increment iterator
-
-		out->ptr += length; 
-		in->ptr += length;
-
-
-	}
-
-	void self_copy(Scanner *scanner, size_t distance, size_t length) {
-
-
-
-		if (std::distance(scanner->Start, scanner->ptr) < static_cast<ptrdiff_t>(distance) ||
-			std::distance(scanner->ptr, scanner->End) < static_cast<ptrdiff_t>(length)) {
-
-			//does overflow
-
-			scanner->ptr = scanner->End;
-			scanner->overflow = 1;
-			return;
-		}
-
-		//in_ptr = scanner->ptr - distance, out_ptr = scanner->ptr;
-
-		auto in_ptr = scanner->ptr - distance;
-		auto out_ptr = scanner->ptr;
-		
-		for (size_t i = 0; i < length; i++) {
-			*out_ptr = *in_ptr;
-			++out_ptr;
-			++in_ptr;
-
-			
-		}
-
-		scanner->ptr += length;
-	
-	}
 	
 
 	std::vector<char> ReturnAllList() {
