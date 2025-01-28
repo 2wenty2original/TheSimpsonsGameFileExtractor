@@ -69,6 +69,7 @@ void Str_Load::UnCompressSection(std::vector<char> InData,std::vector<uint8_t> &
 		InDataReal.push_back((uint8_t) InData[i]);
 	}*/
 
+
 	Init(&in, reinterpret_cast<std::vector<uint8_t>*>(&InData), InSize);
 	Init(&out, &OutData, OutSize);
 
@@ -80,7 +81,6 @@ void Str_Load::UnCompressSection(std::vector<char> InData,std::vector<uint8_t> &
 	DecompSize = read_u24(&in);
 
 
-
 	while (!overflowed(&in) && !overflowed(&out))
 	{
 		Byte_Zero = read_u8(&in);
@@ -89,7 +89,7 @@ void Str_Load::UnCompressSection(std::vector<char> InData,std::vector<uint8_t> &
 
 		if (!(Byte_Zero & 0x80)) {
 
-			printf("Triggered clause 0x80 \n");
+	
 
 			Byte_One = read_u8(&in);
 
@@ -107,7 +107,7 @@ void Str_Load::UnCompressSection(std::vector<char> InData,std::vector<uint8_t> &
 		else if (!(Byte_Zero & 0x40)) {
 
 
-			printf("Triggered clause 0x40 \n");
+
 
 			Byte_One = read_u8(&in);
 			Byte_Two = read_u8(&in);
@@ -124,7 +124,6 @@ void Str_Load::UnCompressSection(std::vector<char> InData,std::vector<uint8_t> &
 
 		else if (!(Byte_Zero & 0x20)) {
 
-			printf("Triggered clause 0x20 \n");
 
 			Byte_One = read_u8(&in);
 			Byte_Two = read_u8(&in);
@@ -144,7 +143,7 @@ void Str_Load::UnCompressSection(std::vector<char> InData,std::vector<uint8_t> &
 
 		else {
 
-			printf("Triggered clause else \n");
+
 
 			proc_len = (Byte_Zero & 0x1f) * 4 + 4;
 
@@ -179,7 +178,15 @@ void Str_Load::UnCompress()
 		size_t InSize = (size_t)InData.size();
 		size_t OutSize = (size_t)OutData.size();
 
-		UnCompressSection(InData, OutData, InSize, OutSize);
+		if (SectionList[i].CompressedSize.variable >= SectionList[i].UnCompressedSize.variable) {
+			WriteSectionToFile(TempOutput, std::vector<uint8_t>(InData.begin(), InData.end()), index);
+		}
+
+		else {
+
+			UnCompressSection(InData, OutData, InSize, OutSize);
+		}
+
 
 		WriteSectionToFile(TempOutput, OutData, index);
 

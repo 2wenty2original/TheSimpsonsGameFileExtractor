@@ -95,7 +95,7 @@ static uint8_t read_u8(Scanner* sca) {
 
 	uint8_t value = *(sca->ptr++);
 
-	printf("read_u8: %02X (pos: %zu, remaining: %zu)\n", value, position(sca), remaining(sca));
+	//printf("read_u8: %02X (pos: %zu, remaining: %zu)\n", value, position(sca), remaining(sca));
 
 	return value;
 }
@@ -110,7 +110,7 @@ static uint16_t read_u16(Scanner* sca) {
 	uint16_t x = (uint16_t(sca->ptr[0]) << 8) | sca->ptr[1];  // Ensures proper widening before shifting
 	sca->ptr += 2;
 
-	printf("read_u16: %04X (pos: %zu, remaining: %zu)\n", x, position(sca), remaining(sca));
+	//printf("read_u16: %04X (pos: %zu, remaining: %zu)\n", x, position(sca), remaining(sca));
 	return x;
 }
 
@@ -124,7 +124,7 @@ static uint32_t read_u24(Scanner* sca) {
 	uint32_t x = (uint32_t(sca->ptr[0]) << 16) | (uint32_t(sca->ptr[1]) << 8) | sca->ptr[2];
 	sca->ptr += 3;
 
-	printf("read_u24: %06X (pos: %zu, remaining: %zu)\n", x, position(sca), remaining(sca));
+	//printf("read_u24: %06X (pos: %zu, remaining: %zu)\n", x, position(sca), remaining(sca));
 	return x;
 }
 
@@ -135,9 +135,9 @@ static void append(Scanner* out, Scanner* in, size_t length)
 		return;
 	}
 
-	if (length > 4) {
+	/*if (length > 4) {
 		length = 4;
-	}
+	}*/
 
 
 	// works out remaining bytes, kinda like how vectors work by magnitude this measure displacement
