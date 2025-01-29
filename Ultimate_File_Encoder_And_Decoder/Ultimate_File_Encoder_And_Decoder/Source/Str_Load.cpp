@@ -34,7 +34,7 @@ void Str_Load::init(const char* file)
 		SortGarbeld(std::string(1, ch));  
 	}
 
-std::cout << "Completed the Init " << buffer.size() << " Is the Buffer Size\n";
+    std::cout << "Completed the Init " << buffer.size() << " Is the Buffer Size\n";
 
 }
 
@@ -164,19 +164,36 @@ void Str_Load::UnCompress()
 {
 	int index = 0;
 	
+	USFP = "UncompressedSections";
+
+
+	if (!std::filesystem::exists(USFP.c_str())) {
+		if (std::filesystem::create_directory(USFP.c_str())) {
+			std::cout << " Created the folder " << " " << USFP.c_str() << std::endl;
+		}
+
+	}
 	
 
 	for (int i = 0; i < SectionList.size(); i++) {
+		index++;
 
 		std::string name = std::to_string(index);
 
-		std::ofstream TempOutput(name, std::ios::binary);
+
+
+		std::filesystem::path FilePath = std::filesystem::path(USFP) / name;
+	
+		std::ofstream TempOutput(FilePath, std::ios::binary);
 
 		std::vector<char> InData = SectionList[i].SectionReal;
 		std::vector<uint8_t> OutData(SectionList[i].UnCompressedSize.variable);
 
 		size_t InSize = (size_t)InData.size();
 		size_t OutSize = (size_t)OutData.size();
+
+
+
 
 		if (SectionList[i].CompressedSize.variable >= SectionList[i].UnCompressedSize.variable) {
 			WriteSectionToFile(TempOutput, std::vector<uint8_t>(InData.begin(), InData.end()), index);
@@ -185,34 +202,22 @@ void Str_Load::UnCompress()
 		else {
 
 			UnCompressSection(InData, OutData, InSize, OutSize);
+			WriteSectionToFile(TempOutput, OutData, index);
 		}
 
 
-		WriteSectionToFile(TempOutput, OutData, index);
+
+		// write section to file was also here, redo if breaks
+		
 
 		TempOutput.close();
 
-		index++;
+		
 
 		printf("\n");
 	}
 }
 
-
-
-void Str_Load::IncrementGrid(std::ifstream& _EntireFile)
-{
-	std::string _line;
-	while (!_EntireFile.eof()) {
-		std::getline(_EntireFile, _line);
-
-		if (_line.size() > 0) {
-			Index += 1;
-		}
-	}
-
-	_EntireFile.close();
-}
 
 void Str_Load::SortGarbeld(std::string CurrentLine) {	
 
@@ -227,13 +232,23 @@ void Str_Load::SortGarbeld(std::string CurrentLine) {
 	}	
 }
 
+void Str_Load::SortGarbeld(std::string CurrentLine, std::vector<uint8_t>& Output) {
+	int Size = CurrentLine.size();
+
+	for (int j = 0; j < Size; j++) {
+
+		Output.push_back(CurrentLine[j]);
+
+
+
+	}
+}
+
 		
 void Str_Load::CheckHeaderForCompression()
 {
 	const int InitialOffSet = 20; //where the section part starts
 	const int Offset = 24; //how big each section IN THE HEADER is (obviously not size of actual headers)
-
-	sizeOfAll = AllList.size(); // size of the amount of characters
 	
 	Sections = AllList[8]; // the amount of sections i.e its just a number
 
@@ -293,6 +308,9 @@ void Str_Load::CheckHeaderForCompression()
 	    SectionList[i].SectionReal.insert(SectionList[i].SectionReal.begin(), AllList.begin() + Start, AllList.begin() + End);
 		
 	}
+
+	AllList.clear();
+	AllList.shrink_to_fit();
 }
 
 
@@ -316,6 +334,75 @@ bool Str_Load::IsStrFile(std::ifstream& file)
 	}
 
 	return false;
+}
+
+void Str_Load::ExtractSection(const char* FileName, std::vector<std::vector<uint8_t>> &Sections)
+{
+	std::ifstream File(FileName, std::ios::binary | std::ios::ate);
+	std::vector<uint8_t> Output;
+
+	if (!File.is_open()) {
+		std::cerr << "Cannot open file: " << Filename << "\n";
+		return;
+	}
+
+
+	std::streamsize fileSize = File.tellg();
+	File.seekg(0, std::ios::beg);
+
+	if (fileSize <= 0) {
+		std::cerr << "File size invalid or empty file: " << Filename << "\n";
+		return;
+	}
+
+	std::vector<uint8_t> buffer(fileSize);
+
+	if (!File.read(reinterpret_cast<char*>(buffer.data()), fileSize)) {
+		std::cerr << "Failed to read file content.\n";
+		return;
+	}
+
+	File.close();
+
+	for (uint8_t ch : buffer) {
+		SortGarbeld(std::string(1, ch), Output);
+	}
+
+	Sections.push_back(Output);
+
+	std::cout << "Completed the Init " << buffer.size() << " Is the Buffer Size\n";
+
+	// just for reference, because you will forgot
+	// each sections 16th byte, once added to the 16th bytes position i.e that current offset
+	// will take you to the start of the file, i have no idea how this accounts for several files in teh same section, but still, you can get the start of the file from 16.value + 16.position
+
+
+}
+
+void Str_Load::ExtractFiles()
+{
+	std::filesystem::path folder(USFP);
+	std::vector<std::vector<uint8_t>> AllSections;
+
+	if (!std::filesystem::exists(folder) || !std::filesystem::is_directory(folder)) {
+		return;
+	}
+
+
+	for(const auto &entry : std::filesystem::directory_iterator(folder)) {
+		if (std::filesystem::is_regular_file(entry)) {  
+			std::string TempString = entry.path().string();
+			FileNames.push_back(TempString);
+		}
+	}
+
+	
+
+	for (int i = 0; i < FileNames.size(); i++) {
+		ExtractSection(FileNames[i].c_str(), AllSections);
+
+
+	}
 }
 
 void Str_Load::ConvertToTxt()

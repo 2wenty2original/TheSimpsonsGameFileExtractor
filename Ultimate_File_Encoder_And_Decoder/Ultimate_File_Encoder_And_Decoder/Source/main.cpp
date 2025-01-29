@@ -33,10 +33,13 @@ int main(int argc, char** argv){
 
 
 
+
+
 	Str_Load* StrObject = new Str_Load();
 	StrObject->init("zone01.str"); // land of chocolate zone02
 	StrObject->CheckHeaderForCompression();
 	StrObject->UnCompress();
+	StrObject->ExtractFiles();
 	
 	
 	

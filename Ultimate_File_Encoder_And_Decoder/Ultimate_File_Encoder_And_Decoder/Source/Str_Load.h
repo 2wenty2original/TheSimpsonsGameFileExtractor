@@ -1,11 +1,13 @@
 #pragma once
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <ostream>
 #include <math.h>
 #include <string>
 #include <vector>
 #include "Bytes.h"
+
 
 
 
@@ -166,7 +168,7 @@ static void append(Scanner* out, Scanner* in, size_t length)
 
 
 
-
+	
 
 	// this is like the iterator version of memcpy, i dont like it but its just Source, length and destination
 
@@ -227,14 +229,17 @@ public:
 	void UnCompressSection(std::vector<char> InData, std::vector<uint8_t>& OutData, size_t InSize, size_t OutSize);
 	void UnCompress();
 
+
+	void ExtractSection(const char* Filename, std::vector<std::vector<uint8_t>>& Sections);
+	void ExtractFiles();
+
 	void ConvertToTxt();
 	void ConvertToStr();
 
 	void destroy();
 
-	void IncrementGrid(std::ifstream& _EntireFile);
-
 	void SortGarbeld(std::string CurrentLine);
+	void SortGarbeld(std::string CurrentLine, std::vector<uint8_t> &Output);
 
 	void CheckHeaderForCompression();
 
@@ -260,50 +265,23 @@ public:
 
 private:
 
-
 	// name of the file
 	char* Filename = nullptr;
-	
+
+	std::string USFP; // uncompressed section folder path
 
 	// file stream object
 	std::fstream FileObject;
 
-
 	// every single character in the file
 	std::vector<char> AllList;
 
-
-	// used for indexing file
-	int Index;
-
-
-	
 	std::vector<Section> SectionList;
+
+	std::vector<std::string> FileNames;
 
 	// how many sections there are 
 	Uint8_C Sections = 0;
-
-
-	// start
-	Uint8_C StartIndex;
-	
-
-	// the size of AllList
-	int sizeOfAll = 0; 
-
-	// this contains the 24 byte long sections, obviosuly not the entire real section, but you get the jist
-	std::vector<Char_Byte> File_Section_Bytes;
-
-	// This is the hardcoded values for the start of every ACTUAL section
-	std::vector<int> StartOfEachFile;
-
-
 	// the possible Memory policies there even are
-	Uint32_C MemPolicyArr[3] = {0x5393AC01, 0x9D6870BC, 0x00000000}; // All possible Memory Policy for memory allocation
-
-
-	// uncompressed and compressed file size
-	unsigned int fileSizeComp = 0;
-	unsigned int fileSizeReal = 0;
-
+	//Uint32_C MemPolicyArr[3] = {0x5393AC01, 0x9D6870BC, 0x00000000}; // All possible Memory Policy for memory allocation
 };
