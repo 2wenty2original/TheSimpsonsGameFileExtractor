@@ -209,6 +209,7 @@ void Str_Load::UnCompress()
 
 		// write section to file was also here, redo if breaks
 		
+		
 
 		TempOutput.close();
 
@@ -216,6 +217,9 @@ void Str_Load::UnCompress()
 
 		printf("\n");
 	}
+
+	SectionList.clear();
+	SectionList.shrink_to_fit();
 }
 
 
@@ -364,18 +368,31 @@ void Str_Load::ExtractSection(const char* FileName, std::vector<std::vector<uint
 
 	File.close();
 
+
+
 	for (uint8_t ch : buffer) {
+		
 		SortGarbeld(std::string(1, ch), Output);
 	}
 
 	Sections.push_back(Output);
 
-	std::cout << "Completed the Init " << buffer.size() << " Is the Buffer Size\n";
+	std::cout << " Section Loaded In" << buffer.size() << " Is the Buffer Size\n";
 
 	// just for reference, because you will forgot
 	// each sections 16th byte, once added to the 16th bytes position i.e that current offset
 	// will take you to the start of the file, i have no idea how this accounts for several files in teh same section, but still, you can get the start of the file from 16.value + 16.position
 
+
+	int StartOffsetIndex = Output[16];
+
+	int StartFileIndex = StartOffsetIndex + 16;
+
+	std::vector<uint8_t>::iterator File = Output.begin() + StartFileIndex;
+
+
+
+	
 
 }
 
