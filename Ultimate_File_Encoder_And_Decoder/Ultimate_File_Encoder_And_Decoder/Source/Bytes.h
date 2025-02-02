@@ -167,6 +167,12 @@ class Char_Byte {
             amountOfBytes = Char_Bytes.size();
         }
 
+        Char_Byte(std::vector<unsigned char>::iterator start, std::vector<unsigned char>::iterator end) {
+            Char_Bytes.insert(Char_Bytes.begin(), start, end);
+
+            amountOfBytes = Char_Bytes.size();
+        }
+
         void assign(char Byte) {
             Char_Bytes.push_back(Byte);
             amountOfBytes = Char_Bytes.size();

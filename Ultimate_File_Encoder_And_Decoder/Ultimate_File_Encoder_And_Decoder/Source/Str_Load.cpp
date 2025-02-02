@@ -53,6 +53,17 @@ void Str_Load::WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> D
 	}
 }
 
+void Str_Load::WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> Data, std::string Name)
+{
+	if (!OutFile.is_open()) {
+		return;
+	}
+
+	if (!Data.empty()) {
+		OutFile.write((const char*)(Data.data()), Data.size());
+	}
+}
+
 void Str_Load::UnCompressSection(std::vector<char> InData,std::vector<uint8_t> &OutData, size_t InSize, size_t OutSize)
 {
 	Scanner in, out;
@@ -340,9 +351,12 @@ bool Str_Load::IsStrFile(std::ifstream& file)
 	return false;
 }
 
-void Str_Load::ExtractSection(const char* FileName, std::vector<std::vector<uint8_t>> &Sections)
+void Str_Load::ExtractSection(const char* FileName)
 {
+	// load file from file name, this will be one of our sections
 	std::ifstream File(FileName, std::ios::binary | std::ios::ate);
+
+	//loads file into Output
 	std::vector<uint8_t> Output;
 
 	if (!File.is_open()) {
@@ -369,26 +383,102 @@ void Str_Load::ExtractSection(const char* FileName, std::vector<std::vector<uint
 	File.close();
 
 
-
+	// line by line adds to output
 	for (uint8_t ch : buffer) {
-		
+
 		SortGarbeld(std::string(1, ch), Output);
 	}
 
-	Sections.push_back(Output);
 
 	std::cout << " Section Loaded In" << buffer.size() << " Is the Buffer Size\n";
 
-	// just for reference, because you will forgot
-	// each sections 16th byte, once added to the 16th bytes position i.e that current offset
-	// will take you to the start of the file, i have no idea how this accounts for several files in teh same section, but still, you can get the start of the file from 16.value + 16.position
+
+	// basically if this is true by virtue of there not being another file, we stop
+	bool OverFlown = false;
+
+	// this is to be added on, a running offset
+	unsigned int Offset = 0;
 
 
-	int StartOffsetIndex = Output[16];
+	// name of the file we are gonna output, this will also change
+	std::string Name;
 
-	int StartFileIndex = StartOffsetIndex + 16;
+	while (!OverFlown) {
 
-	std::vector<uint8_t>::iterator File = Output.begin() + StartFileIndex;
+
+		int Displacement = 0;
+		
+		// this has to be 16 07 or its not uncompressed
+		Char_Byte SigPre = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + 2 };
+
+		// converts to actual number
+		uint16_t SigPost = SigPre.CastToUint16_LE().variable;
+
+		if (SigPost != 1814) {
+			OverFlown = true;
+			break;
+		}
+
+		Offset += 4;
+		Displacement += 4;
+
+		//this is how big the file is, its also technically a 24 bit number, but 32 works and 24 sucks anyway
+		Char_Byte MemoryOffset = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + 4};
+
+		Offset += 8;
+		Displacement += 8;
+
+		// this is the 17th byte to 20th byte big endian number that gives our first offset to D18E
+		Char_Byte OffsetOne = Char_Byte{Output.begin() + Offset, Output.begin() + Offset + 4};
+
+		uint32_t OffsetOneData = OffsetOne.CastToint32_BE().variable;
+
+		Offset += 4;
+		Displacement += 4;
+
+		Char_Byte StartOfFile = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + 4 };
+
+		uint32_t Start = StartOfFile.CastToint32_BE().variable;
+
+		Offset += 4;
+		Displacement += 4;
+
+		Char_Byte FileName = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + Start };
+
+		std::string TempFileName(FileName.Char_Bytes.begin(), FileName.Char_Bytes.end());
+
+	
+		// if this is false, then we have reached the end of the files, therefore we can quit
+		
+
+
+
+
+		// file path to output to
+		std::filesystem::path FilePath = std::filesystem::path(ExtractedSection) / Name;
+
+		// output file
+		std::ofstream TempOutput(FilePath, std::ios::binary);
+
+		int StartFileIndex = 16 + OffsetOneData + (Offset - Displacement);
+
+		std::vector<uint8_t>::iterator FileBegin = Output.begin() + StartFileIndex;
+
+		std::vector<uint8_t>::iterator FileEnd = Output.begin() + MemoryOffset.CastToUint32_LE().variable;
+
+		std::vector<uint8_t> Input;
+		Input.insert(Input.begin(), FileBegin, FileEnd);
+
+		WriteSectionToFile(TempOutput, Input, Name);
+
+		Offset = (Offset + MemoryOffset.CastToint32_LE().variable + 12) - Displacement;
+
+		//Offset = Next;
+
+	}
+
+	
+
 
 
 
@@ -398,13 +488,25 @@ void Str_Load::ExtractSection(const char* FileName, std::vector<std::vector<uint
 
 void Str_Load::ExtractFiles()
 {
+	// this is done to load in the section folder, we are not making a new one dw
 	std::filesystem::path folder(USFP);
-	std::vector<std::vector<uint8_t>> AllSections;
 
 	if (!std::filesystem::exists(folder) || !std::filesystem::is_directory(folder)) {
 		return;
 	}
 
+	ExtractedSection = "UncompressedSections";
+
+	// this will create a new folder to which all extracted files are put into
+
+	if (!std::filesystem::exists(ExtractedSection.c_str())) {
+		if (std::filesystem::create_directory(ExtractedSection.c_str())) {
+			std::cout << " Created the folder " << " " << ExtractedSection.c_str() << std::endl;
+		}
+
+	}
+
+	// gets every file from folder, determins if they are an acceptable file
 
 	for(const auto &entry : std::filesystem::directory_iterator(folder)) {
 		if (std::filesystem::is_regular_file(entry)) {  
@@ -416,9 +518,7 @@ void Str_Load::ExtractFiles()
 	
 
 	for (int i = 0; i < FileNames.size(); i++) {
-		ExtractSection(FileNames[i].c_str(), AllSections);
-
-
+		ExtractSection(FileNames[i].c_str());
 	}
 }
 
