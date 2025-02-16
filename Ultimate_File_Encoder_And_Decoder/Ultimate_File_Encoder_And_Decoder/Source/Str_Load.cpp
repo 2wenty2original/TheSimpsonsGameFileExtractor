@@ -53,7 +53,7 @@ void Str_Load::WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> D
 	}
 }
 
-void Str_Load::WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> Data, std::string Name)
+void Str_Load::WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> Data)
 {
 	if (!OutFile.is_open()) {
 		return;
@@ -403,8 +403,25 @@ void Str_Load::ExtractSection(const char* FileName)
 	// name of the file we are gonna output, this will also change
 	std::string Name;
 
+	// standard termination clause is 0
+
+	uint8_t TerminationClause8 = 0;
+
+	// basically, most structures, offsets etc are terminated with 0x00BF which translates to 191 unsigned 16
+	uint16_t TerminationClause16 = 191;
+
+	// another termination clause for blank strings is 0x00BFBFBF
+
+	uint32_t TerminationClause32 = 12566463;
+
+
+
 	while (!OverFlown) {
 
+		if (Offset >= Output.size()) {
+			OverFlown = true;
+			break;
+		}
 
 		int Displacement = 0;
 		
@@ -436,6 +453,7 @@ void Str_Load::ExtractSection(const char* FileName)
 		Offset += 4;
 		Displacement += 4;
 
+		// this is the number that denotes where the file ACTUALLY starts i.e each file has a header file, this is after that.
 		Char_Byte StartOfFile = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + 4 };
 
 		uint32_t Start = StartOfFile.CastToint32_BE().variable;
@@ -447,31 +465,40 @@ void Str_Load::ExtractSection(const char* FileName)
 
 		std::string TempFileName(FileName.Char_Bytes.begin(), FileName.Char_Bytes.end());
 
-	
-		// if this is false, then we have reached the end of the files, therefore we can quit
+		Offset += FileName.Char_Bytes.size();
+		Displacement += FileName.Char_Bytes.size();
+
+
+
+		// 16 is how big the proceeding structure and 1 for the Termination clause 0
+
+		Offset += 17;
+		Displacement += 17;
+
+
+		Char_Byte
+		
 		
 
-
-
-
 		// file path to output to
-		std::filesystem::path FilePath = std::filesystem::path(ExtractedSection) / Name;
+		std::filesystem::path FilePath = std::filesystem::path(ExtractedSection) / TempFileName;
 
 		// output file
 		std::ofstream TempOutput(FilePath, std::ios::binary);
 
-		int StartFileIndex = 16 + OffsetOneData + (Offset - Displacement);
 
-		std::vector<uint8_t>::iterator FileBegin = Output.begin() + StartFileIndex;
+		std::vector<uint8_t>::iterator FileBegin = 16 + Output.begin() + OffsetOneData;
 
 		std::vector<uint8_t>::iterator FileEnd = Output.begin() + MemoryOffset.CastToUint32_LE().variable;
 
 		std::vector<uint8_t> Input;
 		Input.insert(Input.begin(), FileBegin, FileEnd);
 
-		WriteSectionToFile(TempOutput, Input, Name);
+		WriteSectionToFile(TempOutput, Input);
 
 		Offset = (Offset + MemoryOffset.CastToint32_LE().variable + 12) - Displacement;
+
+		TempOutput.close();
 
 		//Offset = Next;
 
@@ -495,7 +522,7 @@ void Str_Load::ExtractFiles()
 		return;
 	}
 
-	ExtractedSection = "UncompressedSections";
+	ExtractedSection = "Files";
 
 	// this will create a new folder to which all extracted files are put into
 

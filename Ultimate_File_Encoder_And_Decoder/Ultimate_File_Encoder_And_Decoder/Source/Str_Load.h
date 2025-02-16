@@ -225,7 +225,7 @@ public:
 	void init(const char* file);
 
 	void WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> Data, int index);
-	void WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> Data, std::string Name);
+	void WriteSectionToFile(std::ofstream& OutFile, std::vector<uint8_t> Data);
 
 	void UnCompressSection(std::vector<char> InData, std::vector<uint8_t>& OutData, size_t InSize, size_t OutSize);
 	void UnCompress();
@@ -270,7 +270,7 @@ private:
 	char* Filename = nullptr;
 
 	std::string USFP; // uncompressed section folder path
-	std::string ExtractedSection;
+	std::string ExtractedSection; // individual file folder path
 
 	// file stream object
 	std::fstream FileObject;
