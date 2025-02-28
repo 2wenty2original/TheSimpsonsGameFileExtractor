@@ -5,62 +5,43 @@ E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\
 E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(167,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(172,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(173,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
 E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(181,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(190,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(186,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(262,39): warning C4293: '<<': shift count negative or too big, undefined behavior
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(195,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(263,39): warning C4293: '<<': shift count negative or too big, undefined behavior
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(204,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(264,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\FileOpen.cpp(33,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  main.cpp
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(151,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/main.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(265,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(167,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/main.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(285,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(173,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/main.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(286,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(181,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/main.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(287,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(186,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/main.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(288,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(195,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/main.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(308,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(204,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/main.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(309,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(310,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(311,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(331,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(332,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(333,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(334,39): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'Source/FileOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\FileOpen.cpp(42,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
   Rws_Opener.vcxproj -> E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\x64\Debug\Rws_Opener.exe

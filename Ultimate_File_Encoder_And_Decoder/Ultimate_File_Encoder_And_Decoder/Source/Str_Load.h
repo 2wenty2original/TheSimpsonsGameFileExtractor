@@ -211,12 +211,16 @@ static void self_copy(Scanner* scanner, size_t distance, size_t length) {
 
 
 
-class Str_Load {
 
+
+class Str_Load {
 
 	
 
 public:
+
+
+	
 
 	Str_Load() {};
 	~Str_Load() {};

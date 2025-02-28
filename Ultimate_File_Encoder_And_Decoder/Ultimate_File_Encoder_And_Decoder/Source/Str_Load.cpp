@@ -476,8 +476,6 @@ void Str_Load::ExtractSection(const char* FileName)
 		Displacement += 17;
 
 
-		Char_Byte
-		
 		
 
 		// file path to output to
