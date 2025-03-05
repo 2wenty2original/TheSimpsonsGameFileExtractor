@@ -21,27 +21,4 @@ E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\
   (compiling source file 'Source/FileOpen.cpp')
   
 E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\FileOpen.cpp(33,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  main.cpp
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(151,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(167,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(173,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(181,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(186,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(195,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(204,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-  Generating Code...
   Rws_Opener.vcxproj -> E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\x64\Debug\Rws_Opener.exe

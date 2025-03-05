@@ -86,6 +86,44 @@ void FileOpen::ExtractData()
 	}
 }
 
+void FileOpen::ProcessData() {
+
+	int Offset = 0;
+
+	bool HasTextures = false;
+	bool HasGeometryPositions = false;
+	bool HasPreLitGeometry = false;
+	bool HasGeometryNormals = false;
+
+	int VertexCount = 0;
+	int FaceCount = 0;
+
+
+	// this is the beginner struct
+	Chunk Struct = Chunk(GeometryList.begin(), Offset);
+
+	std::vector<uint8_t> StructSum = Struct.Process(GeometryList, Offset);
+
+	Chunk GeometryListChunk = Chunk(GeometryList.begin(), Offset);
+
+
+	Chunk GeometryStruct = Chunk(GeometryList.begin(), Offset);
+
+	std::vector<uint8_t> GeometryStructSum = GeometryStruct.Process(GeometryList, Offset);
+
+	Chunk MaterialList = Chunk(GeometryList.begin(), Offset);
+
+	Offset += MaterialList.size;
+
+	Chunk ExtensionGeometry = Chunk(GeometryList.begin(), Offset);
+
+	Chunk ExtentsionGeometryStruct = Chunk(GeometryList.begin(), Offset);
+
+	std::vector<uint8_t> GeometruStructOutput = ExtentsionGeometryStruct.Process(GeometryList, Offset);
+
+
+}
+
 void FileOpen::ConvertToObj() {
 	std::ofstream Output("OutputtedModel");
 	std::vector<uint8_t> OutputVector;
