@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "Bytes.h"
+#include <bitset>
 
 
 
@@ -19,9 +20,14 @@ public:
 
 	Chunk(std::vector<unsigned char>::iterator Start, int& _Offset) {
 
+		
+
+
 		Offset = &_Offset;
 		type = Char_Byte(Start, _Offset, 4).CastToint32_LE().variable;
 		size = Char_Byte(Start, _Offset, 4).CastToint32_LE().variable;
+
+		
 		version = Char_Byte(Start, _Offset, 4).CastToint32_LE().variable;
 	}
 
@@ -29,12 +35,11 @@ public:
 
 		std::vector<uint8_t> Output;
 
-		if (type == 1) {
+		
+
+		if (type == 1 || type == 1294 || type == 59926 || type == 59925 || type == 59955) {
 			Output.insert(Output.begin(), Data.begin() + *Offset, Data.begin() + *Offset + size);
 			*Offset += size;
-
-			//Data.erase(Data.begin() + *Offset, Data.begin() + *Offset + size);
-			//Data.shrink_to_fit();
 		    return Output;
 		}
 
@@ -68,8 +73,33 @@ public:
 	void Init();
 	void ProcessLines(std::string Line, std::vector<unsigned char>& _Characters);
 	void ExtractData();
-	void ConvertToObj();
+	void ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount);
 	void ProcessData();
+
+
+	std::vector<std::vector<int>> CastStripToFace(std::vector<int> _Strip) {
+
+
+		bool Flip = false;
+		std::vector<std::vector<int>> Output;
+
+		for (int i = 0; i < _Strip.size() - 2; i++) {
+			if (Flip) {
+				Output.push_back(std::vector<int>{_Strip[i +2], _Strip[i+1], _Strip[i]});
+			}
+
+			else {
+				Output.push_back(std::vector<int>{_Strip[i + i], _Strip[i + 2], _Strip[i]});
+			}
+
+			Flip = !Flip;
+		}
+
+
+		return Output;
+	}
+
+
 
 
 private:
@@ -88,6 +118,8 @@ private:
 	int VertexAmount;
 
 	std::vector<uint8_t> GeometryList;
+
+	std::vector<uint8_t> Geometry;
 
 	// list of triangles, each sublist will have 3 points
 	std::vector < std::vector<float>> Triangles;

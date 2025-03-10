@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
 	fileinsert.Init();
 	fileinsert.ExtractData();
 	fileinsert.ProcessData();
-	fileinsert.ConvertToObj();
+	//fileinsert.ConvertToObj();
 
 
 
