@@ -196,7 +196,7 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 
 	int MeshChunkStart = Offset;
 
-	Offset += 20;
+	Offset += 16;
 
 	int TableCount = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable;
 
@@ -213,12 +213,68 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 
 	int DataSubStart = Offset;
 
-	for (int i = 0; i < SubTableCount; i++) {
-		Offset += DataSubStart + (i * 0x14);
-		int NewOffset = Char_Byte(Geometry.begin(), Offset, 4).CastToint32_BE().variable;
+	for (int i = 0; i < DataSubStart; i++) {
+		int DataSubOffset = DataSubStart + (i * 0x14);
+		int NewOffset = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable;
 		int Chunkhead = NewOffset + MeshChunkStart + 0xC;
 
+		int VertCountDataOffset = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable + MeshChunkStart;
+
+		DataSubOffset += VertCountDataOffset;
+
+		int VertChunkTotalSize = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable;
+
+		int VertChunkSize = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable;
+
+		int VertCount = int(VertChunkTotalSize / VertChunkSize);
+
+		DataSubOffset += 8;
+
+		int VertexStart = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable + FaceOffset + MeshChunkStart;
+
+		DataSubOffset += 14;
+
+		int FaceCount = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable / 2;
+
+		DataSubOffset += 4;
+
+		int FaceStart = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable + FaceOffset + MeshChunkStart;
+
+
+		DataSubOffset = FaceStart;
+
+		std::vector<std::vector<int>> StripList;
+
+		std::vector<int> TempList;
+
+		for (int j = 0; j < FaceCount; j++) {
+			int Indice = Char_Byte(InputData.begin(), DataSubOffset, 2).CastToint16_BE().variable;
+
+
+			//max uint16 size
+			if (Indice >= 65535) {
+				StripList.push_back(TempList);
+				TempList.clear();
+				TempList.shrink_to_fit();
+			}
+
+			else {
+				TempList.push_back(Indice);
+			}
+		}
+
+		std::vector<int> FaceList;
+
+		for (int j = 0; j < StripList.size(); j++) {
+			for (int k = 0; k < CastStripToFace(StripList[j]).size(); k++) {
+				FaceList.push_back(CastStripToFace(StripList[j])[k]);
+			}
+		}
+
+		int gh = 0;
 	}
+
+	
 
 	std::vector<int> Faces;
 
