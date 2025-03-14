@@ -9,6 +9,97 @@
 
 
 
+class Vector2 {
+
+public:
+
+	Vector2()
+	{
+		X = 0;
+		Y = 0;
+
+	}
+	Vector2(float _X, float _Y, float _Z) : X(_X), Y(_Y) {}
+
+	Vector2 Normalize() {
+
+		float length = std::sqrt(this->X * this->X + this->Y * this->Y);
+
+		if (length != 0) {
+			X /= length;
+			Y /= length;
+		}
+
+		return *this;
+	}
+
+	float Dot(const Vector2& Other) {
+		return (this->X * Other.X) + (this->Y * Other.Y);
+	}
+
+
+
+public:
+
+	float X;
+	float Y;
+
+	float magnitude;
+};
+
+
+
+class Vector3 {
+
+public:
+
+	Vector3()
+	{
+		X = 0;
+		Y = 0; 
+		Z = 0;
+
+	}
+	Vector3(float _X, float _Y, float _Z) : X(_X) , Y(_Y), Z(_Z) {}
+
+	Vector3 Normalize() {
+
+		float length = std::sqrt(this->X * this->X + this->Y * this->Y + this->Z * this->Z);
+
+		if (length != 0) {
+			X /= length;
+			Y /= length;
+			Z /= length;
+		}
+
+		return *this;
+	}
+
+	float Dot(const Vector3 &Other) {
+		return (this->X * Other.X) + (this->Y * Other.Y) + (this->Z * Other.Z);
+	}
+
+	Vector3 Cross(const Vector3& Other) const {
+
+		Vector3 Output = Vector3();
+		Output.X = this->Y * Other.Z - this->Z * Other.Y;
+		Output.Y = this->Z * Other.X - this->X * Other.Z;
+		Output.Z = this->X * Other.Y - this->Y * Other.X;
+
+		return Output;
+	}
+
+
+public:
+
+	float X;
+	float Y;
+	float Z;
+
+	float magnitude;
+};
+
+
 class Chunk {
 
 public:
@@ -76,6 +167,7 @@ public:
 	void ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount);
 	void ProcessData();
 
+    
 
 	std::vector<std::vector<int>> CastStripToFace(std::vector<int> _Strip) {
 

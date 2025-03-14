@@ -263,15 +263,31 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 			}
 		}
 
-		std::vector<int> FaceList;
+		std::vector<std::vector<int>> FaceList;
 
 		for (int j = 0; j < StripList.size(); j++) {
+			
 			for (int k = 0; k < CastStripToFace(StripList[j]).size(); k++) {
-				FaceList.push_back(CastStripToFace(StripList[j])[k]);
+
+				std::vector<int> Temp = CastStripToFace(StripList[j])[k];
+
+			    FaceList.push_back(Temp);
 			}
 		}
 
-		int gh = 0;
+
+		std::vector<Vector3> VerticesTable;
+		std::vector<Vector2> UVTable;
+
+		for (int j = 0; j < VertCount; j++) {
+			DataSubOffset = VertexStart + j + VertChunkSize;
+
+			// this is for Vector3
+			
+			Vector3 TempVert = Char_Byte(InputData.begin(), DataSubOffset, 12).CastToVector3_BE();
+
+		}
+
 	}
 
 	

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "FileOpen.h"
 
 //Custom data types
 
@@ -161,6 +162,8 @@ class Char_Byte {
            amountOfBytes = _amountOfBytes;
         }
 
+       
+
         Char_Byte(std::vector<char>::iterator start, std::vector<char>::iterator end) {
             Char_Bytes.insert(Char_Bytes.begin(), start, end);
 
@@ -235,6 +238,23 @@ class Char_Byte {
             }
                 
         }
+
+        Vector3 CastToVector3_BE() {
+
+            if (Char_Bytes.size() == 12) {
+                int Offset = 0;
+                Vector3 Output = Vector3();
+
+                Output.X = Char_Byte(Char_Bytes.begin(), Offset, 4).CastToint32_BE().variable;
+                Output.Y = Char_Byte(Char_Bytes.begin(), Offset, 4).CastToint32_BE().variable;
+                Output.Z = Char_Byte(Char_Bytes.begin(), Offset, 4).CastToint32_BE().variable;
+
+                return Output;
+            }
+
+            return Vector3();
+        }
+
 
         Uint16_C CastToUint16_BE() {
             if (Char_Bytes.size() == 2) {
