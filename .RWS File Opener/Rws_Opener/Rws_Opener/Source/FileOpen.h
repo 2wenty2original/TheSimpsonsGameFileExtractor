@@ -5,99 +5,11 @@
 #include <string>
 #include <vector>
 #include "Bytes.h"
-#include <bitset>
 
 
 
-class Vector2 {
-
-public:
-
-	Vector2()
-	{
-		X = 0;
-		Y = 0;
-
-	}
-	Vector2(float _X, float _Y, float _Z) : X(_X), Y(_Y) {}
-
-	Vector2 Normalize() {
-
-		float length = std::sqrt(this->X * this->X + this->Y * this->Y);
-
-		if (length != 0) {
-			X /= length;
-			Y /= length;
-		}
-
-		return *this;
-	}
-
-	float Dot(const Vector2& Other) {
-		return (this->X * Other.X) + (this->Y * Other.Y);
-	}
 
 
-
-public:
-
-	float X;
-	float Y;
-
-	float magnitude;
-};
-
-
-
-class Vector3 {
-
-public:
-
-	Vector3()
-	{
-		X = 0;
-		Y = 0; 
-		Z = 0;
-
-	}
-	Vector3(float _X, float _Y, float _Z) : X(_X) , Y(_Y), Z(_Z) {}
-
-	Vector3 Normalize() {
-
-		float length = std::sqrt(this->X * this->X + this->Y * this->Y + this->Z * this->Z);
-
-		if (length != 0) {
-			X /= length;
-			Y /= length;
-			Z /= length;
-		}
-
-		return *this;
-	}
-
-	float Dot(const Vector3 &Other) {
-		return (this->X * Other.X) + (this->Y * Other.Y) + (this->Z * Other.Z);
-	}
-
-	Vector3 Cross(const Vector3& Other) const {
-
-		Vector3 Output = Vector3();
-		Output.X = this->Y * Other.Z - this->Z * Other.Y;
-		Output.Y = this->Z * Other.X - this->X * Other.Z;
-		Output.Z = this->X * Other.Y - this->Y * Other.X;
-
-		return Output;
-	}
-
-
-public:
-
-	float X;
-	float Y;
-	float Z;
-
-	float magnitude;
-};
 
 
 class Chunk {
@@ -111,14 +23,10 @@ public:
 
 	Chunk(std::vector<unsigned char>::iterator Start, int& _Offset) {
 
-		
-
-
 		Offset = &_Offset;
+
 		type = Char_Byte(Start, _Offset, 4).CastToint32_LE().variable;
 		size = Char_Byte(Start, _Offset, 4).CastToint32_LE().variable;
-
-		
 		version = Char_Byte(Start, _Offset, 4).CastToint32_LE().variable;
 	}
 
@@ -137,6 +45,29 @@ public:
 
 
 		return Output;
+	}
+
+	static int GetIndex(std::vector<uint8_t> List, uint8_t value) {
+
+		auto iterator = std::find(List.begin(), List.end(), value);
+
+		return std::distance(List.begin(), iterator);
+	}
+
+	static int GetChunkedIndex(std::vector<uint8_t> List, uint32_t value) {
+		for (size_t i = 0; i < List.size() - 3; i++) {
+			uint32_t currentValue = (static_cast<uint32_t>(List[i]) << 24) |
+				(static_cast<uint32_t>(List[i + 1]) << 16) |
+				(static_cast<uint32_t>(List[i + 2]) << 8) |
+				static_cast<uint32_t>(List[i + 3]);
+
+
+			if (currentValue == value) {
+				return i; 
+			}
+		}
+
+		return -1;
 	}
 
 public:
@@ -164,7 +95,7 @@ public:
 	void Init();
 	void ProcessLines(std::string Line, std::vector<unsigned char>& _Characters);
 	void ExtractData();
-	void ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount);
+	void ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset);
 	void ProcessData();
 
     
@@ -181,7 +112,7 @@ public:
 			}
 
 			else {
-				Output.push_back(std::vector<int>{_Strip[i + i], _Strip[i + 2], _Strip[i]});
+				Output.push_back(std::vector<int>{_Strip[i + 1], _Strip[i + 2], _Strip[i]});
 			}
 
 			Flip = !Flip;
@@ -195,6 +126,8 @@ public:
 
 
 private:
+
+	int GlobalFileOffset;
 
 	std::fstream FileObject;
 
@@ -214,7 +147,10 @@ private:
 	std::vector<uint8_t> Geometry;
 
 	// list of triangles, each sublist will have 3 points
-	std::vector < std::vector<float>> Triangles;
+
+	std::vector < Vector3> Normals;
+	std::vector < Vector3> Triangles;
+	std::vector < Vector2> UVs;
 
 	std::vector< std::vector<int>> Indexes;
 

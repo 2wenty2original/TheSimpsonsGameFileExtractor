@@ -1,47 +1,47 @@
 ﻿  FileOpen.cpp
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(152,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(244,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(168,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(262,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(174,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(268,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(182,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(276,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(187,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(292,28): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(196,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(301,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(205,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(310,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\FileOpen.cpp(33,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  main.cpp
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(152,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(319,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(168,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(376,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(376,85): warning C4244:         with
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(376,85): warning C4244:         [
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(376,85): warning C4244:             T=int
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(376,85): warning C4244:         ]
+  (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(174,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(377,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(377,85): warning C4244:         with
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(377,85): warning C4244:         [
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(377,85): warning C4244:             T=int
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(377,85): warning C4244:         ]
+  (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(182,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\FileOpen.h(54,23): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
+  (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(187,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\FileOpen.h(66,12): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/FileOpen.cpp')
   
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(196,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\Bytes.h(205,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-  Generating Code...
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\Rws_Opener\Source\FileOpen.cpp(39,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Rws_Opener.vcxproj -> E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\.RWS File Opener\Rws_Opener\x64\Debug\Rws_Opener.exe

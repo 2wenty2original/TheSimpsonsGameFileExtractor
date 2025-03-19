@@ -3,29 +3,35 @@
 void FileOpen::Init()
 {
 
-	std::ifstream EntireFile;
-	std::string Line;
-
-	EntireFile.open(Name.c_str(), std::ios::binary);
-
+	std::ifstream EntireFile(Name.c_str(), std::ios::binary | std::ios::ate);
 	if (!EntireFile.is_open()) {
-		std::cerr << "cant open file" << Name.c_str() << "\n";
-		EntireFile.close();
+		std::cerr << "Cannot open file: " << Name.c_str() << "\n";
 		return;
 	}
 
-	else {
 
+	std::streamsize fileSize = EntireFile.tellg();
+	EntireFile.seekg(0, std::ios::beg);
 
-		while (!EntireFile.eof()) { // loop through whole file
-
-			std::getline(EntireFile, Line);
-			ProcessLines(Line, Characters);
-		}
-
-		EntireFile.close();
-
+	if (fileSize <= 0) {
+		std::cerr << "File size invalid or empty file: " << Name.c_str() << "\n";
+		return;
 	}
+
+	std::vector<char> buffer(fileSize);
+
+	if (!EntireFile.read(buffer.data(), fileSize)) {
+		std::cerr << "Failed to read file content.\n";
+		return;
+	}
+
+	EntireFile.close();
+
+	for (char ch : buffer) {
+		ProcessLines(std::string(1, ch), Characters);
+	}
+
+	std::cout << "Completed the Init " << buffer.size() << " Is the Buffer Size\n";
 }
 
 void FileOpen::ProcessLines(std::string Line, std::vector<unsigned char>& _Characters)
@@ -41,10 +47,14 @@ void FileOpen::ProcessLines(std::string Line, std::vector<unsigned char>& _Chara
 
 void FileOpen::ExtractData()
 {
-	std::vector<int> ChunkIds = { 14, 20, 26 };
+
+	int ClumpId = 16;
+	std::vector<int> ChunkIds = { 14, 20, 26 , 7, 3 };
+	std::vector<int> StructIds = {1,286, 2, 59925, 59926, 59955, 1294, 59923};
 
 	bool FoundGeometry = false;
 	bool InChunk = false;
+
 	int Offset = 0;
 
 	int GeometryTypeId = 26;
@@ -56,37 +66,45 @@ void FileOpen::ExtractData()
 		Chunk GetChunk = Chunk(Characters.begin(), Offset);
 
 
-		for (int i = 0; i < ChunkIds.size(); i++) {
-			if (ChunkIds[i] == GetChunk.type) {
-				InChunk = true;
-			}
-		}
-
-
-
-		if (GetChunk.type == GeometryTypeId) {
-			FoundGeometry = true;
-			GeometryList.insert(GeometryList.begin(), Characters.begin() + Offset, Characters.begin() + Offset + GetChunk.size);
-
-			break;
-		}
-
-		else if (GetChunk.type == 16) {
+		if (GetChunk.type == ClumpId) {
 			Chunk StructureCheck = Chunk(Characters.begin(), Offset);
 
 			if (StructureCheck.type == 1) {
 				Offset += StructureCheck.size;
 			}
+
+			continue;
 		}
 
-		else {
-			Offset += GetChunk.size;
-			InChunk = false;
+		for (int i = 0; i < ChunkIds.size(); i++) {
+			if (ChunkIds[i] == GetChunk.type && !(GetChunk.type == GeometryTypeId)) {
+				InChunk = true;
+			}
+
+			else if (ChunkIds[i] == GetChunk.type && GetChunk.type == GeometryTypeId) {
+				FoundGeometry = true;
+				GeometryList.insert(GeometryList.begin(), Characters.begin() + Offset, Characters.begin() + Offset + GetChunk.size);
+				GlobalFileOffset += Offset;
+				break;
+			}
 		}
+
+		for (int i = 0; i < StructIds.size(); i++) {
+			if (StructIds[i] == GetChunk.type) {
+				Offset += GetChunk.size;
+				InChunk = false;
+			}
+			
+		}
+		
+		
 	}
 }
 
+
 void FileOpen::ProcessData() {
+
+
 
 	int Offset = 0;
 
@@ -112,9 +130,11 @@ void FileOpen::ProcessData() {
 	// this is the beginner struct
 	Chunk Struct = Chunk(GeometryList.begin(), Offset);
 
+
 	std::vector<uint8_t> StructSum = Struct.Process(GeometryList, Offset);
 
 	Chunk GeometryListChunk = Chunk(GeometryList.begin(), Offset);
+
 
 
 	Chunk GeometryStruct = Chunk(GeometryList.begin(), Offset);
@@ -141,16 +161,22 @@ void FileOpen::ProcessData() {
 
 	GeometryStructSumOffset += 2;
 
+
+
 	UnknownCount = Char_Byte(GeometryStructSum.begin(), GeometryStructSumOffset, 2).CastToint16_LE().variable;
 	FaceCount = Char_Byte(GeometryStructSum.begin(), GeometryStructSumOffset, 4).CastToint32_LE().variable;
 	VertexCount = Char_Byte(GeometryStructSum.begin(), GeometryStructSumOffset, 4).CastToint32_LE().variable;
 
 
+
 	Chunk MaterialList = Chunk(GeometryList.begin(), Offset);
+
 
 	Offset += MaterialList.size;
 
 	Chunk ExtensionGeometry = Chunk(GeometryList.begin(), Offset);
+
+
 
 	Chunk ExtentsionGeometryStruct = Chunk(GeometryList.begin(), Offset);
 
@@ -168,6 +194,8 @@ void FileOpen::ProcessData() {
 
 	Chunk Unknown2 = Chunk(GeometryList.begin(), Offset);
 
+
+
 	std::vector<uint8_t> Unknwon2Struct = Unknown2.Process(GeometryList, Offset);
 
 	Chunk ACTUALGEOMETRY = Chunk(GeometryList.begin(), Offset);
@@ -175,103 +203,132 @@ void FileOpen::ProcessData() {
 
 	Geometry = ACTUALGEOMETRY.Process(GeometryList, Offset);
 
-	ConvertToObj(Geometry, VertexCount, FaceCount);
+	// we add 12 btw, because thats the size of the section i.e the 59955
+	GlobalFileOffset += Offset - ACTUALGEOMETRY.size;
 
-	
+	ConvertToObj(Characters, VertexCount, FaceCount, GlobalFileOffset);
+
+
 
 
 }
 
-void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount) {
-	std::ofstream Output("OutputtedModel");
+
+void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset)
+{
+	std::ofstream Output("Output.obj");
 	std::vector<uint8_t> OutputVector;
 
-	int Offset = 0;
+	// local offset for only the input data
+	int Offset = _Offset;
 
+
+	// this number is unknown, but we need to do this to skip 4 bytes
 	int UselessNumber = Char_Byte(InputData.begin(), Offset, 4).CastToint32_LE().variable;
 
+	// this should be 848, this is our offset to get to faces
 	int FaceOffset = Char_Byte(InputData.begin(), Offset, 4).CastToint32_LE().variable;
 
+
+	// this is the size of the ACTUAL geometry data
 	int MeshDataSize = Char_Byte(InputData.begin(), Offset, 4).CastToint32_LE().variable;
 
-	int MeshChunkStart = Offset;
 
-	Offset += 16;
+	int MeshDataStart = Offset;
 
+	// we do this to skip 20
+	Offset += 20;
+
+	// amount of tables, should be 23
 	int TableCount = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable;
 
+
+	//amount of subtables, should be 1, because only 1 mesh
 	int SubTableCount = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable;
 
 
 
 	std::vector<int> DataOffsets;
 
+
+	// we get ALL of the offsets per table, and we skip 4 each time we do so
 	for (int i = 0; i < TableCount; i++) {
 		Offset += 4;
 		DataOffsets.push_back(Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable);
 	}
 
+
+	// start of the data
 	int DataSubStart = Offset;
 
-	for (int i = 0; i < DataSubStart; i++) {
-		int DataSubOffset = DataSubStart + (i * 0x14);
-		int NewOffset = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable;
-		int Chunkhead = NewOffset + MeshChunkStart + 0xC;
 
-		int VertCountDataOffset = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable + MeshChunkStart;
+	// goes through each sub table, again only 1
+	for (int i = 0; i < SubTableCount; i++) {
+		Offset = DataSubStart + (i * 0xc) + 8;
 
-		DataSubOffset += VertCountDataOffset;
+		int NewOffset = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable;
 
-		int VertChunkTotalSize = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable;
+		Offset = NewOffset + MeshDataStart + 0xC;
 
-		int VertChunkSize = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable;
+		int VertCountDataOffset = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable + MeshDataStart;
+
+		Offset = VertCountDataOffset;
+
+		int VertChunkTotalSize = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable;
+
+		int VertChunkSize = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable;
 
 		int VertCount = int(VertChunkTotalSize / VertChunkSize);
 
-		DataSubOffset += 8;
+		Offset += 8;
 
-		int VertexStart = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable + FaceOffset + MeshChunkStart;
+		int VertexStart = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable + FaceOffset + MeshDataStart;
 
-		DataSubOffset += 14;
+		Offset += 0x14;
 
-		int FaceCount = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable / 2;
+		int FaceCount = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable;
 
-		DataSubOffset += 4;
+		FaceCount /= 2;
 
-		int FaceStart = Char_Byte(InputData.begin(), DataSubOffset, 4).CastToint32_BE().variable + FaceOffset + MeshChunkStart;
+		Offset += 4;
+
+		int FaceStart = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable + FaceOffset + MeshDataStart;
 
 
-		DataSubOffset = FaceStart;
+		Offset = FaceStart;
 
 		std::vector<std::vector<int>> StripList;
 
 		std::vector<int> TempList;
 
 		for (int j = 0; j < FaceCount; j++) {
-			int Indice = Char_Byte(InputData.begin(), DataSubOffset, 2).CastToint16_BE().variable;
+			int Indice = Char_Byte(InputData.begin(), Offset, 2).CastToUint16_BE().variable;
 
-
+			
+			
+		
 			//max uint16 size
-			if (Indice >= 65535) {
+			if (Indice == 65535) {
 				StripList.push_back(TempList);
 				TempList.clear();
-				TempList.shrink_to_fit();
 			}
 
 			else {
 				TempList.push_back(Indice);
 			}
+
+			
 		}
 
 		std::vector<std::vector<int>> FaceList;
 
 		for (int j = 0; j < StripList.size(); j++) {
-			
+
 			for (int k = 0; k < CastStripToFace(StripList[j]).size(); k++) {
 
 				std::vector<int> Temp = CastStripToFace(StripList[j])[k];
 
-			    FaceList.push_back(Temp);
+				FaceList.push_back(Temp);
 			}
 		}
 
@@ -280,52 +337,86 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 		std::vector<Vector2> UVTable;
 
 		for (int j = 0; j < VertCount; j++) {
-			DataSubOffset = VertexStart + j + VertChunkSize;
+			Offset = VertexStart + j * VertChunkSize;
 
 			// this is for Vector3
+
+			//Vector3 TempVert = Char_Byte(InputData.begin(), Offset, 12).CastToVector3_BE();
+
+
+			float V0 = Char_Byte(InputData.begin(), Offset, 4).CastTo32Float_BE();
+			float V1 = Char_Byte(InputData.begin(), Offset, 4).CastTo32Float_BE();
+			float V2 = Char_Byte(InputData.begin(), Offset, 4).CastTo32Float_BE();
+
 			
-			Vector3 TempVert = Char_Byte(InputData.begin(), DataSubOffset, 12).CastToVector3_BE();
+
+			VerticesTable.push_back(Vector3(V0, V1, V2));
+
+			Offset = VertexStart + j * VertChunkSize + VertChunkSize - 8;
+
+
+
+			float UV1 = Char_Byte(InputData.begin(), Offset, 4).CastTo32Float_BE();
+			float UV2 = 1 - Char_Byte(InputData.begin(), Offset, 4).CastTo32Float_BE();
+
+
+
+			UVTable.push_back(Vector2(UV1, UV2));
 
 		}
 
+
+		Triangles = VerticesTable;
+		UVs = UVTable;
+
+		for (int v = 0; v < FaceList.size(); v++) {
+			FaceList[v][0] = FaceList[v][0] + 1;
+			FaceList[v][1] = FaceList[v][1] + 1;
+			FaceList[v][2] = FaceList[v][2] + 1;
+		}
+
+		Indexes = FaceList;
+
+
+
 	}
 
-	
-
-	std::vector<int> Faces;
-
-	for (int i = 0; i < FaceCount; i++) {
-		int f = Char_Byte(InputData.begin(), Offset, 2).CastToint16_BE().variable;
-		Faces.push_back(f);
-
-	}
 
 
-	for (int i = 0; i < InputData.size(); i+=3) {
-		
-	}
 
 
-	for (size_t  i = 0; i < Triangles.size(); i++) {
+	for (size_t i = 0; i < Triangles.size(); i++) {
 
-		std::string Line = "v " + std::to_string(Triangles[i][0]) + 
-			" " + std::to_string(Triangles[i][1]) + 
-			" " + std::to_string(Triangles[i][2]) +
+		std::string Line = "v " + std::to_string(Triangles[i].X) +
+			" " + std::to_string(Triangles[i].Y) +
+			" " + std::to_string(Triangles[i].Z) +
 			"\n";
 
 		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-		std::cout << Line << std::endl; 
+	}
+
+	for (size_t i = 0; i < UVs.size(); i++) {
+		std::string Line = "vt " + std::to_string(UVs[i].X) +
+			" " + std::to_string(UVs[i].Y) +
+			"\n";
+
+		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
 	}
 
 	for (size_t i = 0; i < Indexes.size(); i++) {
 
-		std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + "0" + "/" + "0" + " " 
-			+ std::to_string(Indexes[i][1]) + "/" + "0" + "/" + "0" + " " 
-			+ std::to_string(Indexes[i][2]) + "/" + "0" + "/" + "0" + " " + "\n";
+		/*std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + "0" + "/" + "0" + " "
+			+ std::to_string(Indexes[i][1]) + "/" + "0" + "/" + "0" + " "
+			+ std::to_string(Indexes[i][2]) + "/" + "0" + "/" + "0" + " " + "\n";*/
 
-			
+
+
+		std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) +  "/" + std::to_string(Indexes[i][0]) + " "
+			+ std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + " "
+			+ std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + " " + "\n";
+
+
 		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-		std::cout << Line << std::endl; 
 	}
 
 
