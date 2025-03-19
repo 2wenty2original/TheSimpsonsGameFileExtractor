@@ -64,6 +64,15 @@ public:
     }
     Vector3(float _X, float _Y, float _Z) : X(_X), Y(_Y), Z(_Z) {}
 
+
+    Vector3 operator - (const Vector3 &OtherVector) {
+        return Vector3(this->X - OtherVector.X, this->Y - OtherVector.Y, this->Z - OtherVector.Z);
+    }
+
+    Vector3 operator + (const Vector3& OtherVector) {
+        return Vector3(this->X + OtherVector.X, this->Y + OtherVector.Y, this->Z + OtherVector.Z);
+    }
+
     Vector3 Normalize() {
 
         float length = std::sqrt(this->X * this->X + this->Y * this->Y + this->Z * this->Z);
@@ -90,6 +99,18 @@ public:
 
         return Output;
     }
+
+
+    static Vector3 Cross(const Vector3& A, const Vector3& B) {
+        Vector3 Output = Vector3();
+        Output.X = A.Y * B.Z - A.Z * B.Y;
+        Output.Y = A.Z * B.X - A.X * B.Z;
+        Output.Z = A.X * B.Y - A.Y * B.X;
+
+        return Output;
+    }
+
+
 
 
 public:

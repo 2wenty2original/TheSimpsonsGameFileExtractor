@@ -332,9 +332,10 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 			}
 		}
 
-
+		
 		std::vector<Vector3> VerticesTable;
 		std::vector<Vector2> UVTable;
+
 
 		for (int j = 0; j < VertCount; j++) {
 			Offset = VertexStart + j * VertChunkSize;
@@ -348,6 +349,8 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 			float V1 = Char_Byte(InputData.begin(), Offset, 4).CastTo32Float_BE();
 			float V2 = Char_Byte(InputData.begin(), Offset, 4).CastTo32Float_BE();
 
+
+			
 			
 
 			VerticesTable.push_back(Vector3(V0, V1, V2));
@@ -366,14 +369,37 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 		}
 
 
+		
+
+
 		Triangles = VerticesTable;
 		UVs = UVTable;
+
+		// this is dumb but works, this might cause an issue on the other side of things tho, where instead it reaches 706 and freaks out
+
+		for (int Triangle = 0; Triangle < FaceList.size(); Triangle++) {
+			Vector3 Vert0 = VerticesTable[FaceList[Triangle][0]];
+			Vector3 Vert1 = VerticesTable[FaceList[Triangle][1]];
+			Vector3 Vert2 = VerticesTable[FaceList[Triangle][2]];
+
+			Vector3 AB = Vert1 - Vert0;
+			Vector3 AC = Vert2 - Vert0;
+
+			Vector3 CrossProduct = Vector3::Cross(AB, AC);
+
+			Vector3 Normal = CrossProduct.Normalize();
+
+			Normals.push_back(Normal);
+
+		}
 
 		for (int v = 0; v < FaceList.size(); v++) {
 			FaceList[v][0] = FaceList[v][0] + 1;
 			FaceList[v][1] = FaceList[v][1] + 1;
 			FaceList[v][2] = FaceList[v][2] + 1;
 		}
+
+		
 
 		Indexes = FaceList;
 
@@ -400,6 +426,15 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 			" " + std::to_string(UVs[i].Y) +
 			"\n";
 
+		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
+	}
+
+
+	for (size_t i = 0; i < Normals.size(); i++) {
+		std::string Line = "vn " + std::to_string(Normals[i].X) +
+			" " + std::to_string(Normals[i].Y) +
+			" " + std::to_string(Normals[i].Z) +
+			"\n";
 		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
 	}
 
