@@ -73,6 +73,38 @@ public:
         return Vector3(this->X + OtherVector.X, this->Y + OtherVector.Y, this->Z + OtherVector.Z);
     }
 
+    Vector3 operator += (const Vector3& OtherVector) {
+        this->X += OtherVector.X;
+        this->Y += OtherVector.Y;
+        this->Z += OtherVector.Z;
+
+        return *this;
+    }
+
+    Vector3 operator /= (const float scalar) {
+        this->X /= scalar;
+        this->Y /= scalar;
+        this->Z /= scalar;
+
+        return *this;
+    }
+
+    Vector3 operator /= (const Vector3& OtherVector) {
+        this->X /= OtherVector.X;
+        this->Y /= OtherVector.Y;
+        this->Z /= OtherVector.Z;
+
+        return *this;
+    }
+
+    Vector3 operator * (const Vector3& OtherVector) {
+        return Vector3(this->X * OtherVector.X, this->Y * OtherVector.Y, this->Z * OtherVector.Z);
+    }
+
+    Vector3 operator * (const float scalar) {
+        return Vector3(this->X * scalar, this->Y * scalar, this->Z * scalar);
+    }
+
     Vector3 Normalize() {
 
         float length = std::sqrt(this->X * this->X + this->Y * this->Y + this->Z * this->Z);
@@ -108,6 +140,11 @@ public:
         Output.Z = A.X * B.Y - A.Y * B.X;
 
         return Output;
+    }
+
+    float GetMagntitude() {
+        float length = std::sqrt(this->X * this->X + this->Y * this->Y + this->Z * this->Z);
+        return length;
     }
 
 

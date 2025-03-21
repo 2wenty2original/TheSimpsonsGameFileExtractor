@@ -377,20 +377,36 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 
 		// this is dumb but works, this might cause an issue on the other side of things tho, where instead it reaches 706 and freaks out
 
+		Normals.resize(VerticesTable.size(), Vector3(0, 0, 0));
+
 		for (int Triangle = 0; Triangle < FaceList.size(); Triangle++) {
+
 			Vector3 Vert0 = VerticesTable[FaceList[Triangle][0]];
 			Vector3 Vert1 = VerticesTable[FaceList[Triangle][1]];
 			Vector3 Vert2 = VerticesTable[FaceList[Triangle][2]];
+
+			// face normal
 
 			Vector3 AB = Vert1 - Vert0;
 			Vector3 AC = Vert2 - Vert0;
 
 			Vector3 CrossProduct = Vector3::Cross(AB, AC);
 
-			Vector3 Normal = CrossProduct.Normalize();
+			Vector3 Normal = CrossProduct;
 
-			Normals.push_back(Normal);
+			for (int b = 0; b < 3; b++) {
+				int VertexIndex = FaceList[Triangle][b];
+				Normals[VertexIndex] += Normal;
 
+			}
+		
+
+			//Normals.push_back(Normal);
+
+		}
+
+		for (int v = 0; v < Normals.size(); v++) {
+			Normals[i] /= Normals[i].GetMagntitude();
 		}
 
 		for (int v = 0; v < FaceList.size(); v++) {
