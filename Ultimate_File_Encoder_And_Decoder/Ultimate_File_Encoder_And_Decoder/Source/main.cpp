@@ -1,14 +1,10 @@
 
-#define SDL_MAIN_HANDLED
-
 #include "Str_Load.h"
-#include "RenderToScreen.h"
-#include "TextDisplay.h"
 #include <iostream>
 #include <fstream>
 #include <ostream>
 #include <math.h>
-#include "DisplayByte.h"
+
 
 
 
@@ -36,7 +32,7 @@ int main(int argc, char** argv){
 
 
 	Str_Load* StrObject = new Str_Load();
-	StrObject->init("zone02.str"); // land of chocolate zone02
+	StrObject->init("zone03.str"); // land of chocolate zone02
 	StrObject->CheckHeaderForCompression();
 	StrObject->UnCompress();
 	StrObject->ExtractFiles();

@@ -216,8 +216,7 @@ void FileOpen::ProcessData() {
 
 void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset)
 {
-	std::ofstream Output("Output.obj");
-	std::vector<uint8_t> OutputVector;
+	
 
 	// local offset for only the input data
 	int Offset = _Offset;
@@ -264,6 +263,18 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 
 	// goes through each sub table, again only 1
 	for (int i = 0; i < SubTableCount; i++) {
+
+
+		std::string name("Output");
+
+	
+		name.append(std::to_string(i));
+		name.append(".obj");
+
+		std::ofstream Output(name);
+		std::vector<uint8_t> OutputVector;
+
+
 		Offset = DataSubStart + (i * 0xc) + 8;
 
 		int NewOffset = Char_Byte(InputData.begin(), Offset, 4).CastToint32_BE().variable;
@@ -421,61 +432,61 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 
 
 
+		for (size_t i = 0; i < Triangles.size(); i++) {
+
+			std::string Line = "v " + std::to_string(Triangles[i].X) +
+				" " + std::to_string(Triangles[i].Y) +
+				" " + std::to_string(Triangles[i].Z) +
+				"\n";
+
+			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
+		}
+
+		for (size_t i = 0; i < UVs.size(); i++) {
+			std::string Line = "vt " + std::to_string(UVs[i].X) +
+				" " + std::to_string(UVs[i].Y) +
+				"\n";
+
+			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
+		}
+
+
+		for (size_t i = 0; i < Normals.size(); i++) {
+			std::string Line = "vn " + std::to_string(Normals[i].X) +
+				" " + std::to_string(Normals[i].Y) +
+				" " + std::to_string(Normals[i].Z) +
+				"\n";
+			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
+		}
+
+		for (size_t i = 0; i < Indexes.size(); i++) {
+
+			/*std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + "0" + "/" + "0" + " "
+				+ std::to_string(Indexes[i][1]) + "/" + "0" + "/" + "0" + " "
+				+ std::to_string(Indexes[i][2]) + "/" + "0" + "/" + "0" + " " + "\n";*/
+
+
+
+			std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) + " "
+				+ std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + " "
+				+ std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + " " + "\n";
+
+
+			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
+		}
+
+
+		if (!Output.is_open()) {
+			return;
+		}
+
+		if (!OutputVector.empty()) {
+			Output.write((const char*)(OutputVector.data()), OutputVector.size());
+		}
+
 	}
 
 
 
 
-
-	for (size_t i = 0; i < Triangles.size(); i++) {
-
-		std::string Line = "v " + std::to_string(Triangles[i].X) +
-			" " + std::to_string(Triangles[i].Y) +
-			" " + std::to_string(Triangles[i].Z) +
-			"\n";
-
-		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-	}
-
-	for (size_t i = 0; i < UVs.size(); i++) {
-		std::string Line = "vt " + std::to_string(UVs[i].X) +
-			" " + std::to_string(UVs[i].Y) +
-			"\n";
-
-		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-	}
-
-
-	for (size_t i = 0; i < Normals.size(); i++) {
-		std::string Line = "vn " + std::to_string(Normals[i].X) +
-			" " + std::to_string(Normals[i].Y) +
-			" " + std::to_string(Normals[i].Z) +
-			"\n";
-		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-	}
-
-	for (size_t i = 0; i < Indexes.size(); i++) {
-
-		/*std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + "0" + "/" + "0" + " "
-			+ std::to_string(Indexes[i][1]) + "/" + "0" + "/" + "0" + " "
-			+ std::to_string(Indexes[i][2]) + "/" + "0" + "/" + "0" + " " + "\n";*/
-
-
-
-		std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) +  "/" + std::to_string(Indexes[i][0]) + " "
-			+ std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + " "
-			+ std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + " " + "\n";
-
-
-		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-	}
-
-
-	if (!Output.is_open()) {
-		return;
-	}
-
-	if (!OutputVector.empty()) {
-		Output.write((const char*)(OutputVector.data()), OutputVector.size());
-	}
 }

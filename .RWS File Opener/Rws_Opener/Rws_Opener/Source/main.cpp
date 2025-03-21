@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv) {
 
-	FileOpen fileinsert = FileOpen("Load1.rws");
+	FileOpen fileinsert = FileOpen("Load7.rws");
 	fileinsert.Init();
 	fileinsert.ExtractData();
 	fileinsert.ProcessData();

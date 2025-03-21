@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)externals\SDL2\include;$(ProjectDir)externals\SDL2_ttf\include;$(ProjectDir)externals\SDL2_image\include;$(ProjectDir)externals\Eigen;$(ProjectDir)externals\SDL2_mixer\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)externals\SDL2\lib\x64;$(ProjectDir)externals\SDL2_image\lib\x64;$(ProjectDir)externals\SDL2_ttf\lib\x64;$(ProjectDir)externals\Eigen;$(ProjectDir)externals\SDL2_mixer\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)externals\SDL2\include;$(ProjectDir)externals\SDL2_ttf\include;$(ProjectDir)externals\SDL2_image\include;$(ProjectDir)externals\Eigen;$(ProjectDir)externals\SDL2_mixer\include;$(IncludePath)</IncludePath>
@@ -118,7 +118,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,23 +141,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\CmdTypeable.cpp" />
-    <ClCompile Include="Source\FontObject.cpp" />
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\RenderToScreen.cpp" />
     <ClCompile Include="Source\Str_Load.cpp">
       <FileType>CppCode</FileType>
     </ClCompile>
-    <ClCompile Include="Source\TextDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Bytes.h" />
-    <ClInclude Include="Source\CmdTypeable.h" />
-    <ClInclude Include="Source\DisplayByte.h" />
-    <ClInclude Include="Source\FontObject.h" />
-    <ClInclude Include="Source\RenderToScreen.h" />
     <ClInclude Include="Source\Str_Load.h" />
-    <ClInclude Include="Source\TextDisplay.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
