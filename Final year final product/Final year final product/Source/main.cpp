@@ -55,8 +55,9 @@ int main(int argc, char** argv){
 
 
 			if (std::filesystem::exists(exitPath)) {
+				std::cout << exitPath << " " << "/" << "Files" << std::endl;
 				for (const auto& entry : std::filesystem::directory_iterator(exitPath + "/" + "Files")) {
-
+					
 
 					std::string entryPath = entry.path().string();
 
@@ -80,7 +81,7 @@ int main(int argc, char** argv){
 						RwsObject->ExtractData();
 					}
 
-					else if (extension == ".dff") {
+					/*else if (extension == ".dff") {
 						DFFOpen* DffObject = new DFFOpen(entryPath);
 
 						DffObject->FilePath = exitPath;
@@ -89,7 +90,7 @@ int main(int argc, char** argv){
 						DffObject->Init();
 						DffObject->ExtractData();
 
-					}
+					}*/
 
 					
 					

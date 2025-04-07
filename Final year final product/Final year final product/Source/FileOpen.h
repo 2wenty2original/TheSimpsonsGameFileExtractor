@@ -28,12 +28,23 @@ public:
 
 	
 
-
+	// this reads the file as binary and does process lines, needs to be called first
 	void Init();
+
+	// this loads the entire file into memory
+
 	void ProcessLines(std::string Line, std::vector<unsigned char>& _Characters);
+
+	// this will get us the geometry section of .rws, mind you not the ACTUAL geometry, thats later, but the chunk
 	void ExtractData();
+
+	//this is to add to our global output vector
 	void ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset);
+
+	//this is to get us to the actual geometry of the .rws file
 	bool ProcessData(int _ObjectCount);
+
+	void WriteToFile();
 
     
 
@@ -41,6 +52,8 @@ public:
 
 public:
 	
+
+
 
 	std::string FilePath;
 
@@ -94,6 +107,8 @@ private:
 	int IndexAmount;
 	int VertexAmount;
 
+	int IndexOffsetForSubMeshes = 0;
+
 	std::vector<uint8_t> GeometryList;
 
 	std::vector<uint8_t> Geometry;
@@ -101,7 +116,7 @@ private:
 	// list of triangles, each sublist will have 3 points
 
 	std::vector < Vector3> Normals;
-	std::vector < Vector3> Triangles;
+	std::vector < Vector3> Vertices;
 	std::vector < Vector2> UVs;
 
 	std::vector< std::vector<int>> Indexes;

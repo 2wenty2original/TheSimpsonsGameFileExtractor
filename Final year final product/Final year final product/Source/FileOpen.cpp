@@ -232,11 +232,17 @@ bool RwsOpen::ProcessData(int _ObjectCount) {
 	}
 
 	
+	WriteToFile();
 
 	return true;
 
 
 
+}
+
+void RwsOpen::WriteToFile()
+{
+	
 }
 
 
@@ -287,24 +293,31 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 	int DataSubStart = Offset;
 
 
-	// goes through each sub table, again only 1
+
+
+
+	std::string name("Output");
+
+
+	GlobalFileIndex++;
+	name.append(std::to_string(GlobalFileIndex));
+	name.append(".obj");
+
+	std::filesystem::path OutputPath = std::filesystem::path(FilePath) / name;
+
+	std::ofstream Output(OutputPath);
+
+	std::vector<uint8_t> OutputVector;
+
+
+	// goes through each sub table, depends on mesh
 	for (int i = 0; i < SubTableCount; i++) {
 
 		
 
-		std::string name("Output");
+	
 
-		name.append(std::to_string(i));
-		GlobalFileIndex++;
-		name.append(std::to_string(GlobalFileIndex));
-		name.append(".obj");
-
-		std::filesystem::path OutputPath = std::filesystem::path(FilePath) / name;
-
-		std::ofstream Output(OutputPath);
-
-		std::vector<uint8_t> OutputVector;
-
+		
 
 		Offset = DataSubStart + (i * 0xc) + 8;
 
@@ -362,6 +375,8 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 			
 		}
 
+
+
 		std::vector<std::vector<int>> FaceList;
 
 		for (int j = 0; j < StripList.size(); j++) {
@@ -374,7 +389,7 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 			}
 		}
 
-		
+
 		std::vector<Vector3> VerticesTable;
 		std::vector<Vector2> UVTable;
 
@@ -392,8 +407,8 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 			float V2 = Char_Byte(InputData.begin(), Offset, 4).CastTo32Float_BE();
 
 
-			
-			
+
+
 
 			VerticesTable.push_back(Vector3(V0, V1, V2));
 
@@ -411,15 +426,19 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 		}
 
 
-		
+
+		for (int v = 0; v < VerticesTable.size(); v++) {
+			Vertices.push_back(VerticesTable[v]);
+			UVs.push_back(UVTable[v]);
+		}
+
+		//Vertices = VerticesTable;
+		//UVs = UVTable;
 
 
-		Triangles = VerticesTable;
-		UVs = UVTable;
 
-		// this is dumb but works, this might cause an issue on the other side of things tho, where instead it reaches 706 and freaks out
-
-		Normals.resize(VerticesTable.size(), Vector3(0, 0, 0));
+		std::vector<Vector3> NormalTable;
+		NormalTable.resize(VerticesTable.size(), Vector3(0, 0, 0));
 
 		for (int Triangle = 0; Triangle < FaceList.size(); Triangle++) {
 
@@ -438,36 +457,50 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 
 			for (int b = 0; b < 3; b++) {
 				int VertexIndex = FaceList[Triangle][b];
-				Normals[VertexIndex] += Normal;
+				NormalTable[VertexIndex] += Normal;
 
 			}
-		
-
-			//Normals.push_back(Normal);
 
 		}
 
-		for (int v = 0; v < Normals.size(); v++) {
-			Normals[i] /= Normals[i].GetMagntitude();
+		for (int v = 0; v < NormalTable.size(); v++) {
+			NormalTable[v] /= NormalTable[v].GetMagntitude();
+			Normals.push_back(NormalTable[v]);
+
 		}
 
 		for (int v = 0; v < FaceList.size(); v++) {
-			FaceList[v][0] = FaceList[v][0] + 1;
-			FaceList[v][1] = FaceList[v][1] + 1;
-			FaceList[v][2] = FaceList[v][2] + 1;
+			FaceList[v][0] = FaceList[v][0] + 1 + IndexOffsetForSubMeshes;
+			FaceList[v][1] = FaceList[v][1] + 1 + IndexOffsetForSubMeshes;
+			FaceList[v][2] = FaceList[v][2] + 1 + IndexOffsetForSubMeshes;
+			Indexes.push_back(FaceList[v]);
 		}
 
+		IndexOffsetForSubMeshes += VerticesTable.size();
+
+
+		//Indexes = FaceList;
+
+
+	
+
+
+
+
+
+		
 		
 
-		Indexes = FaceList;
+	}
 
 
 
-		for (size_t i = 0; i < Triangles.size(); i++) {
 
-			std::string Line = "v " + std::to_string(Triangles[i].X) +
-				" " + std::to_string(Triangles[i].Y) +
-				" " + std::to_string(Triangles[i].Z) +
+	for (size_t i = 0; i < Vertices.size(); i++) {
+
+			std::string Line = "v " + std::to_string(Vertices[i].X) +
+				" " + std::to_string(Vertices[i].Y) +
+				" " + std::to_string(Vertices[i].Z) +
 				"\n";
 
 			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
@@ -491,13 +524,6 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 		}
 
 		for (size_t i = 0; i < Indexes.size(); i++) {
-
-			/*std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + "0" + "/" + "0" + " "
-				+ std::to_string(Indexes[i][1]) + "/" + "0" + "/" + "0" + " "
-				+ std::to_string(Indexes[i][2]) + "/" + "0" + "/" + "0" + " " + "\n";*/
-
-
-
 			std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) + " "
 				+ std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + " "
 				+ std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + " " + "\n";
@@ -514,9 +540,6 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 		if (!OutputVector.empty()) {
 			Output.write((const char*)(OutputVector.data()), OutputVector.size());
 		}
-
-	}
-
 
 
 

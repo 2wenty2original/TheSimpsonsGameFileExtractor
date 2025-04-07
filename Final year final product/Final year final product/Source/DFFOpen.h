@@ -94,7 +94,7 @@ private:
 	// list of triangles, each sublist will have 3 points
 
 	std::vector < Vector3> Normals;
-	std::vector < Vector3> Triangles;
+	std::vector < Vector3> Vertices;
 	std::vector < Vector2> UVs;
 
 	std::vector< std::vector<int>> Indexes;

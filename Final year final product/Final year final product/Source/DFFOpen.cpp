@@ -287,7 +287,7 @@ void DFFOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 
 
 
-		Triangles = VerticesTable;
+		Vertices = VerticesTable;
 		UVs = UVTable;
 
 		// this is dumb but works, this might cause an issue on the other side of things tho, where instead it reaches 706 and freaks out
@@ -321,7 +321,7 @@ void DFFOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 		}
 
 		for (int v = 0; v < Normals.size(); v++) {
-			Normals[i] /= Normals[i].GetMagntitude();
+			Normals[v] /= Normals[v].GetMagntitude();
 		}
 
 		for (int v = 0; v < FaceList.size(); v++) {
@@ -336,11 +336,11 @@ void DFFOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 
 
 
-		for (size_t i = 0; i < Triangles.size(); i++) {
+		for (size_t i = 0; i < Vertices.size(); i++) {
 
-			std::string Line = "v " + std::to_string(Triangles[i].X) +
-				" " + std::to_string(Triangles[i].Y) +
-				" " + std::to_string(Triangles[i].Z) +
+			std::string Line = "v " + std::to_string(Vertices[i].X) +
+				" " + std::to_string(Vertices[i].Y) +
+				" " + std::to_string(Vertices[i].Z) +
 				"\n";
 
 			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
