@@ -168,6 +168,7 @@ void DFFOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 		std::string name("Output");
 
 		name.append(std::to_string(i));
+		GlobalFileIndex++;
 		name.append(std::to_string(GlobalFileIndex));
 		name.append(".obj");
 

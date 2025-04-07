@@ -80,6 +80,10 @@ void RwsOpen::ExtractData()
 
 	bool Exit = false;
 
+	if (ObjectCount > 1) {
+		int gfh = 0;
+	}
+
 	while (!Exit) {
 		GetChunk = Chunk(Characters.begin(), Offset);
 
@@ -291,6 +295,7 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 		std::string name("Output");
 
 		name.append(std::to_string(i));
+		GlobalFileIndex++;
 		name.append(std::to_string(GlobalFileIndex));
 		name.append(".obj");
 
