@@ -1,6 +1,6 @@
 #include "FileOpen.h"
 
-void FileOpen::Init()
+void RwsOpen::Init()
 {
 
 	if (Characters.size() > 0) {
@@ -38,7 +38,7 @@ void FileOpen::Init()
 	std::cout << "Completed the Init " << buffer.size() << " Is the Buffer Size\n";
 }
 
-void FileOpen::ProcessLines(std::string Line, std::vector<unsigned char>& _Characters)
+void RwsOpen::ProcessLines(std::string Line, std::vector<unsigned char>& _Characters)
 {
 	int Length = Line.size();
 
@@ -49,7 +49,7 @@ void FileOpen::ProcessLines(std::string Line, std::vector<unsigned char>& _Chara
 	}
 }
 
-void FileOpen::ExtractData()
+void RwsOpen::ExtractData()
 {
 
 	int ClumpId = 16;
@@ -66,19 +66,22 @@ void FileOpen::ExtractData()
 
 	// fuck it make this bitch recursive, iknow you can, thsi isnt hard
 
-	while (!FoundGeometry) {
-		Chunk GetChunk = Chunk(Characters.begin(), Offset);
+	Chunk GetChunk = Chunk(Characters.begin(), Offset);
+
+	Chunk StructureCheck = Chunk(Characters.begin(), Offset);
 
 
-		if (GetChunk.type == ClumpId) {
-			Chunk StructureCheck = Chunk(Characters.begin(), Offset);
+	ObjectCount = Char_Byte(Characters.begin(), Offset, 4).CastToint32_LE().variable;
+	Offset -= 4;
 
-			if (StructureCheck.type == 1) {
-				Offset += StructureCheck.size;
-			}
+	if (StructureCheck.type == 1) {
+		Offset += StructureCheck.size;
+	}
 
-			continue;
-		}
+
+
+	while (ObjectCount > 0) {
+		GetChunk = Chunk(Characters.begin(), Offset);
 
 		for (int i = 0; i < ChunkIds.size(); i++) {
 			if (ChunkIds[i] == GetChunk.type && !(GetChunk.type == GeometryTypeId)) {
@@ -86,12 +89,15 @@ void FileOpen::ExtractData()
 			}
 
 			else if (ChunkIds[i] == GetChunk.type && GetChunk.type == GeometryTypeId) {
-				FoundGeometry = true;
 				GeometryList.insert(GeometryList.begin(), Characters.begin() + Offset, Characters.begin() + Offset + GetChunk.size);
 				GlobalFileOffset += Offset;
+				ObjectCount--;
+				ProcessData();
 				break;
 			}
 		}
+
+		
 
 		for (int i = 0; i < StructIds.size(); i++) {
 			if (StructIds[i] == GetChunk.type) {
@@ -106,7 +112,7 @@ void FileOpen::ExtractData()
 }
 
 
-void FileOpen::ProcessData() {
+void RwsOpen::ProcessData() {
 
 
 
@@ -210,6 +216,9 @@ void FileOpen::ProcessData() {
 	// we add 12 btw, because thats the size of the section i.e the 59955
 	GlobalFileOffset += Offset - ACTUALGEOMETRY.size;
 
+	GeometryList.clear();
+	GeometryList.shrink_to_fit();
+
 	ConvertToObj(Characters, VertexCount, FaceCount, GlobalFileOffset);
 
 
@@ -218,7 +227,7 @@ void FileOpen::ProcessData() {
 }
 
 
-void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset)
+void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset)
 {
 	
 
@@ -273,6 +282,7 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 		std::string name("Output");
 
 		name.append(std::to_string(i));
+		name.append(std::to_string(GlobalFileIndex));
 		name.append(".obj");
 
 		std::filesystem::path OutputPath = std::filesystem::path(FilePath) / name;

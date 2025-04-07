@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "Bytes.h"
+#include <filesystem>
 
 
 
@@ -30,16 +31,16 @@ public:
 		version = Char_Byte(Start, _Offset, 4).CastToint32_LE().variable;
 	}
 
-	std::vector<uint8_t> Process(std::vector<uint8_t> &Data, int &_Offset) {
+	std::vector<uint8_t> Process(std::vector<uint8_t>& Data, int& _Offset) {
 
 		std::vector<uint8_t> Output;
 
-		
+
 
 		if (type == 1 || type == 1294 || type == 59926 || type == 59925 || type == 59955) {
 			Output.insert(Output.begin(), Data.begin() + *Offset, Data.begin() + *Offset + size);
 			*Offset += size;
-		    return Output;
+			return Output;
 		}
 
 
@@ -63,7 +64,7 @@ public:
 
 
 			if (currentValue == value) {
-				return i; 
+				return i;
 			}
 		}
 
@@ -84,12 +85,14 @@ class FileOpen {
 
 public:
 
+	FileOpen() {}
+
 	FileOpen(std::string _name)
 	{
 		Name = _name;
 	}
 
-	
+
 
 
 	void Init();
@@ -98,7 +101,17 @@ public:
 	void ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset);
 	void ProcessData();
 
-    
+
+
+
+
+public:
+
+
+	std::string FilePath;
+
+
+private:
 
 	std::vector<std::vector<int>> CastStripToFace(std::vector<int> _Strip) {
 
@@ -108,7 +121,7 @@ public:
 
 		for (int i = 0; i < _Strip.size() - 2; i++) {
 			if (Flip) {
-				Output.push_back(std::vector<int>{_Strip[i +2], _Strip[i+1], _Strip[i]});
+				Output.push_back(std::vector<int>{_Strip[i + 2], _Strip[i + 1], _Strip[i]});
 			}
 
 			else {
@@ -122,9 +135,6 @@ public:
 		return Output;
 	}
 
-
-
-
 private:
 
 	int GlobalFileOffset;
@@ -134,6 +144,8 @@ private:
 	std::string Name;
 
 	std::vector<unsigned char> Characters;
+
+
 
 	int AmountOfCharacters;
 
@@ -154,7 +166,7 @@ private:
 
 	std::vector< std::vector<int>> Indexes;
 
-	
 
-	
+
+
 };

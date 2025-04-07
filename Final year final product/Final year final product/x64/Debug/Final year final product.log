@@ -1,150 +1,47 @@
-﻿  FileOpen.cpp
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(302,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+﻿  DFFOpen.cpp
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(302,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(320,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(320,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(326,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(326,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(334,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(334,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(350,28): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(350,28): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(359,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(359,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(368,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(368,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(377,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(377,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         with
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         [
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:             T=int
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         ]
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         with
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         [
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:             T=int
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         ]
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         with
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         [
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:             T=int
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         ]
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         with
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         [
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:             T=int
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         ]
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\FileOpen.h(55,23): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(715,29): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\FileOpen.h(67,12): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/FileOpen.cpp')
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(727,24): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Source/DFFOpen.cpp')
   
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\FileOpen.cpp(43,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  main.cpp
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(302,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(320,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(326,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(334,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(350,28): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(359,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(368,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(377,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         with
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         [
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:             T=int
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         ]
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         with
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         [
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:             T=int
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         ]
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.h(147,12): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.h(148,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\FileOpen.h(55,23): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\FileOpen.h(67,12): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/main.cpp')
-  
-  Str_Load.cpp
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(302,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(320,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(326,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(334,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(350,28): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(359,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(368,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(377,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         with
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         [
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:             T=int
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(434,85): warning C4244:         ]
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         with
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         [
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:             T=int
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         ]
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.h(147,12): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.h(148,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/Str_Load.cpp')
-  
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.cpp(238,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.cpp(250,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.cpp(287,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.cpp(288,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.cpp(478,37): warning C4267: '+=': conversion from 'size_t' to 'unsigned int', possible loss of data
-E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\Final year final product\Source\Str_Load.cpp(479,43): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
-  Final year final product.vcxproj -> E:\GitHubDesktop\Final_Year_Working_Program\Final year final product\x64\Debug\Final year final product.exe
+E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\DFFOpen.cpp(44,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Final year final product.vcxproj -> E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\x64\Debug\Final year final product.exe

@@ -1,6 +1,7 @@
 
 #include "Str_Load.h"
 #include "FileOpen.h"
+#include "DFFOpen.h"
 #include <iostream>
 #include <fstream>
 #include <ostream>
@@ -13,6 +14,8 @@
 int main(int argc, char** argv){
 
 	int counter = 0;
+
+
 
 	std::string exitPath;
 
@@ -61,18 +64,35 @@ int main(int argc, char** argv){
 
 					extension.insert(extension.begin(), entryPath.end() - 4, entryPath.end());
 
-
-					if (extension != ".rws") {
+					
+					// these are files that contain geometry
+					if (extension != ".rws" && extension != ".dff") {
 						continue;
 					}
 
-					FileOpen* RwsObject = new FileOpen(entryPath);
+					if (extension == ".rws") {
+						RwsOpen* RwsObject = new RwsOpen(entryPath);
 
-					RwsObject->FilePath = exitPath;
+						RwsObject->FilePath = exitPath;
+						RwsObject->GlobalFileIndex = counter++;
 
-					RwsObject->Init();
-					RwsObject->ExtractData();
-					RwsObject->ProcessData();
+						RwsObject->Init();
+						RwsObject->ExtractData();
+					}
+
+					else if (extension == ".dff") {
+						DFFOpen* DffObject = new DFFOpen(entryPath);
+
+						DffObject->FilePath = exitPath;
+						DffObject->GlobalFileIndex = counter++;
+
+						DffObject->Init();
+						DffObject->ExtractData();
+
+					}
+
+					
+					
 
 				}
 			}

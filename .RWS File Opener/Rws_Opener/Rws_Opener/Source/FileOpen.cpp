@@ -3,6 +3,10 @@
 void FileOpen::Init()
 {
 
+	if (Characters.size() > 0) {
+		return;
+	}
+
 	std::ifstream EntireFile(Name.c_str(), std::ios::binary | std::ios::ate);
 	if (!EntireFile.is_open()) {
 		std::cerr << "Cannot open file: " << Name.c_str() << "\n";
@@ -50,7 +54,7 @@ void FileOpen::ExtractData()
 
 	int ClumpId = 16;
 	std::vector<int> ChunkIds = { 14, 20, 26 , 7, 3 };
-	std::vector<int> StructIds = {1,286, 2, 59925, 59926, 59955, 1294, 59923};
+	std::vector<int> StructIds = { 1,286, 2, 59925, 59926, 59955, 1294, 59923 };
 
 	bool FoundGeometry = false;
 	bool InChunk = false;
@@ -94,10 +98,10 @@ void FileOpen::ExtractData()
 				Offset += GetChunk.size;
 				InChunk = false;
 			}
-			
+
 		}
-		
-		
+
+
 	}
 }
 
@@ -216,7 +220,7 @@ void FileOpen::ProcessData() {
 
 void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset)
 {
-	
+
 
 	// local offset for only the input data
 	int Offset = _Offset;
@@ -265,13 +269,16 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 	for (int i = 0; i < SubTableCount; i++) {
 
 
+
 		std::string name("Output");
 
-	
 		name.append(std::to_string(i));
 		name.append(".obj");
 
-		std::ofstream Output(name);
+		std::filesystem::path OutputPath = std::filesystem::path(FilePath) / name;
+
+		std::ofstream Output(OutputPath);
+
 		std::vector<uint8_t> OutputVector;
 
 
@@ -315,9 +322,9 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 		for (int j = 0; j < FaceCount; j++) {
 			int Indice = Char_Byte(InputData.begin(), Offset, 2).CastToUint16_BE().variable;
 
-			
-			
-		
+
+
+
 			//max uint16 size
 			if (Indice == 65535) {
 				StripList.push_back(TempList);
@@ -328,7 +335,7 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 				TempList.push_back(Indice);
 			}
 
-			
+
 		}
 
 		std::vector<std::vector<int>> FaceList;
@@ -343,7 +350,7 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 			}
 		}
 
-		
+
 		std::vector<Vector3> VerticesTable;
 		std::vector<Vector2> UVTable;
 
@@ -361,8 +368,8 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 			float V2 = Char_Byte(InputData.begin(), Offset, 4).CastTo32Float_BE();
 
 
-			
-			
+
+
 
 			VerticesTable.push_back(Vector3(V0, V1, V2));
 
@@ -380,7 +387,7 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 		}
 
 
-		
+
 
 
 		Triangles = VerticesTable;
@@ -410,7 +417,7 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 				Normals[VertexIndex] += Normal;
 
 			}
-		
+
 
 			//Normals.push_back(Normal);
 
@@ -426,7 +433,7 @@ void FileOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int
 			FaceList[v][2] = FaceList[v][2] + 1;
 		}
 
-		
+
 
 		Indexes = FaceList;
 
