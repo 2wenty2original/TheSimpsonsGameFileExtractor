@@ -78,9 +78,9 @@ void RwsOpen::ExtractData()
 		Offset += StructureCheck.size;
 	}
 
+	bool Exit = false;
 
-
-	while (ObjectCount > 0) {
+	while (!Exit) {
 		GetChunk = Chunk(Characters.begin(), Offset);
 
 		for (int i = 0; i < ChunkIds.size(); i++) {
@@ -91,8 +91,7 @@ void RwsOpen::ExtractData()
 			else if (ChunkIds[i] == GetChunk.type && GetChunk.type == GeometryTypeId) {
 				GeometryList.insert(GeometryList.begin(), Characters.begin() + Offset, Characters.begin() + Offset + GetChunk.size);
 				GlobalFileOffset += Offset;
-				ObjectCount--;
-				ProcessData();
+				Exit = ProcessData(ObjectCount);
 				break;
 			}
 		}
@@ -112,26 +111,15 @@ void RwsOpen::ExtractData()
 }
 
 
-void RwsOpen::ProcessData() {
+bool RwsOpen::ProcessData(int _ObjectCount) {
 
-
+	int ObjectCount = _ObjectCount;
 
 	int Offset = 0;
 
-	bool HasTripSet = false;
-	bool HasTextures = false;
-	bool HasGeometryPositions = false;
-	bool HasPreLitGeometry = false;
-	bool HasGeometryNormals = false;
-	bool HasModulatedMaterial = false;
-	bool HasTextures2 = false;
+	int LocalOffset = GlobalFileOffset;
 
-	bool HasGeometryLight = false;
-
-	int VertexCount = 0;
-	int FaceCount = 0;
-	int IndexCount = 0;
-	int UnknownCount = 0;
+	
 
 
 	// i need to make this very clear, this is a terrible way of doing it, im just doing it this way because they all follow the same file format so screw it
@@ -143,84 +131,105 @@ void RwsOpen::ProcessData() {
 
 	std::vector<uint8_t> StructSum = Struct.Process(GeometryList, Offset);
 
-	Chunk GeometryListChunk = Chunk(GeometryList.begin(), Offset);
+	while (ObjectCount > 0) {
+		ObjectCount--;
+
+		bool HasTripSet = false;
+		bool HasTextures = false;
+		bool HasGeometryPositions = false;
+		bool HasPreLitGeometry = false;
+		bool HasGeometryNormals = false;
+		bool HasModulatedMaterial = false;
+		bool HasTextures2 = false;
+
+		bool HasGeometryLight = false;
+
+		int VertexCount = 0;
+		int FaceCount = 0;
+		int IndexCount = 0;
+		int UnknownCount = 0;
+
+
+		Chunk GeometryListChunk = Chunk(GeometryList.begin(), Offset);
 
 
 
-	Chunk GeometryStruct = Chunk(GeometryList.begin(), Offset);
+		Chunk GeometryStruct = Chunk(GeometryList.begin(), Offset);
 
 
-	int GeometryStructSumOffset = 0;
-	std::vector<uint8_t> GeometryStructSum = GeometryStruct.Process(GeometryList, Offset);
+		int GeometryStructSumOffset = 0;
+		std::vector<uint8_t> GeometryStructSum = GeometryStruct.Process(GeometryList, Offset);
 
 
-	// please extract data now
+		// please extract data now
 
 
-	std::bitset<8> Flags(GeometryStructSum[0]);
+		std::bitset<8> Flags(GeometryStructSum[0]);
 
-	HasTripSet = Flags[0];
-	HasGeometryPositions = Flags[1];
-	HasTextures = Flags[2];
-	HasPreLitGeometry = Flags[3];
-	HasGeometryNormals = Flags[4];
+		HasTripSet = Flags[0];
+		HasGeometryPositions = Flags[1];
+		HasTextures = Flags[2];
+		HasPreLitGeometry = Flags[3];
+		HasGeometryNormals = Flags[4];
 
-	HasGeometryLight = Flags[5];
-	HasModulatedMaterial = Flags[6];
-	HasTextures2 = Flags[7];
+		HasGeometryLight = Flags[5];
+		HasModulatedMaterial = Flags[6];
+		HasTextures2 = Flags[7];
 
-	GeometryStructSumOffset += 2;
-
-
-
-	UnknownCount = Char_Byte(GeometryStructSum.begin(), GeometryStructSumOffset, 2).CastToint16_LE().variable;
-	FaceCount = Char_Byte(GeometryStructSum.begin(), GeometryStructSumOffset, 4).CastToint32_LE().variable;
-	VertexCount = Char_Byte(GeometryStructSum.begin(), GeometryStructSumOffset, 4).CastToint32_LE().variable;
+		GeometryStructSumOffset += 2;
 
 
 
-	Chunk MaterialList = Chunk(GeometryList.begin(), Offset);
-
-
-	Offset += MaterialList.size;
-
-	Chunk ExtensionGeometry = Chunk(GeometryList.begin(), Offset);
+		UnknownCount = Char_Byte(GeometryStructSum.begin(), GeometryStructSumOffset, 2).CastToint16_LE().variable;
+		FaceCount = Char_Byte(GeometryStructSum.begin(), GeometryStructSumOffset, 4).CastToint32_LE().variable;
+		VertexCount = Char_Byte(GeometryStructSum.begin(), GeometryStructSumOffset, 4).CastToint32_LE().variable;
 
 
 
-	Chunk ExtentsionGeometryStruct = Chunk(GeometryList.begin(), Offset);
+		Chunk MaterialList = Chunk(GeometryList.begin(), Offset);
 
-	std::vector<uint8_t> GeometruStructOutput = ExtentsionGeometryStruct.Process(GeometryList, Offset);
 
-	int GeometryStructOffset = 0;
+		Offset += MaterialList.size;
 
-	int FaceType = Char_Byte(GeometruStructOutput.begin(), GeometryStructOffset, 4).CastToint32_LE().variable;
-	int SplitCount = Char_Byte(GeometruStructOutput.begin(), GeometryStructOffset, 4).CastToint32_LE().variable;
-	IndexCount = Char_Byte(GeometruStructOutput.begin(), GeometryStructOffset, 4).CastToint32_LE().variable;
-
-	Chunk Unknown1 = Chunk(GeometryList.begin(), Offset);
-
-	std::vector<uint8_t> Unknwon1Struct = Unknown1.Process(GeometryList, Offset);
-
-	Chunk Unknown2 = Chunk(GeometryList.begin(), Offset);
+		Chunk ExtensionGeometry = Chunk(GeometryList.begin(), Offset);
 
 
 
-	std::vector<uint8_t> Unknwon2Struct = Unknown2.Process(GeometryList, Offset);
+		Chunk ExtentsionGeometryStruct = Chunk(GeometryList.begin(), Offset);
 
-	Chunk ACTUALGEOMETRY = Chunk(GeometryList.begin(), Offset);
+		std::vector<uint8_t> GeometruStructOutput = ExtentsionGeometryStruct.Process(GeometryList, Offset);
+
+		int GeometryStructOffset = 0;
+
+		int FaceType = Char_Byte(GeometruStructOutput.begin(), GeometryStructOffset, 4).CastToint32_LE().variable;
+		int SplitCount = Char_Byte(GeometruStructOutput.begin(), GeometryStructOffset, 4).CastToint32_LE().variable;
+		IndexCount = Char_Byte(GeometruStructOutput.begin(), GeometryStructOffset, 4).CastToint32_LE().variable;
+
+		Chunk Unknown1 = Chunk(GeometryList.begin(), Offset);
+
+		std::vector<uint8_t> Unknwon1Struct = Unknown1.Process(GeometryList, Offset);
+
+		Chunk Unknown2 = Chunk(GeometryList.begin(), Offset);
 
 
-	Geometry = ACTUALGEOMETRY.Process(GeometryList, Offset);
 
-	// we add 12 btw, because thats the size of the section i.e the 59955
-	GlobalFileOffset += Offset - ACTUALGEOMETRY.size;
+		std::vector<uint8_t> Unknwon2Struct = Unknown2.Process(GeometryList, Offset);
 
-	GeometryList.clear();
-	GeometryList.shrink_to_fit();
+		Chunk ACTUALGEOMETRY = Chunk(GeometryList.begin(), Offset);
 
-	ConvertToObj(Characters, VertexCount, FaceCount, GlobalFileOffset);
 
+		Geometry = ACTUALGEOMETRY.Process(GeometryList, Offset);
+
+		GlobalFileOffset = LocalOffset + (Offset - ACTUALGEOMETRY.size);
+
+
+		ConvertToObj(Characters, VertexCount, FaceCount, GlobalFileOffset);
+
+	}
+
+	
+
+	return true;
 
 
 

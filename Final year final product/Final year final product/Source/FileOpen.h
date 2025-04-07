@@ -33,7 +33,7 @@ public:
 	void ProcessLines(std::string Line, std::vector<unsigned char>& _Characters);
 	void ExtractData();
 	void ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset);
-	void ProcessData();
+	bool ProcessData(int _ObjectCount);
 
     
 
