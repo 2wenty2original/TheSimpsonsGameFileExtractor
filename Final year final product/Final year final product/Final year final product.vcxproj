@@ -129,12 +129,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\BSPOpen.cpp" />
     <ClCompile Include="Source\DFFOpen.cpp" />
     <ClCompile Include="Source\FileOpen.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Str_Load.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\BSPOpen.h" />
     <ClInclude Include="Source\Bytes.h" />
     <ClInclude Include="Source\DFFOpen.h" />
     <ClInclude Include="Source\FileOpen.h" />

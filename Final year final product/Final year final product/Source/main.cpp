@@ -2,6 +2,7 @@
 #include "Str_Load.h"
 #include "FileOpen.h"
 #include "DFFOpen.h"
+#include "BSPOpen.h"
 #include <iostream>
 #include <fstream>
 #include <ostream>
@@ -17,7 +18,7 @@ int main(int argc, char** argv){
 
 
 
-	std::string exitPath;
+	std::string exitPath; 
 
 	if (std::filesystem::exists("AllAssets")) {
 		for(const auto& entry : std::filesystem::directory_iterator("AllAssets") ) {
@@ -95,6 +96,19 @@ int main(int argc, char** argv){
 						delete DffObject;
 
 					}
+
+					/*else if (extension == ".bsp") {
+						BSPOpen* BSPObject = new BSPOpen(entryPath);
+
+						BSPObject->FilePath = exitPath;
+						BSPObject->GlobalFileIndex = counter++;
+
+						BSPObject->Init();
+						BSPObject->ReadHeader();
+						BSPObject->WriteToFile();
+
+						delete BSPObject;
+					}*/
 
 					
 					
