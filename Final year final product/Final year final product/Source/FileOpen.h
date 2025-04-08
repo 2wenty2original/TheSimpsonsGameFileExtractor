@@ -53,7 +53,7 @@ public:
 public:
 	
 
-
+	std::vector<uint8_t> OutputVector;
 
 	std::string FilePath;
 

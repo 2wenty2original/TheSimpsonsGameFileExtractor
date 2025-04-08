@@ -27,12 +27,14 @@ public:
 	void ExtractData();
 	void ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int FaceCount, int _Offset);
 	bool ProcessData(int _ObjectAmount);
-
+	void WriteToFile();
 
 
 
 
 public:
+
+	std::vector<uint8_t> OutputVector;
 
 
 	std::string FilePath;
@@ -86,6 +88,8 @@ private:
 	int FaceAmount;
 	int IndexAmount;
 	int VertexAmount;
+
+	int IndexOffsetForSubMeshes = 0;
 
 	std::vector<uint8_t> GeometryList;
 

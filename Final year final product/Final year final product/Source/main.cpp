@@ -79,9 +79,11 @@ int main(int argc, char** argv){
 
 						RwsObject->Init();
 						RwsObject->ExtractData();
+
+						delete RwsObject;
 					}
 
-					/*else if (extension == ".dff") {
+					else if (extension == ".dff") {
 						DFFOpen* DffObject = new DFFOpen(entryPath);
 
 						DffObject->FilePath = exitPath;
@@ -90,7 +92,9 @@ int main(int argc, char** argv){
 						DffObject->Init();
 						DffObject->ExtractData();
 
-					}*/
+						delete DffObject;
+
+					}
 
 					
 					

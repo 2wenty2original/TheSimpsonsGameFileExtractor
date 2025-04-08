@@ -242,7 +242,62 @@ bool RwsOpen::ProcessData(int _ObjectCount) {
 
 void RwsOpen::WriteToFile()
 {
-	
+	std::string name("Output");
+
+
+	GlobalFileIndex++;
+	name.append(std::to_string(GlobalFileIndex));
+	name.append(".obj");
+
+	std::filesystem::path OutputPath = std::filesystem::path(FilePath) / name;
+
+	std::ofstream Output(OutputPath);
+
+	for (size_t i = 0; i < Vertices.size(); i++) {
+
+		std::string Line = "v " + std::to_string(Vertices[i].X) +
+			" " + std::to_string(Vertices[i].Y) +
+			" " + std::to_string(Vertices[i].Z) +
+			"\n";
+
+		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
+	}
+
+	for (size_t i = 0; i < UVs.size(); i++) {
+		std::string Line = "vt " + std::to_string(UVs[i].X) +
+			" " + std::to_string(UVs[i].Y) +
+			"\n";
+
+		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
+	}
+
+
+	for (size_t i = 0; i < Normals.size(); i++) {
+		std::string Line = "vn " + std::to_string(Normals[i].X) +
+			" " + std::to_string(Normals[i].Y) +
+			" " + std::to_string(Normals[i].Z) +
+			"\n";
+		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
+	}
+
+	for (size_t i = 0; i < Indexes.size(); i++) {
+		std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) + " "
+			+ std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + " "
+			+ std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + " " + "\n";
+
+
+		OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
+	}
+
+
+	if (!Output.is_open()) {
+		return;
+	}
+
+	if (!OutputVector.empty()) {
+		Output.write((const char*)(OutputVector.data()), OutputVector.size());
+	}
+
 }
 
 
@@ -296,18 +351,9 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 
 
 
-	std::string name("Output");
 
 
-	GlobalFileIndex++;
-	name.append(std::to_string(GlobalFileIndex));
-	name.append(".obj");
 
-	std::filesystem::path OutputPath = std::filesystem::path(FilePath) / name;
-
-	std::ofstream Output(OutputPath);
-
-	std::vector<uint8_t> OutputVector;
 
 
 	// goes through each sub table, depends on mesh
@@ -480,67 +526,9 @@ void RwsOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 
 
 		//Indexes = FaceList;
-
-
-	
-
-
-
-
-
-		
 		
 
 	}
-
-
-
-
-	for (size_t i = 0; i < Vertices.size(); i++) {
-
-			std::string Line = "v " + std::to_string(Vertices[i].X) +
-				" " + std::to_string(Vertices[i].Y) +
-				" " + std::to_string(Vertices[i].Z) +
-				"\n";
-
-			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-		}
-
-		for (size_t i = 0; i < UVs.size(); i++) {
-			std::string Line = "vt " + std::to_string(UVs[i].X) +
-				" " + std::to_string(UVs[i].Y) +
-				"\n";
-
-			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-		}
-
-
-		for (size_t i = 0; i < Normals.size(); i++) {
-			std::string Line = "vn " + std::to_string(Normals[i].X) +
-				" " + std::to_string(Normals[i].Y) +
-				" " + std::to_string(Normals[i].Z) +
-				"\n";
-			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-		}
-
-		for (size_t i = 0; i < Indexes.size(); i++) {
-			std::string Line = "f " + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) + "/" + std::to_string(Indexes[i][0]) + " "
-				+ std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + "/" + std::to_string(Indexes[i][1]) + " "
-				+ std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + "/" + std::to_string(Indexes[i][2]) + " " + "\n";
-
-
-			OutputVector.insert(OutputVector.end(), Line.begin(), Line.end());
-		}
-
-
-		if (!Output.is_open()) {
-			return;
-		}
-
-		if (!OutputVector.empty()) {
-			Output.write((const char*)(OutputVector.data()), OutputVector.size());
-		}
-
 
 
 }
