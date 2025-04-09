@@ -91,6 +91,8 @@ private:
 
 	int IndexOffsetForSubMeshes = 0;
 
+	bool HasSkin = false;
+
 	std::vector<uint8_t> GeometryList;
 
 	std::vector<uint8_t> Geometry;

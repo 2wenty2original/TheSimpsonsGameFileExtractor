@@ -1,5 +1,7 @@
 
 #include "Str_Load.h"
+#include "Str_Load_Full.h"
+#include "Str_Confirmer.h"
 #include "FileOpen.h"
 #include "DFFOpen.h"
 #include "BSPOpen.h"
@@ -12,22 +14,22 @@
 
 
 
-int main(int argc, char** argv){
+int main(int argc, char** argv) {
 
 	int counter = 0;
 
 
 
-	std::string exitPath; 
+	std::string exitPath;
 
 	if (std::filesystem::exists("AllAssets")) {
-		for(const auto& entry : std::filesystem::directory_iterator("AllAssets") ) {
+		for (const auto& entry : std::filesystem::directory_iterator("AllAssets")) {
 
 			std::string entryPath = entry.path().string();
 
 			std::string prefix = "AllAssets";
 
-			
+
 
 			// this will extract the file name, - 3 for the extentsion and AllAssets because of the folder, this does work now
 			exitPath.insert(exitPath.begin(), entryPath.begin() + prefix.length() + 1, entryPath.end() - 4);
@@ -38,21 +40,43 @@ int main(int argc, char** argv){
 
 			}
 
+
+			Str_Confirmer* ConfirmStreamFile = new Str_Confirmer();
+			ConfirmStreamFile->Init(entryPath.c_str());
+			int Global = ConfirmStreamFile->ReadHeader();
+
+			if (Global == 0) {
+				Str_Load* StrObject = new Str_Load();
+
+				StrObject->USFP = exitPath + "/" + "Uncompressed_Sections";
+				StrObject->ExtractedSection = exitPath + "/" + "Files";
+
+				StrObject->init(entryPath.c_str()); // land of chocolate zone02
+				StrObject->CheckHeaderForCompression();
+				StrObject->UnCompress();
+				StrObject->ExtractFiles();
+
+
+				delete StrObject;
+			}
+
+			else if (Global == 1) {
+				Str_Load_Full* StrObject = new Str_Load_Full();
+
+				StrObject->USFP = exitPath + "/" + "Uncompressed_Sections";
+				StrObject->ExtractedSection = exitPath + "/" + "Files";
+
+				StrObject->init(entryPath.c_str()); // land of chocolate zone02
+				StrObject->CheckHeaderForCompression();
+				StrObject->UnCompress();
+				StrObject->ExtractFiles();
+
+
+				delete StrObject;
+			}
 			
-			
-
-			Str_Load* StrObject = new Str_Load();
-
-			StrObject->USFP = exitPath + "/" + "Uncompressed_Sections";
-			StrObject->ExtractedSection = exitPath + "/" + "Files";
-
-			StrObject->init(entryPath.c_str()); // land of chocolate zone02
-			StrObject->CheckHeaderForCompression();
-			StrObject->UnCompress();
-			StrObject->ExtractFiles();
-
-
-			delete StrObject;
+			delete ConfirmStreamFile;
+		
 
 
 			if (std::filesystem::exists(exitPath)) {

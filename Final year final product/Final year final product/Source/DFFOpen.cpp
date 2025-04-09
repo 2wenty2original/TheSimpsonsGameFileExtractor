@@ -515,11 +515,18 @@ bool DFFOpen::ProcessData(int _ObjectCount)
 		int SplitCount = Char_Byte(GeometruStructOutput.begin(), GeometryStructOffset, 4).CastToint32_LE().variable;
 		IndexCount = Char_Byte(GeometruStructOutput.begin(), GeometryStructOffset, 4).CastToint32_LE().variable;
 
-		Chunk SkinPlg = Chunk(GeometryList.begin(), Offset);
+		int SkinOffset = Offset; // this is just done for checking
 
-		std::vector<uint8_t> SkinPlgStruct = SkinPlg.Process(GeometryList, Offset);
+		if (Chunk(GeometryList.begin(), SkinOffset).type == 278) {
+			Chunk SkinPlg = Chunk(GeometryList.begin(), Offset);
 
-		Offset += SkinPlg.size;
+			std::vector<uint8_t> SkinPlgStruct = SkinPlg.Process(GeometryList, Offset);
+
+			Offset += SkinPlg.size;
+		}
+
+
+	
 
 		Chunk Unknown1 = Chunk(GeometryList.begin(), Offset);
 

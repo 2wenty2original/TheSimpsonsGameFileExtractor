@@ -133,14 +133,18 @@
     <ClCompile Include="Source\DFFOpen.cpp" />
     <ClCompile Include="Source\FileOpen.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Str_Confirmer.cpp" />
     <ClCompile Include="Source\Str_Load.cpp" />
+    <ClCompile Include="Source\Str_Load_Full.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\BSPOpen.h" />
     <ClInclude Include="Source\Bytes.h" />
     <ClInclude Include="Source\DFFOpen.h" />
     <ClInclude Include="Source\FileOpen.h" />
+    <ClInclude Include="Source\Str_Confirmer.h" />
     <ClInclude Include="Source\Str_Load.h" />
+    <ClInclude Include="Source\Str_Load_Full.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
