@@ -385,9 +385,16 @@ void DFFOpen::ConvertToObj(std::vector<uint8_t> InputData, int VertexCount, int 
 		}
 
 		for (int v = 0; v < NormalTable.size(); v++) {
-			NormalTable[v] /= NormalTable[v].GetMagntitude();
-			Normals.push_back(NormalTable[v]);
 
+			float magnitude = NormalTable[v].GetMagntitude();
+			if (magnitude > 0.0f) {
+				NormalTable[v] /= magnitude;
+			}
+			else {
+
+				NormalTable[v] = Vector3(0, 0, 1);
+			}
+			Normals.push_back(NormalTable[v]);
 		}
 
 		for (int v = 0; v < FaceList.size(); v++) {
