@@ -76,6 +76,8 @@ public:
 
 private:
 
+	int TextureIndex = 0;
+
 	// name of the file
 	char* Filename = nullptr;
 

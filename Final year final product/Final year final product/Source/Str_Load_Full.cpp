@@ -417,7 +417,8 @@ void Str_Load_Full::ExtractSection(const char* FileName)
 
 	uint32_t TerminationClause32 = 12566463;
 
-
+	// if this is ever equal to our name, we have hit a texture, so we need to rename
+	int TextureValue = 12566463;
 
 	while (!OverFlown) {
 
@@ -478,6 +479,22 @@ void Str_Load_Full::ExtractSection(const char* FileName)
 		Char_Byte FileName = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + Start };
 
 		std::string TempFileName(FileName.Char_Bytes.begin(), FileName.Char_Bytes.end());
+
+
+		int IsTexture = FileName.CastToint32_BE().variable;
+
+
+		if (IsTexture == TextureValue) {
+			TextureIndex++;
+
+			TempFileName.clear();
+			TempFileName.shrink_to_fit();
+
+			TempFileName.append(std::to_string(TextureIndex));
+			TempFileName.append("Texture");
+			TempFileName.append(".txd");
+
+		}
 
 		Offset += FileName.Char_Bytes.size();
 		Displacement += FileName.Char_Bytes.size();

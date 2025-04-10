@@ -709,6 +709,23 @@ public:
         return Output;
     }
 
+    std::vector<uint8_t> SimpleProcess(std::vector<uint8_t>& Data, int& _Offset) {
+
+        std::vector<uint8_t> Output;
+
+
+
+       
+        Output.insert(Output.begin(), Data.begin() + *Offset, Data.begin() + *Offset + size);
+        *Offset += size;
+        return Output;
+        
+
+
+
+        return Output;
+    }
+
     static int GetIndex(std::vector<uint8_t> List, uint8_t value) {
 
         auto iterator = std::find(List.begin(), List.end(), value);

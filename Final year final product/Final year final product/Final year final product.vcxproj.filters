@@ -21,9 +21,6 @@
     <ClCompile Include="Source\Str_Load.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FileOpen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\DFFOpen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,12 +33,15 @@
     <ClCompile Include="Source\Str_Confirmer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\RWSOpen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TXDOpen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Bytes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FileOpen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Str_Load.h">
@@ -57,6 +57,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Str_Confirmer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RWSOpen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TXDOpen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

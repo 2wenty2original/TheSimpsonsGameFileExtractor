@@ -2,7 +2,8 @@
 #include "Str_Load.h"
 #include "Str_Load_Full.h"
 #include "Str_Confirmer.h"
-#include "FileOpen.h"
+#include "TXDOpen.h"
+#include "RWSOpen.h"
 #include "DFFOpen.h"
 #include "BSPOpen.h"
 #include <iostream>
@@ -92,7 +93,7 @@ int main(int argc, char** argv) {
 
 					
 					// these are files that contain geometry
-					if (extension != ".rws" && extension != ".dff") {
+					if (extension != ".rws" && extension != ".dff" && extension != ".txd") {
 						continue;
 					}
 
@@ -119,6 +120,13 @@ int main(int argc, char** argv) {
 
 						delete DffObject;
 
+					}
+
+					else if (extension == ".txd") {
+						TXDOpen* TXDObject = new TXDOpen(entryPath);
+
+						TXDObject->Init();
+						TXDObject->ExtractData();
 					}
 
 					/*else if (extension == ".bsp") {
