@@ -220,6 +220,11 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, int Width, int Height
 		return;
 	}
 
+	//for (int i = 0; i < InputData.size(); i++) {
+	//	WriteInt(Output, InputData[i], 1);
+	//}
+
+
 	Output.write(reinterpret_cast<const char*>(InputData.data()), InputData.size());
 	Output.close();
 
