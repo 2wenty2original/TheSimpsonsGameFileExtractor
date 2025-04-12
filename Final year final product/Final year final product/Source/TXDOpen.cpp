@@ -206,7 +206,7 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, int Width, int Height
 	WriteInt(Output, 0x00000000, 4);
 
 
-
+ 
 
 
 	// this isnt needed, BUT, if we find a format where we need to swap from rgba to bgra, KEEP THIS
@@ -220,12 +220,88 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, int Width, int Height
 		return;
 	}
 
+
+
+
+
+	int counter = 1;
+
+	int MipOffset = 0;
+
+	int NewWidth = Width / counter;
+	int NewHeight = Height / counter;
+	int channels = 4;
+
+	int size = (NewWidth * NewHeight) * channels;
+
+	std::vector<int> MipMapOffsets; 
+	MipMapOffsets.push_back(0);
+
+
+	// ok these work
+	for (int i = 0; i < MinMapCount ; i++) {
+		
+		if (MinMapCount == 1) {
+			Output.write(reinterpret_cast<const char*>(InputData.data()), InputData.size());
+			continue;
+		}
+
+		uint32_t Next = Char_Byte(InputData.begin() + size + MipOffset, InputData.begin() + size + MipOffset + 4).CastToUint32_LE().variable;
+
+		MipOffset += 4;
+
+		MipMapOffsets.push_back(MipOffset + size);
+
+		MipOffset += Next;
+
+	}
+
+
+	for (int Mip = 0; Mip < MipMapOffsets.size() - 1; Mip++) {
+		
+
+		int Newsize = NewWidth * NewHeight * channels;
+
+		int NewMipMapOffset = MipMapOffsets[Mip];
+
+		std::vector<uint8_t> PollFrom = Char_Byte(InputData.begin() + NewMipMapOffset, InputData.begin() + NewMipMapOffset + Newsize).Char_Bytes;
+
+
+	
+		uint8_t* ddsPixels = new uint8_t[NewWidth * NewHeight * channels];
+
+		//for (int j = 0; j < NewHeight; ++j) {
+		//	for (int i = 0; i < NewWidth; ++i) {
+		//		int srcIndex = (j * NewWidth + i) * channels;
+		//		//int dstIndex = (j * NewWidth + i) * channels;
+		//		int dstIndex = srcIndex;
+
+		//		ddsPixels[dstIndex + 0] = PollFrom[srcIndex + 0];
+		//		ddsPixels[dstIndex + 1] = PollFrom[srcIndex + 1];
+		//		ddsPixels[dstIndex + 2] = PollFrom[srcIndex + 2];
+		//		ddsPixels[dstIndex + 3] = PollFrom[srcIndex + 3]; // PollFrom[srcIndex + 3];
+		//	}
+		//}
+
+		Unswizzle(PollFrom.data(), ddsPixels, NewWidth, NewHeight, channels);
+
+		Output.write(reinterpret_cast<const char*>(ddsPixels), (NewWidth * NewHeight * channels));
+
+		delete[] ddsPixels;
+
+		NewWidth = std::max(1, NewWidth / 2);
+		NewHeight = std::max(1, NewHeight / 2);
+
+	}
+	
+
+
 	//for (int i = 0; i < InputData.size(); i++) {
 	//	WriteInt(Output, InputData[i], 1);
 	//}
 
 
-	Output.write(reinterpret_cast<const char*>(InputData.data()), InputData.size());
+	//Output.write(reinterpret_cast<const char*>(InputData.data()), InputData.size());
 	Output.close();
 
 }

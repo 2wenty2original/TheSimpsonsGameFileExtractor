@@ -7,6 +7,33 @@
 #include "Bytes.h"
 #include <filesystem>
 
+#define DDS_FOURCC      0x00000004  // DDPF_FOURCC
+#define DDS_RGB         0x00000040  // DDPF_RGB
+#define DDS_RGBA        0x00000041  // DDPF_RGB | DDPF_ALPHAPIXELS
+#define DDS_LUMINANCE   0x00020000  // DDPF_LUMINANCE
+#define DDS_LUMINANCEA  0x00020001  // DDPF_LUMINANCE | DDPF_ALPHAPIXELS
+#define DDS_ALPHA       0x00000002  // DDPF_ALPHA
+#define DDS_PAL8        0x00000020  // DDPF_PALETTEINDEXED8
+
+#define DDS_HEADER_FLAGS_TEXTURE        0x00001007  // DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT
+#define DDS_HEADER_FLAGS_MIPMAP         0x00020000  // DDSD_MIPMAPCOUNT
+#define DDS_HEADER_FLAGS_VOLUME         0x00800000  // DDSD_DEPTH
+#define DDS_HEADER_FLAGS_PITCH          0x00000008  // DDSD_PITCH
+#define DDS_HEADER_FLAGS_LINEARSIZE     0x00080000  // DDSD_LINEARSIZE
+
+#define DDS_HEIGHT 0x00000002 // DDSD_HEIGHT
+#define DDS_WIDTH  0x00000004 // DDSD_WIDTH
+
+#define DDS_SURFACE_FLAGS_TEXTURE 0x00001000 // DDSCAPS_TEXTURE
+#define DDS_SURFACE_FLAGS_MIPMAP  0x00400008 // DDSCAPS_COMPLEX | DDSCAPS_MIPMAP
+#define DDS_SURFACE_FLAGS_CUBEMAP 0x00000008 // DDSCAPS_COMPLEX
+
+#define DDS_CUBEMAP_POSITIVEX 0x00000600 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_POSITIVEX
+#define DDS_CUBEMAP_NEGATIVEX 0x00000a00 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_NEGATIVEX
+#define DDS_CUBEMAP_POSITIVEY 0x00001200 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_POSITIVEY
+#define DDS_CUBEMAP_NEGATIVEY 0x00002200 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_NEGATIVEY
+#define DDS_CUBEMAP_POSITIVEZ 0x00004200 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_POSITIVEZ
+#define DDS_CUBEMAP_NEGATIVEZ 0x00008200 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_NEGATIVEZ
 
 
 class TXDOpen {
@@ -21,6 +48,7 @@ public:
 
 	~TXDOpen() {};
 
+	
 	
 	// this reads the file as binary and does process lines, needs to be called first
 	void Init();
@@ -64,6 +92,33 @@ private:
 		for (int i = 0; i < byteCount; ++i) {
 			uint8_t byte = (value >> (i * 8)) & 0xFF;
 			out.write(reinterpret_cast<char*>(&byte), 1);
+		}
+	}
+
+
+	void DecodeMorton2D(int index, int& x, int& y) {
+		x = 0;
+		y = 0;
+		for (int i = 0; i < 16; ++i) {
+			x |= ((index >> (2 * i + 0)) & 1) << i;
+			y |= ((index >> (2 * i + 1)) & 1) << i;
+		}
+	}
+
+	// Unswizzle from Morton layout to linear
+	void Unswizzle(const uint8_t* swizzled, uint8_t* linear, int width, int height, int bytesPerPixel) {
+		int size = width * height;
+		for (int i = 0; i < size; ++i) {
+			int x, y;
+			DecodeMorton2D(i, x, y);
+
+			if (x >= width || y >= height)
+				continue;
+
+			int dstIndex = (y * width + x) * bytesPerPixel;
+			int srcIndex = i * bytesPerPixel;
+
+			memcpy(&linear[dstIndex], &swizzled[srcIndex], bytesPerPixel);
 		}
 	}
 
