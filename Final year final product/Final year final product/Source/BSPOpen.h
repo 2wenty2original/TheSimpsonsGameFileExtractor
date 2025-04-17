@@ -23,6 +23,8 @@ public:
 	void Init();
 	void ProcessLines(std::string Line, std::vector<unsigned char>& _Characters);
 	void ReadHeader();
+	void ExtraData();
+	void ConvertToObj();
 	void WriteToFile();
 
 

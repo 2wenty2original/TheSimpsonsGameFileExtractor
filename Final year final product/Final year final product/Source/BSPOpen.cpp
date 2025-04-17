@@ -57,8 +57,87 @@ void BSPOpen::ReadHeader()
 	int AmountOfSections = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
 	int StartOfSectionsInHeader = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
 
+	int BlankNumber2 = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+
+	int UnKnown = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+	int UnKnown2 = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+	int UnKnown3 = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+	int UnKnown4 = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+
+	int BlankNumber3 = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+
+	int FirstOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+	int SecondOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+	int ThirdOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+	int FourthOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+	int FifthOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+
+	// start of the actual geometry
+	int SixthOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+
+	// end of geometry start of padding
+	int SeventhOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+
+	int EighthOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
 
 
+	int NinethOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+
+
+	int TenthOffset = Char_Byte(Characters.begin(), Offset, 4).CastToint32_BE().variable;
+
+	Offset = SixthOffset;
+
+
+	std::vector<int> FaceIndexes;
+
+	std::vector<Vector3> VerticesTable;
+	std::vector<Vector2> UvTable;
+
+	for (int i = SixthOffset; i < SeventhOffset; i+= 16) 
+	{
+		float x = Char_Byte(Characters.begin(), Offset, 4).CastTo32Float_BE();
+		float y = Char_Byte(Characters.begin(), Offset, 4).CastTo32Float_BE();
+		float z = Char_Byte(Characters.begin(), Offset, 4).CastTo32Float_BE();
+		float terminationClause = Char_Byte(Characters.begin(), Offset, 4).CastTo32Float_BE();
+
+
+		UvTable.push_back(Vector2(0, 0));
+		UvTable.push_back(Vector2(0, 0));
+
+
+		Vector3 TempVert = Vector3{ x,y,z };
+		VerticesTable.push_back(TempVert);
+	}
+
+	
+	
+	Offset = NinethOffset;
+	Offset += 4;
+
+	for (int i = NinethOffset; i < TenthOffset; i+=2) {
+		int Index = Char_Byte(Characters.begin(), Offset, 2).CastToUint16_BE().variable;
+		FaceIndexes.push_back(Index);
+
+	}
+
+	std::vector<Vector3> NormalTable(VerticesTable.size(), Vector3(0, 0, 0));
+
+	for (int i = 0; i < Normals.size(); i++) {
+
+	}
+
+
+
+}
+
+void BSPOpen::ExtraData()
+{
+
+}
+
+void BSPOpen::ConvertToObj()
+{
 
 }
 

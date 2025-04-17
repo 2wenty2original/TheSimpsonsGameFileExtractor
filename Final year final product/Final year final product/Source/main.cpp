@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
 
 					
 					// these are files that contain geometry
-					if (extension != ".rws" && extension != ".dff" && extension != ".txd") {
+					if (extension != ".rws" && extension != ".dff" && extension != ".txd" && extension != ".bsp") {
 						continue;
 					}
 
@@ -132,9 +132,11 @@ int main(int argc, char** argv) {
 
 						TXDObject->Init();
 						TXDObject->ExtractData();
+
+						delete TXDOpen;
 					}*/
 
-					/*else if (extension == ".bsp") {
+				/*	else if (extension == ".bsp") {
 						BSPOpen* BSPObject = new BSPOpen(entryPath);
 
 						BSPObject->FilePath = exitPath;
@@ -171,7 +173,5 @@ int main(int argc, char** argv) {
 
 	
 	
-	
-
 	return 0;
 };
