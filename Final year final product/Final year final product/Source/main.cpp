@@ -97,6 +97,8 @@ int main(int argc, char** argv) {
 						continue;
 					}
 
+				
+
 					if (extension == ".rws") {
 						RwsOpen* RwsObject = new RwsOpen(entryPath);
 
@@ -122,12 +124,15 @@ int main(int argc, char** argv) {
 
 					}
 
-					else if (extension == ".txd") {
+					/*else if (extension == ".txd") {
 						TXDOpen* TXDObject = new TXDOpen(entryPath);
+
+						TXDObject->FilePath = exitPath;
+						TXDObject->GlobalFileIndex = counter++;
 
 						TXDObject->Init();
 						TXDObject->ExtractData();
-					}
+					}*/
 
 					/*else if (extension == ".bsp") {
 						BSPOpen* BSPObject = new BSPOpen(entryPath);

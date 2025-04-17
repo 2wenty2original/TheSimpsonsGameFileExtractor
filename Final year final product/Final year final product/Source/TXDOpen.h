@@ -36,6 +36,16 @@
 #define DDS_CUBEMAP_NEGATIVEZ 0x00008200 // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_NEGATIVEZ
 
 
+
+struct DDSFlag {
+	int FourCC;
+	bool HasAlpha;
+	int Filtering;
+	bool HasSwizzle;
+	bool HasMipMaps;
+
+};
+
 class TXDOpen {
 
 public:
@@ -61,7 +71,10 @@ public:
 	void ExtractData();
 
 	//this is to add to our global output vector
-	void ConvertToDDS(std::vector<uint8_t> InputData, int Width, int Height, int LinerNumber, int AlphaFlags, int MimMapCount, 
+	void ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureName, int Width, int Height, int FirstNumber,int LinerNumber, int AlphaFlags, int MimMapCount, 
+		int Depth);
+
+	void ConvertToDDSAlt(std::vector<uint8_t> InputData, std::string TextureName, int Width, int Height, int FirstNumber, int LinerNumber, int AlphaFlags, int MimMapCount,
 		int Depth);
 
 	//this is to add to our global output vector
@@ -95,8 +108,7 @@ private:
 		}
 	}
 
-
-	void DecodeMorton2D(int index, int& x, int& y) {
+	void DecodeMorton2DAlt(int index, int& x, int& y) {
 		x = 0;
 		y = 0;
 		for (int i = 0; i < 16; ++i) {
@@ -106,7 +118,7 @@ private:
 	}
 
 	// Unswizzle from Morton layout to linear
-	void Unswizzle(const uint8_t* swizzled, uint8_t* linear, int width, int height, int bytesPerPixel) {
+	void UnswizzleAlt(const uint8_t* swizzled, uint8_t* linear, int width, int height, int bytesPerPixel) {
 		int size = width * height;
 		for (int i = 0; i < size; ++i) {
 			int x, y;
@@ -121,6 +133,58 @@ private:
 			memcpy(&linear[dstIndex], &swizzled[srcIndex], bytesPerPixel);
 		}
 	}
+
+
+	// asigns our x and y via bitshitfting
+	// this does it by virtue of odd even checks and asigning it to x and y
+	// we do to 16 because we need it by rows, in hex edit and similar formatting its 16 for row, for our linaer
+	void DecodeMorton2D(int index, int& x, int& y) {
+		x = 0;
+		y = 0;
+		for (int i = 0; i < 16; ++i) {
+			// this determines odd or even, its a very low level way to do it, but we are on the 
+			// lowest level near to assembly at this point, so im indifferent
+			x |= ((index >> (2 * i + 0)) & 1) << i;
+			y |= ((index >> (2 * i + 1)) & 1) << i;
+		}
+	}
+
+	// basically tl;dr, morton layout or grid layout, basically lays your pixels out as maps/squares, however
+	// other texture formats like .dds require linear, so we have to effectivelyconvert out pixels
+	// AS WE ARE PARSING THEM THROUGH, to a linear format
+	void Unswizzle(const uint8_t* swizzled, uint8_t* linear, int width, int height, int bytesPerPixel) {
+		// only width and height
+
+		float Proportion = ((float)height / (float)width);
+		float size = ((float)width * (float)height) * Proportion;
+
+		// 2 and 1 scalers, 65536, that means divide by 4 and then squar root
+
+
+		for (int i = 0; i < (int)size; ++i) {
+			int x, y;
+			DecodeMorton2D(i, x, y);
+
+			// bounds check
+			if (x >= width || y >= height)
+				continue;
+
+			// this is just jans y * width + x, stolen lol
+			// we need to multiply by channel for bgra, not rbga btw
+
+			int yAxis = int((float)y * Proportion);
+
+			int dstIndex = (yAxis * width + x) * bytesPerPixel;
+
+			// we do this because so far, we havnt actually being using hte channels for our morton
+			int srcIndex = i * bytesPerPixel;
+
+			// memcpy is realy realy quick, normally i use iterators, but we are doing it between data blocks so screw it
+			memcpy(&linear[dstIndex], &swizzled[srcIndex], bytesPerPixel);
+		}
+	}
+
+
 
 private:
 

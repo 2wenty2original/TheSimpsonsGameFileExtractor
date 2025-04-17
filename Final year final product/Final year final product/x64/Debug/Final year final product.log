@@ -1,57 +1,4 @@
-﻿  TXDOpen.cpp
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(303,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(321,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(327,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(335,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(351,28): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(360,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(369,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(378,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         with
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         [
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:             T=int
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(435,85): warning C4244:         ]
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(436,85): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(436,85): warning C4244:         with
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(436,85): warning C4244:         [
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(436,85): warning C4244:             T=int
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(436,85): warning C4244:         ]
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(733,29): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(745,24): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(897,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(898,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Source/TXDOpen.cpp')
-  
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\TXDOpen.cpp(42,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\TXDOpen.cpp(318,22): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  main.cpp
+﻿  main.cpp
 E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(303,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/main.cpp')
   
@@ -102,5 +49,4 @@ E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final 
 E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(898,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/main.cpp')
   
-  Generating Code...
   Final year final product.vcxproj -> E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\x64\Debug\Final year final product.exe
