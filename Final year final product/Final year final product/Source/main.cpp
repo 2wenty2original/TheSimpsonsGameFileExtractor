@@ -11,6 +11,7 @@
 #include <ostream>
 #include <math.h>
 #include <memory>
+#include <chrono>
 
 
 
@@ -78,7 +79,7 @@ int main(int argc, char** argv) {
 			
 			delete ConfirmStreamFile;
 		
-
+			auto start = std::chrono::high_resolution_clock::now();
 
 			if (std::filesystem::exists(exitPath)) {
 				std::cout << exitPath << " " << "/" << "Files" << std::endl;
@@ -153,8 +154,13 @@ int main(int argc, char** argv) {
 					
 
 				}
-			}
 
+
+				
+
+			}
+			auto end = std::chrono::high_resolution_clock::now();
+			auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 			exitPath.clear();
 
 		}
