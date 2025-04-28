@@ -12,20 +12,49 @@
 #include <math.h>
 #include <memory>
 #include <chrono>
+#include <numeric>
 
+double StandardDev(const std::vector<double>& times, double &mean)
+{
+	if (times.size() <= 1) 
+	{
+		// if nothing then exit
+		return 0.0; 
+	}
 
+	// calculate the sum of times
+	double sum = std::accumulate(times.begin(), times.end(), 0.0);
 
+	//mean calculation
+	mean = sum / times.size();
 
-int main(int argc, char** argv) {
+	
+	double sq_sum = 0.0;
+	for (double time : times)
+	{
+		sq_sum += (time - mean) * (time - mean);
+	}
+
+	// calculate the standard deviation
+	double variance = sq_sum / (times.size() - 1);
+	return std::sqrt(variance);
+}
+
+void run(std::vector<double>& strAdd, std::vector<double>& modelAdd) {
 
 	int counter = 0;
 
-
-
 	std::string exitPath;
+
+
+	auto start = std::chrono::high_resolution_clock::now();
 
 	if (std::filesystem::exists("AllAssets")) {
 		for (const auto& entry : std::filesystem::directory_iterator("AllAssets")) {
+
+			if (entry.is_directory()) {
+				continue;
+			}
 
 			std::string entryPath = entry.path().string();
 
@@ -48,6 +77,9 @@ int main(int argc, char** argv) {
 			int Global = ConfirmStreamFile->ReadHeader();
 
 			if (Global == 0) {
+
+
+
 				Str_Load* StrObject = new Str_Load();
 
 				StrObject->USFP = exitPath + "/" + "Uncompressed_Sections";
@@ -57,6 +89,7 @@ int main(int argc, char** argv) {
 				StrObject->CheckHeaderForCompression();
 				StrObject->UnCompress();
 				StrObject->ExtractFiles();
+
 
 
 				delete StrObject;
@@ -76,15 +109,15 @@ int main(int argc, char** argv) {
 
 				delete StrObject;
 			}
-			
+
 			delete ConfirmStreamFile;
-		
-			auto start = std::chrono::high_resolution_clock::now();
+
+			std::vector<double> tempModelTimes;
 
 			if (std::filesystem::exists(exitPath)) {
 				std::cout << exitPath << " " << "/" << "Files" << std::endl;
 				for (const auto& entry : std::filesystem::directory_iterator(exitPath + "/" + "Files")) {
-					
+
 
 					std::string entryPath = entry.path().string();
 
@@ -92,15 +125,17 @@ int main(int argc, char** argv) {
 
 					extension.insert(extension.begin(), entryPath.end() - 4, entryPath.end());
 
-					
+
 					// these are files that contain geometry
 					if (extension != ".rws" && extension != ".dff" && extension != ".txd" && extension != ".bsp") {
 						continue;
 					}
 
-				
+
 
 					if (extension == ".rws") {
+						auto startModel = std::chrono::high_resolution_clock::now();
+
 						RwsOpen* RwsObject = new RwsOpen(entryPath);
 
 						RwsObject->FilePath = exitPath;
@@ -109,10 +144,17 @@ int main(int argc, char** argv) {
 						RwsObject->Init();
 						RwsObject->ExtractData();
 
+						auto endModel = std::chrono::high_resolution_clock::now();
+						std::chrono::duration<double, std::milli> duration = endModel - startModel;
+						double msModel = duration.count();
+						tempModelTimes.push_back(msModel);
+
 						delete RwsObject;
 					}
 
 					else if (extension == ".dff") {
+						auto startModel = std::chrono::high_resolution_clock::now();
+
 						DFFOpen* DffObject = new DFFOpen(entryPath);
 
 						DffObject->FilePath = exitPath;
@@ -120,6 +162,12 @@ int main(int argc, char** argv) {
 
 						DffObject->Init();
 						DffObject->ExtractData();
+
+
+						auto endModel = std::chrono::high_resolution_clock::now();
+						std::chrono::duration<double, std::milli> duration = endModel - startModel;
+						double msModel = duration.count();
+						tempModelTimes.push_back(msModel);
 
 						delete DffObject;
 
@@ -137,38 +185,72 @@ int main(int argc, char** argv) {
 						delete TXDOpen;
 					}*/
 
-				/*	else if (extension == ".bsp") {
-						BSPOpen* BSPObject = new BSPOpen(entryPath);
+					/*	else if (extension == ".bsp") {
+							BSPOpen* BSPObject = new BSPOpen(entryPath);
 
-						BSPObject->FilePath = exitPath;
-						BSPObject->GlobalFileIndex = counter++;
+							BSPObject->FilePath = exitPath;
+							BSPObject->GlobalFileIndex = counter++;
 
-						BSPObject->Init();
-						BSPObject->ReadHeader();
-						BSPObject->WriteToFile();
+							BSPObject->Init();
+							BSPObject->ReadHeader();
+							BSPObject->WriteToFile();
 
-						delete BSPObject;
-					}*/
+							delete BSPObject;
+						}*/
 
-					
-					
+
+
 
 				}
 
 
-				
+
 
 			}
-			auto end = std::chrono::high_resolution_clock::now();
-			auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+			double output = 0.0f;
+			for (int z = 0; z < tempModelTimes.size(); z++) {
+				output += tempModelTimes[z];
+			}
+
+			modelAdd.push_back(output);
+		
 			exitPath.clear();
 
 		}
+
+		auto end = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double, std::milli> duration = end - start;
+		double ms = duration.count();
+
+		strAdd.push_back(ms);
+	}
+}
+
+
+void AddToRunTime(int HowMany, std::vector<double>& strAdd, std::vector<double>& modelAdd) {
+
+	for (int i = 0; i < HowMany; i++) {
+		run(strAdd, modelAdd);
 	}
 
-	
+}
+
+
+int main(int argc, char** argv) {
 
 	
+
+	std::vector<double> strAdd;
+	std::vector<double> modelAdd;
+
+	AddToRunTime(10,strAdd, modelAdd);
+	
+	double strMean = 0.0f;
+	double modelMean = 0.0f;
+
+	double strTime = StandardDev(strAdd, strMean);
+	double modelTime = StandardDev(modelAdd, modelMean);
 	
 	
 	
