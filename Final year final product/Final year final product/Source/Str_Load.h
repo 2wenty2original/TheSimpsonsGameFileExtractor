@@ -15,12 +15,12 @@
 
 class Str_Load {
 
-	
+
 
 public:
 
 
-	
+
 
 	Str_Load() {};
 	~Str_Load() {};
@@ -44,13 +44,30 @@ public:
 	void destroy();
 
 	void SortGarbeld(std::string CurrentLine);
-	void SortGarbeld(std::string CurrentLine, std::vector<uint8_t> &Output);
+	void SortGarbeld(std::string CurrentLine, std::vector<uint8_t>& Output);
 
 	void CheckHeaderForCompression();
 
-	bool IsStrFile(std::ifstream &file);
+	bool IsStrFile(std::ifstream& file);
+
+	std::string StringIndexes(std::string _string, int &index) {
+		std::string output;
+
+		for (int i = 0; i < _string.size(); i++) {
+			if(_string[i] == 46) {
+				output.insert(output.begin(), _string.begin(), _string.begin() + i);
+				_string.erase(_string.begin(), _string.begin() + i);
+				output.append(std::to_string(index++));
+				output.insert(output.end(), _string.begin(), _string.end());
+
+				return output;
+			}
+		}
 
 	
+		return output;
+		
+	}
 
 	bool IsValidIndex(int index, int Offset, int SizeOfContainer) {
 		if ((index + Offset) >= 0 && (index + Offset) < SizeOfContainer) {
@@ -80,6 +97,7 @@ public:
 private:
 
 	int TextureIndex = 0;
+	int ObjectIndex = 0;
 
 	// name of the file
 	char* Filename = nullptr;

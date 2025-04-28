@@ -59,8 +59,25 @@ public:
 		}
 	}
 
-	
 
+	std::string StringIndexes(std::string _string, int &index) {
+		std::string output;
+
+		for (int i = 0; i < _string.size(); i++) {
+			if (_string[i] == 46) {
+				output.insert(output.begin(), _string.begin(), _string.begin() + i);
+				_string.erase(_string.begin(), _string.begin() + i);
+				output.append(std::to_string(index++));
+				output.insert(output.end(), _string.begin(), _string.end());
+
+				return output;
+			}
+		}
+
+
+		return output;
+
+	}
 	std::vector<unsigned char> ReturnAllList() {
 		return AllList;
 	}
@@ -77,6 +94,7 @@ public:
 private:
 
 	int TextureIndex = 0;
+	int ObjectIndex = 0;
 
 	// name of the file
 	char* Filename = nullptr;

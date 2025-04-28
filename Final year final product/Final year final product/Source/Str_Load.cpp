@@ -476,8 +476,11 @@ void Str_Load::ExtractSection(const char* FileName)
 		Displacement += 4;
 
 		Char_Byte FileName = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + Start };
+		
 
 		std::string TempFileName(FileName.Char_Bytes.begin(), FileName.Char_Bytes.end());
+
+		TempFileName = StringIndexes(TempFileName, ObjectIndex);
 
 		int IsTexture = FileName.CastToint32_BE().variable;
 

@@ -480,6 +480,7 @@ void Str_Load_Full::ExtractSection(const char* FileName)
 
 		std::string TempFileName(FileName.Char_Bytes.begin(), FileName.Char_Bytes.end());
 
+		TempFileName = StringIndexes(TempFileName, ObjectIndex);
 
 		int IsTexture = FileName.CastToint32_BE().variable;
 
