@@ -244,7 +244,7 @@ int main(int argc, char** argv) {
 	std::vector<double> strAdd;
 	std::vector<double> modelAdd;
 
-	AddToRunTime(10,strAdd, modelAdd);
+	AddToRunTime(1,strAdd, modelAdd);
 	
 	double strMean = 0.0f;
 	double modelMean = 0.0f;

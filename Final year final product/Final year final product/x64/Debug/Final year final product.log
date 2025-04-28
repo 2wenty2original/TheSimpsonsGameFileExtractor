@@ -49,4 +49,5 @@ E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final 
 E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\Final year final product\Source\Bytes.h(898,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Source/main.cpp')
   
+  LINK : E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\x64\Debug\Final year final product.exe not found or not built by the last incremental link; performing full link
   Final year final product.vcxproj -> E:\GitHubDesktop\FINAL_YEAR_PROJECT\FinalYear\FinalYearProject\Final year final product\x64\Debug\Final year final product.exe
