@@ -119,7 +119,8 @@ void TXDOpen::ExtractData()
 
 		/*LocalOffset++;*/
 
-		int UnknownEnd = Char_Byte(TextureData.begin(), LocalOffset, 4).CastToUint32_LE().variable;
+		// this is basically the size of the texture, the rest are mip maps, can be used for relative offset
+		int SizeOfInitialMip = Char_Byte(TextureData.begin(), LocalOffset, 4).CastToUint32_LE().variable;
 
 		TextureData.erase(TextureData.begin(), TextureData.begin() + LocalOffset);
 
@@ -174,7 +175,7 @@ void TXDOpen::ExtractData()
 
 
 		// now its time to convert data
- 		ConvertToDDS(TextureData, TextureName, Width, Height, UnknownEnd, UnknownEnd, AlphaFlags, mipmap_count, Depth);
+		ConvertToDDS(TextureData, TextureName, Width, Height, SizeOfInitialMip , SizeOfInitialMip, AlphaFlags, mipmap_count, Depth);
 		
 	}
 
@@ -550,77 +551,6 @@ void TXDOpen::ConvertToDDSAlt(std::vector<uint8_t> InputData, std::string Textur
 	Output.close();
 }
 
-void TXDOpen::ConvertToBMP(std::vector<uint8_t> InputData, int Width, int Height, int MimMapCount)
-{
-
-	std::ofstream Output("Out.bmp", std::ios::binary);
-
-	// 2 bytes
-	WriteInt(Output, 0x4D42, 2);
-
-	// 4 bytes
-	WriteInt(Output, 54 + InputData.size(), 4);
-
-	// 2 bytes reserverd
-	WriteInt(Output, 0, 2);
-
-	// 2 bytes
-	WriteInt(Output, 0, 2);
-
-	// 4 bytes 
-
-	WriteInt(Output, 54,4);
-
-
-
-	// DIB header, basically bmp files have 2 headers, its kinda dumnb but thats what the wiki said so whatever
-
-	WriteInt(Output, 40, 4); 
-
-	// width 
-	WriteInt(Output, Width, 4);
-	//height has to be inverted because its down up
-	WriteInt(Output, Height, 4);
-
-	// amount of planes
-	WriteInt(Output, 1, 2);
-
-	// pixel depth, 32 is the full set
-	WriteInt(Output, 32, 2);
-
-	// compression, might need to change this
-	WriteInt(Output, 3, 4);
-
-	// image size, but like physically
-	WriteInt(Output, 0, 4);           
-
-	// x pixels per metre
-	WriteInt(Output, 0, 4);
-
-	//y pixels per metre
-	WriteInt(Output, 0, 4);
-
-	// total colours
-	WriteInt(Output, 0, 4);
-
-	//important colours
-	WriteInt(Output, 0, 4);   
-	
-	// this isnt needed, BUT, if we find a format where we need to swap from rgba to bgra, KEEP THIS
-	//for (size_t i = 0; i < InputData.size(); i += 4) {
-	//	std::swap(InputData[i], InputData[i + 2]); // Swap R and B
-	//}
-
-	if (!Output.is_open()) {
-		return;
-	}
-
-	if (!InputData.empty()) {
-		Output.write(reinterpret_cast<const char*>(InputData.data()), InputData.size());
-	}
-
-	Output.close();
-}
 
 bool TXDOpen::ProcessData(int _ObjectCount)
 {

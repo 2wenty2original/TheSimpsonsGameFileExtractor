@@ -183,7 +183,7 @@ void run(std::vector<double>& strAdd, std::vector<double>& modelAdd) {
 
 					}
 
-					/*else if (extension == ".txd") {
+					else if (extension == ".txd") {
 						TXDOpen* TXDObject = new TXDOpen(entryPath);
 
 						TXDObject->FilePath = exitPath;
@@ -192,8 +192,8 @@ void run(std::vector<double>& strAdd, std::vector<double>& modelAdd) {
 						TXDObject->Init();
 						TXDObject->ExtractData();
 
-						delete TXDOpen;
-					}*/
+						delete TXDObject;
+					}
 
 					/*	else if (extension == ".bsp") {
 							BSPOpen* BSPObject = new BSPOpen(entryPath);

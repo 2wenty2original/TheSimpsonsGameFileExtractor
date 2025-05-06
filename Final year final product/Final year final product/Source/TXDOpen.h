@@ -141,6 +141,7 @@ private:
 	void DecodeMorton2D(int index, int& x, int& y) {
 		x = 0;
 		y = 0;
+		// thing is 16 for row
 		for (int i = 0; i < 16; ++i) {
 			// this determines odd or even, its a very low level way to do it, but we are on the 
 			// lowest level near to assembly at this point, so im indifferent
@@ -155,13 +156,13 @@ private:
 	void Unswizzle(const uint8_t* swizzled, uint8_t* linear, int width, int height, int bytesPerPixel) {
 		// only width and height
 
-		float Proportion = ((float)height / (float)width);
-		float size = ((float)width * (float)height) * Proportion;
+		float Proportion = height / width;
+		int size = width * height * Proportion;
 
 		// 2 and 1 scalers, 65536, that means divide by 4 and then squar root
 
 
-		for (int i = 0; i < (int)size; ++i) {
+		for (int i = 0; i < size; ++i) {
 			int x, y;
 			DecodeMorton2D(i, x, y);
 
@@ -172,7 +173,7 @@ private:
 			// this is just jans y * width + x, stolen lol
 			// we need to multiply by channel for bgra, not rbga btw
 
-			int yAxis = int((float)y * Proportion);
+			int yAxis = y * Proportion;
 
 			int dstIndex = (yAxis * width + x) * bytesPerPixel;
 
