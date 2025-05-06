@@ -46,6 +46,14 @@ struct DDSFlag {
 
 };
 
+enum DDS_Data_Read {
+	Uncompressed,
+	DXT1,
+	DXT3,
+	DXT5,
+	Default
+};
+
 class TXDOpen {
 
 public:
@@ -72,13 +80,11 @@ public:
 
 	//this is to add to our global output vector
 	void ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureName, int Width, int Height, int FirstNumber,int LinerNumber, int AlphaFlags, int MimMapCount, 
-		int Depth);
+		int Depth, DDS_Data_Read FourCC);
 
 	void ConvertToDDSAlt(std::vector<uint8_t> InputData, std::string TextureName, int Width, int Height, int FirstNumber, int LinerNumber, int AlphaFlags, int MimMapCount,
 		int Depth);
 
-	//this is to add to our global output vector
-	void ConvertToBMP(std::vector<uint8_t> InputData, int Width, int Height, int MimMapCount);
 
 	//this is to get us to the actual geometry of the .rws file
 	bool ProcessData(int _ObjectCount);
@@ -108,14 +114,7 @@ private:
 		}
 	}
 
-	void DecodeMorton2DAlt(int index, int& x, int& y) {
-		x = 0;
-		y = 0;
-		for (int i = 0; i < 16; ++i) {
-			x |= ((index >> (2 * i + 0)) & 1) << i;
-			y |= ((index >> (2 * i + 1)) & 1) << i;
-		}
-	}
+
 
 	// Unswizzle from Morton layout to linear
 	void UnswizzleAlt(const uint8_t* swizzled, uint8_t* linear, int width, int height, int bytesPerPixel) {
@@ -153,35 +152,50 @@ private:
 	// basically tl;dr, morton layout or grid layout, basically lays your pixels out as maps/squares, however
 	// other texture formats like .dds require linear, so we have to effectivelyconvert out pixels
 	// AS WE ARE PARSING THEM THROUGH, to a linear format
-	void Unswizzle(const uint8_t* swizzled, uint8_t* linear, int width, int height, int bytesPerPixel) {
-		// only width and height
-
-		float Proportion = height / width;
-		int size = width * height * Proportion;
-
-		// 2 and 1 scalers, 65536, that means divide by 4 and then squar root
-
-
+	void Unswizzle(const uint8_t* swizzled, uint8_t* linear, int width, int height, int bytesPerPixel, DDS_Data_Read condition) {
+		
+		int size = 0.0f;
 		for (int i = 0; i < size; ++i) {
+
+
+
 			int x, y;
 			DecodeMorton2D(i, x, y);
 
-			// bounds check
+
 			if (x >= width || y >= height)
 				continue;
 
-			// this is just jans y * width + x, stolen lol
-			// we need to multiply by channel for bgra, not rbga btw
+		    if (condition == DDS_Data_Read::Uncompressed) {
+				size = height * width;
 
-			int yAxis = y * Proportion;
+				int dstIndex = (y * width + x) * bytesPerPixel;
+				int srcIndex = i * bytesPerPixel;
 
-			int dstIndex = (yAxis * width + x) * bytesPerPixel;
+				memcpy(&linear[dstIndex], &swizzled[srcIndex], bytesPerPixel);
+			}
 
-			// we do this because so far, we havnt actually being using hte channels for our morton
-			int srcIndex = i * bytesPerPixel;
+			if (condition == DDS_Data_Read::DXT1) {
 
-			// memcpy is realy realy quick, normally i use iterators, but we are doing it between data blocks so screw it
-			memcpy(&linear[dstIndex], &swizzled[srcIndex], bytesPerPixel);
+			}
+
+			if (condition == DDS_Data_Read::DXT3) {
+
+
+				int dstIndex = (y * width + x);
+				int srcIndex = i * bytesPerPixel;
+
+				memcpy(&linear[dstIndex], &swizzled[srcIndex], bytesPerPixel);
+			}
+
+			if (condition == DDS_Data_Read::DXT5) {
+				size = height * width;
+
+				int dstIndex = (y * width + x) * bytesPerPixel;
+				int srcIndex = i * bytesPerPixel;
+
+				memcpy(&linear[dstIndex], &swizzled[srcIndex], bytesPerPixel);
+			}
 		}
 	}
 

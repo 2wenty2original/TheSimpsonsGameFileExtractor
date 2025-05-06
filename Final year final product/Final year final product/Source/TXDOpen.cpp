@@ -175,7 +175,7 @@ void TXDOpen::ExtractData()
 
 
 		// now its time to convert data
-		ConvertToDDS(TextureData, TextureName, Width, Height, SizeOfInitialMip , SizeOfInitialMip, AlphaFlags, mipmap_count, Depth);
+		ConvertToDDS(TextureData, TextureName, Width, Height, SizeOfInitialMip , SizeOfInitialMip, AlphaFlags, mipmap_count, Depth, DDS_Data_Read::Default);
 		
 	}
 
@@ -186,7 +186,7 @@ void TXDOpen::ExtractData()
 }
 
 void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureName, int Width, int Height, int FirstOffset, int LinearNumber, int AlphaFlags, int MinMapCount
-	, int Depth)
+	, int Depth, DDS_Data_Read FourCC)
 {
 
 	
@@ -304,8 +304,9 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 	int NewHeight = Height / counter;
 	int channels = 4;
 
-	int size = FirstOffset; //(NewWidth * NewHeight) * channels;
-	//int size = ;
+	int size = FirstOffset; 
+
+	
 
 	std::vector<int> MipMapOffsets; 
 	MipMapOffsets.push_back(0);
@@ -314,10 +315,10 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 	// ok these work
 	for (int i = 0; i < MinMapCount ; i++) {
 		
-		if (MinMapCount == 1) {
+		/*if (MinMapCount == 1) {
 			Output.write(reinterpret_cast<const char*>(InputData.data()), InputData.size());
 			continue;
-		}
+		}*/
 
 		uint32_t Next = Char_Byte(InputData.begin() + size + MipOffset, InputData.begin() + size + MipOffset + 4).CastToUint32_LE().variable;
 
@@ -333,7 +334,15 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 	for (int Mip = 0; Mip < MipMapOffsets.size() - 1; ++Mip) {
 		
 
-		int Newsize = NewWidth * NewHeight * channels;
+		int Newsize; 
+		
+
+		if (FourCC == ) {
+
+		}
+
+
+		= NewWidth * NewHeight * channels;
 
 		
 
@@ -349,19 +358,6 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 		int Displacement = MipEndOffset - MipStartOffset;
 
 		uint8_t* ddsPixels = new uint8_t[Displacement];
-
-		//for (int j = 0; j < NewHeight; ++j) {
-		//	for (int i = 0; i < NewWidth; ++i) {
-		//		int srcIndex = (j * NewWidth + i) * channels;
-		//		//int dstIndex = (j * NewWidth + i) * channels;
-		//		int dstIndex = srcIndex;
-
-		//		ddsPixels[dstIndex + 0] = PollFrom[srcIndex + 0];
-		//		ddsPixels[dstIndex + 1] = PollFrom[srcIndex + 1];
-		//		ddsPixels[dstIndex + 2] = PollFrom[srcIndex + 2];
-		//		ddsPixels[dstIndex + 3] = PollFrom[srcIndex + 3]; // PollFrom[srcIndex + 3];
-		//	}
-		//}
 
 		Unswizzle(PollFrom.data(), ddsPixels, NewWidth, NewHeight, channels);
 
