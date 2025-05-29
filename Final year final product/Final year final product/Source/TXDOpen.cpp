@@ -235,6 +235,10 @@ void TXDOpen::ExtractData()
 		int Pitch = ((Width * total_bpp + 7) / 8 + 3) & ~3;
 
 
+		if (IsGreyScaled) {
+			return;
+		}
+
 		// now its time to convert data
 
 		/*if (!IsGreyScaled) {
