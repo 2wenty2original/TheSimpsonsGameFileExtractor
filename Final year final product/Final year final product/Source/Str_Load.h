@@ -50,6 +50,18 @@ public:
 
 	bool IsStrFile(std::ifstream& file);
 
+
+	std::string BytesToString(const std::vector<uint8_t>& Bytes) {
+		std::string Output;
+
+		// No reverse
+		for (uint8_t byte : Bytes) {
+			Output += static_cast<char>(byte);
+		}
+
+		return Output;
+	}
+
 	std::string StringIndexes(std::string _string, int &index) {
 		std::string output;
 
@@ -86,6 +98,7 @@ public:
 	}
 
 
+
 public:
 
 	std::vector<uint8_t> FileOutput;
@@ -113,6 +126,8 @@ private:
 
 	std::vector<std::string> FileNames;
 
+	std::string TextureType = BytesToString(std::vector<uint8_t>{0x72, 0x77, 0x49, 0x44, 0x5F, 0x54, 0x45, 0x58, 0x44, 0x49, 0x43, 0x54, 0x49, 0x4F, 0x4E, 0x41, 0x52, 0x59, 0x00, 0xBF});
+	std::string GraphType = BytesToString(std::vector<uint8_t>{0x47, 0x52, 0x41, 0x50, 0x48, 0x00, 0xBF, 0xBF});
 	
 
 	// how many sections there are 

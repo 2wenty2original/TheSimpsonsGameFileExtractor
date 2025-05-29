@@ -416,8 +416,7 @@ void Str_Load::ExtractSection(const char* FileName)
 
 
 
-	// if this is ever equal to our name, we have hit a texture, so we need to rename
-	int TextureValue = 12566463;
+
 
 	while (!OverFlown) {
 
@@ -426,7 +425,7 @@ void Str_Load::ExtractSection(const char* FileName)
 			break;
 		}
 
-		int Displacement = 0;
+
 
 		int StartOfSubFile = Offset;
 		
@@ -442,7 +441,7 @@ void Str_Load::ExtractSection(const char* FileName)
 		}
 
 		Offset += 4;
-		Displacement += 4;
+
 
 		//this is how big the file is, its also technically a 24 bit number, but 32 works and 24 sucks anyway
 		Char_Byte MemoryOffset = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + 4};
@@ -450,7 +449,7 @@ void Str_Load::ExtractSection(const char* FileName)
 		int MemOut = MemoryOffset.CastToint32_LE().variable;
 
 		Offset += 8;
-		Displacement += 8;
+
 
 		// this is the 17th byte to 20th byte big endian number that gives our first offset to D18E
 		Char_Byte OffsetOne = Char_Byte{Output.begin() + Offset, Output.begin() + Offset + 4};
@@ -460,7 +459,7 @@ void Str_Load::ExtractSection(const char* FileName)
 		int AddSizeToMe = Offset;
 
 		Offset += 4;
-		Displacement += 4;
+
 
 		int AddOffsetOneDataToMe = Offset;
 
@@ -470,10 +469,11 @@ void Str_Load::ExtractSection(const char* FileName)
 
 		Char_Byte StartOfFile = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + 4 };
 
+		// this is the size of the file name
 		uint32_t Start = StartOfFile.CastToint32_BE().variable;
 
 		Offset += 4;
-		Displacement += 4;
+
 
 		Char_Byte FileName = Char_Byte{ Output.begin() + Offset, Output.begin() + Offset + Start };
 		
@@ -482,10 +482,27 @@ void Str_Load::ExtractSection(const char* FileName)
 
 		TempFileName = StringIndexes(TempFileName, ObjectIndex);
 
-		int IsTexture = FileName.CastToint32_BE().variable;
+
+		Offset += FileName.Char_Bytes.size();
 
 
-		if (IsTexture == TextureValue) {
+
+		// 16 is how big the proceeding structure and 1 for the Termination clause 0
+
+		Offset += 16;
+
+
+		Char_Byte FileType = Char_Byte(Output.begin() + Offset, Output.begin() + Offset + 4);
+		
+		uint32_t FileTypeNumber = FileType.CastToint32_BE().variable;
+
+		Offset += 4;
+
+
+		std::string FileTypeString(Output.begin() + Offset, Output.begin() + Offset + FileTypeNumber);
+
+		if (FileTypeString == TextureType) {
+
 			TextureIndex++;
 
 			TempFileName.clear();
@@ -494,20 +511,18 @@ void Str_Load::ExtractSection(const char* FileName)
 			TempFileName.append(std::to_string(TextureIndex));
 			TempFileName.append("Texture");
 			TempFileName.append(".txd");
-
 		}
 
-		Offset += FileName.Char_Bytes.size();
-		Displacement += FileName.Char_Bytes.size();
+		else if (FileTypeString == GraphType) {
+			TextureIndex++;
 
+			TempFileName.clear();
+			TempFileName.shrink_to_fit();
 
-		// 16 is how big the proceeding structure and 1 for the Termination clause 0
-
-		Offset += 17;
-		Displacement += 17;
-
-
-		
+			TempFileName.append(std::to_string(TextureIndex));
+			TempFileName.append("Graph");
+			TempFileName.append(".graph");
+		}
 
 		// file path to output to
 		std::filesystem::path FilePath = std::filesystem::path(ExtractedSection) / TempFileName;

@@ -74,13 +74,18 @@ void TXDOpen::ExtractData()
 
 	int Unknown = Char_Byte(HeaderInfo_1.begin() + 2, HeaderInfo_1.begin() + 4).CastToint16_LE().variable;
 
-
+	
 
 	for (int i = 0; i < AmountOfTextures; i++) {
+
+		DDS_Data_Read FourCC = DDS_Data_Read::Default;
+		int FourCCFlags = 0;
+		int FourCCHex = 0;
 		int LocalOffset = 0;
 
-		Chunk Field = Chunk(Characters.begin(), Offset);
+		bool IsGreyScaled = false;
 
+		Chunk Field = Chunk(Characters.begin(), Offset);
 
 		std::vector<uint8_t> TextureData = Char_Byte(Characters.begin() + Offset, Characters.begin() + Offset + Field.size).Char_Bytes;
 
@@ -103,9 +108,89 @@ void TXDOpen::ExtractData()
 		// this is actually the compression type
 		int AlphaFlags = Char_Byte(TextureData.begin(), LocalOffset, 4).CastToint32_BE().variable;
 
+		int bpp = 0;
+
+		int channels = 0;
+
+		std::vector<uint8_t> GreyVector(TextureData.size() * 4);
+
+
+
+
 		int Width = Char_Byte(TextureData.begin(), LocalOffset, 2).CastToint16_BE().variable;
 
 		int Height = Char_Byte(TextureData.begin(), LocalOffset, 2).CastToint16_BE().variable;
+
+		if (AlphaFlags == 405275014) {
+			FourCC = Uncompressed;
+			FourCCFlags = 0x00000041;
+			FourCCHex = 0x00000000;
+			bpp = 8;
+			channels = 4;
+		}
+
+		else if (AlphaFlags == 671088898) {
+			FourCC = Uncompressed;
+			FourCCFlags = 0x00000040;
+			FourCCHex = 0x00000000;
+			bpp = 8;
+			channels = 1;
+			IsGreyScaled = true;
+
+			//PadGrayscaleToTopLeft_RGBA(TextureData.data(), GreyVector.data(), Width, Height, Width, Height );
+
+
+		}
+
+		else if (AlphaFlags == 438305106) {
+			FourCC = DXT1;
+			FourCCFlags = 0x00000004;
+			FourCCHex = 0x31545844;
+			bpp = 4;
+			channels = 3;
+
+
+		}
+
+		else if (AlphaFlags == 438305109) { 
+			FourCC = DXT2;
+			FourCCFlags = 0x00000004;
+			FourCCHex = 0x32545844;
+			bpp = 8;
+			channels = 4;
+		}
+
+		
+
+		else if (AlphaFlags == 438305107) {
+			FourCC = DXT3;
+			FourCCFlags = 0x00000004;
+			FourCCHex = 0x33545844;
+			bpp = 8;
+			channels = 4;
+		}
+
+		else if (AlphaFlags == 438305110) { 
+			FourCC = DXT4;
+			FourCCFlags = 0x00000004;
+			FourCCHex = 0x34545844;
+			bpp = 8;
+			channels = 4;
+		}
+
+		else if (AlphaFlags == 438305108) {
+			FourCC = DXT5;
+			FourCCFlags = 0x00000004;
+			FourCCHex = 0x35545844;
+			bpp = 8;
+			channels = 4;
+		}
+
+		else {
+			int gh = 0;
+		}
+
+
 
 		int Depth = TextureData[LocalOffset++];
 
@@ -117,66 +202,49 @@ void TXDOpen::ExtractData()
 
 		int Palette = TextureData[Depth == 8 ? 256 * 4 : 0];
 
-		/*LocalOffset++;*/
-
 		// this is basically the size of the texture, the rest are mip maps, can be used for relative offset
 		int SizeOfInitialMip = Char_Byte(TextureData.begin(), LocalOffset, 4).CastToUint32_LE().variable;
 
 		TextureData.erase(TextureData.begin(), TextureData.begin() + LocalOffset);
 
+		// nothing for now
+		int dwFlag = 0;
 
+		// because we are converting from texture, its always true, so we do 0x1, 0x2, 0x4
+		dwFlag |= 0x7;
 
+		// if the fourCC is compressed we need to add pitch flag
+		if (FourCC != DXT1 && FourCC != DXT3 && FourCC != DXT5) {
+			dwFlag |= 0x8;
+		}
 
+		else {
+			dwFlag |= 0x80000;
+		}
+
+		// this is standard
+		dwFlag |= 0x1000;
 		
+		// if we have mipmaps
+		if (mipmap_count > 0) {
+			dwFlag |= 0x20000;
+		}
 
-		// Output the value in binary to visualize
-		std::cout << "Value in binary: " << std::bitset<32>(AlphaFlags) << std::endl;
 
-		// Extract individual bits using bitwise operations
-		bool bit_0 = (AlphaFlags & 0x1) != 0;     // 1st bit
-		bool bit_1 = (AlphaFlags & 0x2) != 0;     // 2nd bit
-		bool bit_2 = (AlphaFlags & 0x4) != 0;     // 3rd bit
-		bool bit_3 = (AlphaFlags & 0x8) != 0;     // 4th bit
-
-		bool bit_4 = (AlphaFlags & 0x10) != 0;    // 5th bit
-		bool bit_5 = (AlphaFlags & 0x20) != 0;    // 6th bit
-		bool bit_6 = (AlphaFlags & 0x40) != 0;    // 7th bit
-		bool bit_7 = (AlphaFlags & 0x80) != 0;    // 8th bit
-
-		bool bit_8 = (AlphaFlags & 0x100) != 0;   // 9th bit
-		bool bit_9 = (AlphaFlags & 0x200) != 0;   // 10th bit
-		bool bit_10 = (AlphaFlags & 0x400) != 0;  // 11th bit
-		bool bit_11 = (AlphaFlags & 0x800) != 0;  // 12th bit
-
-		bool bit_12 = (AlphaFlags & 0x1000) != 0; // 13th bit
-		bool bit_13 = (AlphaFlags & 0x2000) != 0; // 14th bit
-		bool bit_14 = (AlphaFlags & 0x4000) != 0; // 15th bit
-		bool bit_15 = (AlphaFlags & 0x8000) != 0; // 16th bit
-
-		bool bit_16 = (AlphaFlags & 0x10000) != 0; // 17th bit
-		bool bit_17 = (AlphaFlags & 0x20000) != 0; // 18th bit
-		bool bit_18 = (AlphaFlags & 0x40000) != 0; // 19th bit
-		bool bit_19 = (AlphaFlags & 0x80000) != 0; // 20th bit
-
-		bool bit_20 = (AlphaFlags & 0x100000) != 0; // 21st bit
-		bool bit_21 = (AlphaFlags & 0x200000) != 0; // 22nd bit
-		bool bit_22 = (AlphaFlags & 0x400000) != 0; // 23rd bit
-		bool bit_23 = (AlphaFlags & 0x800000) != 0; // 24th bit
-
-		bool bit_24 = (AlphaFlags & 0x1000000) != 0; // 25th bit
-		bool bit_25 = (AlphaFlags & 0x2000000) != 0; // 26th bit
-		bool bit_26 = (AlphaFlags & 0x4000000) != 0; // 27th bit
-		bool bit_27 = (AlphaFlags & 0x8000000) != 0; // 28th bit
-
-		bool bit_28 = (AlphaFlags & 0x10000000) != 0; // 29th bit
-		bool bit_29 = (AlphaFlags & 0x20000000) != 0; // 30th bit
-		bool bit_30 = (AlphaFlags & 0x40000000) != 0; // 31st bit
-		bool bit_31 = (AlphaFlags & 0x80000000) != 0; // 32nd bit
+		int total_bpp = bpp * channels;
+		int Pitch = ((Width * total_bpp + 7) / 8 + 3) & ~3;
 
 
 		// now its time to convert data
-		ConvertToDDS(TextureData, TextureName, Width, Height, SizeOfInitialMip , SizeOfInitialMip, AlphaFlags, mipmap_count, Depth, DDS_Data_Read::Default);
+
+		/*if (!IsGreyScaled) {
+			ConvertToDDS(TextureData, TextureName, dwFlag, FourCCHex, FourCCFlags, FourCC, Width, Height, SizeOfInitialMip, Pitch, mipmap_count, Depth, IsGreyScaled);
+		}
 		
+		else {
+			ConvertToDDS(GreyVector, TextureName, dwFlag, FourCCHex, FourCCFlags, FourCC, Width, Height, SizeOfInitialMip, Pitch, mipmap_count, Depth, IsGreyScaled);
+		}*/
+		ConvertToDDS(TextureData, TextureName, dwFlag, FourCCHex, FourCCFlags, FourCC, Width, Height, SizeOfInitialMip, Pitch, mipmap_count, Depth, IsGreyScaled);
 	}
 
 
@@ -185,8 +253,7 @@ void TXDOpen::ExtractData()
 
 }
 
-void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureName, int Width, int Height, int FirstOffset, int LinearNumber, int AlphaFlags, int MinMapCount
-	, int Depth, DDS_Data_Read FourCC)
+void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureName, int dwFlag, int FourCC, int FourCCFlags, DDS_Data_Read FourCCFormat ,int Width, int Height, int FirstOffset, int LinearNumber, int MinMapCount,int Depth, bool IsGrey)
 {
 
 	
@@ -211,21 +278,30 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 
 
 
-	// DDs Signature
+	// DDs Signature, dont change
 	WriteInt(Output, 0x20534444, 4);
 
-	// size of header
+	// size of header, always the same so dont change
 	WriteInt(Output, 0x0000007C, 4);
 
+	// i think these are flags, i dont know
+	WriteInt(Output, dwFlag, 4);
 
-	WriteInt(Output, 0x0002100F, 4);
+	// good, have to be big number tho, like none of that ratio shit, 1024, 512 etc those are cool
+	WriteInt(Output, Height, 4);
 
 	WriteInt(Output, Width, 4);
 
-	WriteInt(Output, Height, 4);
+	// this number can be really big or small, like 4096
 
+
+	// linear number refers to the size of the ENTIRE first texture image in bytes
+	// this number CAN be pitch instead, in that case its the number per row of pixels
+	// if this number is fucking massive, its linear size, if its way smaller its pitch, it variable and cringe
 	WriteInt(Output, LinearNumber, 4);
 
+
+	// depth of volume texture, bruh this is ps3, there aint no fucking volume in textures HAHAHHAHAHA
 	WriteInt(Output, 0x00000001, 4);
 
 	WriteInt(Output, MinMapCount, 4);
@@ -241,13 +317,13 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 	WriteInt(Output, Depth, 4);
 
 	// flags
-	WriteInt(Output, 0x00000041, 4);
+	WriteInt(Output, FourCCFlags, 4);
 
 	// the fourCC or special characters that denote the directX thingy ( its a magic number basically)
-	WriteInt(Output, 0x00000000, 4);
+	WriteInt(Output, FourCC, 4);
 
 	// RGBBitCount
-	WriteInt(Output, 0x00000020, 4);
+	WriteInt(Output, Depth, 4);
 
 
 	// RBitMask
@@ -259,11 +335,27 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 	// BBitMask
 	WriteInt(Output, 0x000000FF, 4);
 
-	// BAitMask
-	WriteInt(Output, 0xFF000000, 4);
+	// ABitMask
 
-	// Caps 1
-	WriteInt(Output, 0x00401008, 4);
+	if (IsGrey) {
+		WriteInt(Output, 0x00000000, 4);
+	}
+
+	else {
+		WriteInt(Output, 0xFF000000, 4);
+	}
+
+
+	if (MinMapCount > 0) {
+		// Caps 1
+		WriteInt(Output, 0x00401008, 4);
+	}
+
+	else {
+		WriteInt(Output, 0x00001000, 4);
+	}
+
+	// these are all useless
 
 	// Caps 2
 	WriteInt(Output, 0x00000000, 4);
@@ -296,55 +388,114 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 
 
 
-	int counter = 1;
+
 
 	int MipOffset = 0;
 
-	int NewWidth = Width / counter;
-	int NewHeight = Height / counter;
-	int channels = 4;
+	int NewWidth;
+	int NewHeight;
+	int channels;
 
-	int size = FirstOffset; 
+	int BlockSize = 16;
+
+	int size; // = NewWidth * NewHeight * BlockSize;
+
+	if (FourCCFormat == DXT1) {
+		BlockSize = 8;
+
+		NewWidth = std::max(1, (Width + 3) / 4);
+		NewHeight = std::max(1, (Height + 3) / 4);
+
+		channels = 3;
+
+		//size = NewWidth * NewHeight * BlockSize;
+	}
+
+	else if (FourCCFormat == DXT2 || FourCCFormat == DXT3 || FourCCFormat == DXT4 || FourCCFormat == DXT5) {
+		BlockSize = 16;
+
+		NewWidth = std::max(1, (Width + 3) / 4);
+		NewHeight = std::max(1, (Height + 3) / 4);
+
+		channels = 4;
+
+		//size = NewWidth * NewHeight * BlockSize;
+
+
+	}
+
+	else if (IsGrey) {
+		NewWidth = Width;
+		NewHeight = Height;
+
+		channels = 1;
+	}
+
+	else {
+		NewWidth = Width;
+		NewHeight = Height;
+
+		channels = 4;
+
+		//size = NewWidth * NewHeight * channels;
+	}
+
+	
+
+	
 
 	
 
 	std::vector<int> MipMapOffsets; 
 	MipMapOffsets.push_back(0);
 
+	int PriorSize = 0;
 
 	// ok these work
-	for (int i = 0; i < MinMapCount ; i++) {
+	for (int i = 0; i < MinMapCount; i++) {
 		
-		/*if (MinMapCount == 1) {
+		if (MinMapCount == 1) {
 			Output.write(reinterpret_cast<const char*>(InputData.data()), InputData.size());
 			continue;
-		}*/
+		}
 
-		uint32_t Next = Char_Byte(InputData.begin() + size + MipOffset, InputData.begin() + size + MipOffset + 4).CastToUint32_LE().variable;
+		
+			
+		
+		if (FourCCFormat == DXT1 || FourCCFormat == DXT2 || 
+			FourCCFormat == DXT3 || FourCCFormat == DXT4 || 
+			FourCCFormat == DXT5) {
+			size = NewWidth * NewHeight * BlockSize;
+		}
 
-		MipOffset += 4;
+		else {
+			size = NewWidth * NewHeight * channels;
+		}
+		
 
-		MipMapOffsets.push_back(MipOffset + size);
+		Char_Byte Text = Char_Byte(InputData.begin()  + PriorSize, InputData.begin() + PriorSize + size);
 
-		MipOffset += Next;
+		NewWidth *= 0.5;
+		NewHeight *= 0.5;
+
+		PriorSize += size;
+		PriorSize += 4;
+	
+
+		MipMapOffsets.push_back(PriorSize);
+
+		
 
 	}
+
+	NewWidth = Width;
+	NewHeight = Height;
 
 
 	for (int Mip = 0; Mip < MipMapOffsets.size() - 1; ++Mip) {
 		
 
-		int Newsize; 
-		
 
-		if (FourCC == ) {
-
-		}
-
-
-		= NewWidth * NewHeight * channels;
-
-		
 
 		int MipStartOffset = MipMapOffsets[Mip];
 		int MipEndOffset = MipMapOffsets[Mip + 1];
@@ -357,13 +508,33 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 
 		int Displacement = MipEndOffset - MipStartOffset;
 
-		uint8_t* ddsPixels = new uint8_t[Displacement];
 
-		Unswizzle(PollFrom.data(), ddsPixels, NewWidth, NewHeight, channels);
 
-		Output.write(reinterpret_cast<const char*>(ddsPixels), (Displacement));
+		std::vector<uint8_t> ddsPixels;
 
-		delete[] ddsPixels;
+		if (FourCCFormat == DDS_Data_Read::DXT1 || 
+			FourCCFormat == DDS_Data_Read::DXT2 ||
+			FourCCFormat == DDS_Data_Read::DXT3 ||
+			FourCCFormat == DDS_Data_Read::DXT4 ||
+			FourCCFormat == DDS_Data_Read::DXT5 || 
+			IsGrey) {
+
+
+			//UnswizzleDXT(PollFrom, ddsPixels, NewWidth, NewHeight, BlockSize);
+			//Output.write(reinterpret_cast<const char*>(ddsPixels.data()), ddsPixels.size());
+
+			Output.write(reinterpret_cast<const char*>(PollFrom.data()), PollFrom.size());
+		}
+
+		else {
+			UnswizzleRGBA(PollFrom, ddsPixels, NewWidth, NewHeight, channels);
+			Output.write(reinterpret_cast<const char*>(ddsPixels.data()), ddsPixels.size());
+		}
+
+		
+
+		
+		 
 
 		NewWidth = std::max(1, NewWidth / 2);
 		NewHeight = std::max(1, NewHeight / 2);
@@ -374,6 +545,23 @@ void TXDOpen::ConvertToDDS(std::vector<uint8_t> InputData, std::string TextureNa
 	Output.close();
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void TXDOpen::ConvertToDDSAlt(std::vector<uint8_t> InputData, std::string TextureName, int Width, int Height, int FirstNumber, int LinerNumber, int AlphaFlags, int MimMapCount, int Depth)
 {
@@ -429,7 +617,7 @@ void TXDOpen::ConvertToDDSAlt(std::vector<uint8_t> InputData, std::string Textur
 	// BBitMask
 	WriteInt(Output, 0x000000FF, 4);
 
-	// BAitMask
+	// ABitMask
 	WriteInt(Output, 0xFF000000, 4);
 
 	// Caps 1
@@ -525,7 +713,7 @@ void TXDOpen::ConvertToDDSAlt(std::vector<uint8_t> InputData, std::string Textur
 		//	}
 		//}
 
-		Unswizzle(PollFrom.data(), ddsPixels, NewWidth, NewHeight, channels);
+		Unswizzle(PollFrom.data(), ddsPixels, NewWidth, NewHeight, channels, DDS_Data_Read::Default);
 
 		Output.write(reinterpret_cast<const char*>(ddsPixels), (NewWidth * NewHeight * channels));
 
